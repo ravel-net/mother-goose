@@ -18,7 +18,6 @@ CREATE UNLOGGED TABLE p1 (
        status 	text,
        PRIMARY key (counts)
 );
--- INSERT into p1 (counts) values (0) ;
 
 DROP TABLE IF EXISTS p2 CASCADE;
 CREATE UNLOGGED TABLE p2 (
@@ -124,7 +123,6 @@ CREATE TRIGGER tm_del_trigger
 --        ON INSERT TO tm
 --        DO ALSO
 --        	  INSERT INTO p1 VALUES ((SELECT max (counts) FROM p1) + 1, 'on');
-
 ----------------------------------------------------------------------
 -- obs application
 ----------------------------------------------------------------------
@@ -588,7 +586,8 @@ CREATE OR REPLACE FUNCTION test() RETURNS text AS '
 ' LANGUAGE plsh;
 
 
+----------------------------------------------------------------------
+-- common to all
+----------------------------------------------------------------------
 
-
-
-
+INSERT into p1 values (0,'on') ;

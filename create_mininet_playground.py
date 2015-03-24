@@ -165,7 +165,8 @@ def load_topo3switch (dbname, username):
         INSERT INTO switches(sid) VALUES (4),(5),(6);
         INSERT INTO hosts(hid) VALUES (1),(2),(3);
         INSERT INTO tp(sid, nid) VALUES (1,4), (2,5), (3,6);
-        INSERT INTO tp(sid, nid) VALUES (4,5), (5,6), (6,4);""")
+        INSERT INTO tp(sid, nid) VALUES (4,5), (5,6), (6,4);
+""")
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
         print 'Error %s' % e    
