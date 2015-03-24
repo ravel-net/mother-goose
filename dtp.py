@@ -1,4 +1,4 @@
-"""2015-03-22-13-31-05-637183
+"""2015-03-24-13-12-10-784236
 $ sudo mn --custom ~/ravel/dtp.py --topo mytopo --test pingall
 $ sudo mn --custom ~/ravel/dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """

@@ -101,6 +101,30 @@ CREATE UNLOGGED TABLE tm (
        PRIMARY KEY (fid)
 );
 
+CREATE OR REPLACE FUNCTION tm_fun() RETURNS TRIGGER AS
+$$
+ct = plpy.execute("""select max (counts) from p1""")[0]['max']
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE TRIGGER tm_in_trigger
+     AFTER INSERT ON tm
+     FOR EACH ROW
+   EXECUTE PROCEDURE tm_fun();
+
+CREATE TRIGGER tm_del_trigger
+     AFTER DELETE ON tm
+     FOR EACH ROW
+   EXECUTE PROCEDURE tm_fun();
+
+
+-- CREATE OR REPLACE RULE tm_in AS 
+--        ON INSERT TO tm
+--        DO ALSO
+--        	  INSERT INTO p1 VALUES ((SELECT max (counts) FROM p1) + 1, 'on');
+
 ----------------------------------------------------------------------
 -- obs application
 ----------------------------------------------------------------------
@@ -369,6 +393,11 @@ plpy.notice (cmd2 + ' via os.system returns ' + str (x2) )
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
+CREATE TRIGGER add_flow_trigger
+     AFTER INSERT ON cf
+     FOR EACH ROW
+   EXECUTE PROCEDURE add_flow_fun();
+
 -- import subprocess
 -- x1 = subprocess.call(mnstring,shell=True)
 -- x2 = subprocess.call(mnstring2,shell=True)
@@ -399,10 +428,48 @@ $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 -- x2 = os.system(mnstring2)
 -- plpy.notice (mnstring2 + ' returns: ' + str (x2))
 
-CREATE TRIGGER add_flow_trigger
-     AFTER INSERT ON cf
+------------------------------------------------------------
+-- del_flow triggers
+------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION del_flow_fun ()
+RETURNS TRIGGER
+AS $$
+f = TD["old"]["pid"]
+s = TD["old"]["sid"]
+n = TD["old"]["nid"]
+
+u = plpy.execute("""\
+         select port
+         from get_port (""" +str (s)+""")  
+         where nid = """ +str (n))
+outport = str(u[0]['port'])
+
+v = plpy.execute("""\
+         select port
+         from get_port (""" +str (s)+""")
+         where nid = """ +str (f))
+inport = str (v[0]['port'])
+
+import os
+import sys
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+os.system (cmd1)
+os.system (cmd2)
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+-- plpy.notice (cmd1 + ' via os.system returns ' + str (x1) )
+-- plpy.notice (cmd2 + ' via os.system returns ' + str (x2) )
+-- plpy.notice("remove sid = "+ str (s) + ", nid = " +str (n) + ", out_port =" + outport + ", in_port = "+ inport)
+
+CREATE TRIGGER del_flow_trigger
+     AFTER DELETE ON cf
      FOR EACH ROW
-   EXECUTE PROCEDURE add_flow_fun();
+   EXECUTE PROCEDURE del_flow_fun();
+
 
 ------------------------------------------------------------
 -- test triggers
@@ -441,10 +508,10 @@ CREATE OR REPLACE FUNCTION tp_notify_trigger()
    END;
    $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER ins_tp_trigger
-     AFTER INSERT ON tp
-     FOR EACH ROW
-   EXECUTE PROCEDURE tp_notify_trigger();
+-- CREATE TRIGGER ins_tp_trigger
+--      AFTER INSERT ON tp
+--      FOR EACH ROW
+--    EXECUTE PROCEDURE tp_notify_trigger();
 
 CREATE OR REPLACE FUNCTION py_tp_notify_trigger ()
 RETURNS TRIGGER
@@ -466,31 +533,38 @@ plpy.notice (msg + ' via subprocess returns ' + str (z))
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
+-- CREATE TRIGGER py_ins_tp_trigger
+--      AFTER INSERT ON tp
+--      FOR EACH ROW
+--    EXECUTE PROCEDURE py_tp_notify_trigger();
+
 ------------------------------------------------------------
 -- useful debugging function
 ------------------------------------------------------------
-
-CREATE TRIGGER py_ins_tp_trigger
-     AFTER INSERT ON tp
-     FOR EACH ROW
-   EXECUTE PROCEDURE py_tp_notify_trigger();
-
 
 CREATE OR REPLACE FUNCTION fun() RETURNS SETOF text AS
 $$
 import os
 import sys
-import subprocess
-msg = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s6 in_port=2,actions=output:1'
-x = os.system (msg)
-plpy.notice (msg + ' via os.system returns ' + str (x) )
+
+ct = plpy.execute("""\
+         select max (counts)
+         from p1""")[0]['max']
+plpy.notice (ct)
+
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
 
 return os.listdir('/home/mininet/ravel')
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
+-- msg = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s6 in_port=2,actions=output:1'
+-- x = os.system (msg)
+-- plpy.notice (msg + ' via os.system returns ' + str (x) )
+
 -- y = os.system (msg)
 -- plpy.notice (msg + ' via os.system returns ' + str (y) )
+-- import subprocess
 -- y = subprocess.call(msg,shell=True)
 -- plpy.notice (msg + ' via subprocess returns ' + str (y) )
 
@@ -500,13 +574,21 @@ echo "$1$2"
 ls
 ' LANGUAGE plsh;
 
+
 CREATE OR REPLACE FUNCTION hello() RETURNS text AS '
 #!/bin/sh
 echo "$1$2"
 ls
 ' LANGUAGE plsh;
 
+
 CREATE OR REPLACE FUNCTION test() RETURNS text AS '
 #!/bin/sh
 /usr/bin/sudo /usr/bin/ovs-ofctl add-flow s6 in_port=2,actions=output:1
 ' LANGUAGE plsh;
+
+
+
+
+
+
