@@ -16,17 +16,17 @@ def create_mininet_topo (dbname, username):
         cur.execute ("SELECT * FROM switches;")
         cs = cur.fetchall ()
         switches = [s['sid'] for s in cs]
-        print switches
+        # print switches
 
         cur.execute ("SELECT * FROM hosts;")
         cs = cur.fetchall ()
         hosts = [h['hid'] for h in cs]
-        print hosts
+        # print hosts
 
         cur.execute ("SELECT * FROM tp;")
         cs = cur.fetchall ()
         links = [[l['sid'],l['nid']] for l in cs]
-        print links
+        # print links
 
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e    
