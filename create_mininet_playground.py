@@ -149,7 +149,51 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
     finally:
         if conn: conn.close()
 
-    
+def load_ISP_topo_fewer_hosts (dbname, username):
+    def init_topology (cursor):
+        ISP_edges_file = os.getcwd () + '/ISP_topo/4755_edges.txt'
+        ISP_nodes_file = os.getcwd () + '/ISP_topo/4755_nodes.txt'
+
+        f = open (ISP_edges_file, "r").readlines ()# [:10]
+
+        for edge in f:
+            ed = edge[:-1].split()
+            try:
+                cursor.execute("""INSERT INTO tp(sid, nid) VALUES (%s, %s);""", (int(ed[0]), int(ed[1])))
+            except psycopg2.DatabaseError, e:
+                print "Unable to insert into topology table: %s" % str(e)
+
+        f = open (ISP_nodes_file, "r").readlines ()
+        for node in f:
+            nd = node[:-1]
+            try:
+                cursor.execute ("""INSERT INTO switches VALUES (%s);""", ([int (nd)]))
+            except psycopg2.DatabaseError, e:
+                print "Unable to insert into switches table: %s" % str(e)
+
+        f = ['60\n','34\n','112\n','141\n','193\n','238\n','28\n','89\n','91\n','253\n','472\n']
+        for node in f:
+            nd = node[:-1]
+            try:
+                cursor.execute ("""INSERT INTO hosts VALUES (%s);""", ([int (nd)+1000]))
+                cursor.execute ("""INSERT INTO tp(sid, nid) VALUES (%s, %s);""",(int(nd)+1000,int(nd)))
+            except psycopg2.DatabaseError, e:
+                print "Unable to insert into hosts table: %s" % str(e)
+        print "Initialize topology table with edges in " + ISP_edges_file + "\n"
+
+    try:
+        conn = psycopg2.connect(database= dbname, user= username)
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor()
+        print "Connect to database " + dbname + ", as user " + username
+        
+        init_topology (cur)
+    except psycopg2.DatabaseError, e:
+        print "Unable to connect to database " + dbname + ", as user " + username
+        print 'Error %s' % e    
+
+    finally:
+        if conn: conn.close()    
 
 def load_topo3switch (dbname, username):
     try:
@@ -201,11 +245,17 @@ if __name__ == '__main__':
 
     load_schema (dbname, username, sql_script)
 
-    load_topo3switch (dbname, username)
+    topo_flag = raw_input ('Topology options (isp/toy): ')
+    if topo_flag == 'toy':
+        load_topo3switch (dbname, username)
+    elif topo_flag == 'isp':
+        load_ISP_topo_fewer_hosts (dbname, username)
+    else:
+        print 'wrong topology type\n'
 
-    create_mininet_topo (dbname, username)
+    if (topo_flag == 'toy' or topo_flag == 'isp'):
+        create_mininet_topo (dbname, username)
 
     del_flag = raw_input ('Clean the added database (y/n): ')
     if del_flag == 'y':
         clean_db (dbname)
-
