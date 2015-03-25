@@ -383,11 +383,22 @@ cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + o
 
 import os
 import sys
+import time
 
+fo = open ('/home/mininet/ravel/log.txt', 'a')
+def logfunc(msg,f=fo):
+    f.write(msg+'\n')
+
+t1 = time.time ()
 x1 = os.system (cmd1)
-plpy.notice (cmd1 + ' via os.system returns ' + str (x1) )
+t2 = time.time ()
+logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+
+t1 = time.time ()
 x2 = os.system (cmd2)
-plpy.notice (cmd2 + ' via os.system returns ' + str (x2) )
+t2 = time.time ()
+logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
@@ -395,6 +406,9 @@ CREATE TRIGGER add_flow_trigger
      AFTER INSERT ON cf
      FOR EACH ROW
    EXECUTE PROCEDURE add_flow_fun();
+
+-- plpy.notice (cmd1 + ' via os.system returns ' + str (x1) )
+-- plpy.notice (cmd2 + ' via os.system returns ' + str (x2) )
 
 -- import subprocess
 -- x1 = subprocess.call(mnstring,shell=True)
@@ -449,12 +463,26 @@ v = plpy.execute("""\
          where nid = """ +str (f))
 inport = str (v[0]['port'])
 
-import os
-import sys
 cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
 cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
-os.system (cmd1)
-os.system (cmd2)
+
+import os
+import sys
+import time
+
+fo = open ('/home/mininet/ravel/log.txt', 'a')
+def logfunc(msg,f=fo):
+    f.write(msg+'\n')
+
+t1 = time.time ()
+x1 = os.system (cmd1)
+t2 = time.time ()
+logfunc ('del-flows s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+
+t1 = time.time ()
+x1 = os.system (cmd2)
+t2 = time.time ()
+logfunc ('del-flows s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
 
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
@@ -555,6 +583,41 @@ plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
 return os.listdir('/home/mininet/ravel')
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION fun2() RETURNS text AS
+$$
+plpy.notice ('fun2 begins')
+
+fo = open ('/home/mininet/ravel/log.txt', 'a')
+def logfunc(msg,f=fo):
+    f.write(msg+'\n')
+logfunc ('fun2 write log')
+return str ('fun2 return')
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+-- f = open('/tmp/log2.txt', 'w')
+    -- f.flush()
+
+
+CREATE OR REPLACE FUNCTION log() RETURNS text AS
+$$
+import time
+plpy.notice ('log begins')
+plpy.log ('hello log')
+t = time.time ()
+plpy.log ('log time: ' + str (t))
+
+t = time.time ()
+plpy.debug ('debug time: ' + str (t))
+
+t = time.time ()
+plpy.info ('info time: ' + str (t))
+
+return str ('log ends')
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
 
 -- msg = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s6 in_port=2,actions=output:1'
 -- x = os.system (msg)

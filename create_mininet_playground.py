@@ -86,6 +86,7 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
     """)
     fo.write ('\n')
     fo.close ()
+    print "-------------------->create_mininet_topo successful"
 
 
 def clean_db (dbname):
@@ -95,7 +96,7 @@ def clean_db (dbname):
         cur = conn.cursor()
 
         cur.execute ("drop database " + dbname)
-        print 'Successfully drop database ' + dbname + '\n'
+        print "clean_db successful"
 
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname 
@@ -109,7 +110,6 @@ def create_db (dbname):
         conn = psycopg2.connect(database= 'postgres', user= 'mininet')
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
-        print "Connect to database postgres, as user " + 'mininet'
 
         cur.execute ("SELECT datname FROM pg_database WHERE datistemplate = false;")
         c = cur.fetchall ()
@@ -119,8 +119,9 @@ def create_db (dbname):
         else:
             print "database " + dbname + " exists, skip"
 
+        print "-------------------->create_db successful"
     except psycopg2.DatabaseError, e:
-        print "Unable to connect to database postgres, as user " + 'mininet'
+        print "create_db: unable to connect to database postgres, as user " + 'mininet'
         print 'Error %s' % e
 
     finally:
@@ -133,10 +134,8 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
         conn = psycopg2.connect(database= dbname, user= username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
-        print "Connect to database " + dbname + ", as user " + username
 
         cur.execute ("SELECT 1 FROM pg_catalog.pg_namespace n JOIN pg_catalog.pg_proc p ON pronamespace = n.oid WHERE proname = 'pgr_dijkstra';")
-
         c = cur.fetchall ()
         if c == []:
             cur.execute ("CREATE EXTENSION IF NOT EXISTS plpythonu;")
@@ -144,6 +143,7 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
             cur.execute ("CREATE EXTENSION IF NOT EXISTS pgrouting;")
             cur.execute ("CREATE EXTENSION plsh;")
 
+        print "-------------------->add_pgrouting_plpy_plsh_extension successful"
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
@@ -185,9 +185,10 @@ def load_ISP_topo_fewer_hosts (dbname, username):
         conn = psycopg2.connect(database= dbname, user= username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
-        print "Connect to database " + dbname + ", as user " + username
-        
         init_topology (cur)
+
+        print "-------------------->load_ISP_topo_fewer_hosts successful"
+
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
         print 'Error %s' % e    
@@ -200,8 +201,6 @@ def load_topo3switch (dbname, username):
         conn = psycopg2.connect(database= dbname, user= username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
-        print "Connect to database " + dbname + ", as user " + username
-
         cur.execute ("""
         TRUNCATE TABLE tp cascade;
         TRUNCATE TABLE cf cascade;
@@ -211,6 +210,8 @@ def load_topo3switch (dbname, username):
         INSERT INTO tp(sid, nid) VALUES (1,4), (2,5), (3,6);
         INSERT INTO tp(sid, nid) VALUES (4,5), (5,6), (6,4);
 """)
+
+        print "-------------------->load_topo3switch successful"
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
         print 'Error %s' % e    
@@ -223,11 +224,57 @@ def load_schema (dbname, username, sql_script):
         conn = psycopg2.connect(database= dbname, user= username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
-        print "Connect to database " + dbname + ", as user " + username
 
         dbscript  = open (sql_script,'r').read()
         cur.execute(dbscript)
 
+        print "-------------------->load_schema successful"
+    except psycopg2.DatabaseError, e:
+        print 'Error %s' % e
+    finally:
+        if conn: conn.close()
+
+def batch_test (dbname, username):
+    try:
+        conn = psycopg2.connect(database= dbname, user= username)
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute ("SELECT * FROM hosts;")
+        cs = cur.fetchall ()
+        hosts = [h['hid'] for h in cs]
+        # print hosts
+
+        logfile = os.getcwd ()+'/log.txt'
+        open(logfile, 'w').close()
+        f = open(logfile, 'a')
+        f.write ("-------------------->batch_test begins\n")
+        f.flush ()
+
+        def one_round (cur=cur, hosts=hosts, f=f):
+            indices = random.sample(range(len(hosts)), 2)
+            [h1,h2] = [hosts[i] for i in sorted(indices)]
+            
+            t1 = time.time ()
+            cur.execute ("INSERT INTO tm values (1,%s,%s,1);",([int (h1),int (h2)]))
+            t2 = time.time ()
+            f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
+            f.flush ()
+
+            t1 = time.time ()
+            cur.execute ("DELETE FROM tm WHERE fid = 1;")
+            t2 = time.time ()
+            f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')  
+            # logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+            # cursor.execute ("""INSERT INTO switches VALUES (%s);""", ([int (nd)]))
+
+        one_round ()
+
+        f.write ("-------------------->batch_test ends\n")
+        f.close ()
+        logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
+        os.system ("cp "+ logfile + ' ' + logdest)
+        
+        print "-------------------->batch_test successful"
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
@@ -255,6 +302,8 @@ if __name__ == '__main__':
 
     if (topo_flag == 'toy' or topo_flag == 'isp'):
         create_mininet_topo (dbname, username)
+
+    batch_test (dbname, username)
 
     del_flag = raw_input ('Clean the added database (y/n): ')
     if del_flag == 'y':

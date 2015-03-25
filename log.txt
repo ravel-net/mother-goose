@@ -1,0 +1,12 @@
+-------------------->batch_test begins
+add-flow s6(ms): 10.1690292358
+add-flow s6(ms): 11.8789672852
+add-flow s4(ms): 10.4959011078
+add-flow s4(ms): 11.0919475555
+INSERT INTO tm values (1,1,3,1)(ms):89.7350311279
+del-flows s4(ms): 12.2029781342
+del-flows s4(ms): 11.4398002625
+del-flows s6(ms): 11.3110542297
+del-flows s6(ms): 11.1260414124
+DELETE FROM tm WHERE fid = 1(ms):54.3689727783
+-------------------->batch_test ends
