@@ -399,6 +399,8 @@ x2 = os.system (cmd2)
 t2 = time.time ()
 logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
 
+fo.flush ()
+
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
@@ -483,6 +485,8 @@ t1 = time.time ()
 x1 = os.system (cmd2)
 t2 = time.time ()
 logfunc ('del-flows s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+
+fo.flush ()
 
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;

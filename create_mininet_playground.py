@@ -263,11 +263,15 @@ def batch_test (dbname, username):
             t1 = time.time ()
             cur.execute ("DELETE FROM tm WHERE fid = 1;")
             t2 = time.time ()
-            f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')  
-            # logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
-            # cursor.execute ("""INSERT INTO switches VALUES (%s);""", ([int (nd)]))
+            f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
+            f.flush ()
 
-        one_round ()
+        for i in range (0,10):
+            print "round " + str (i)
+            f.write ("round " + str (i) + '\n')
+            f.flush ()
+            one_round ()
+            f.write ('\n')
 
         f.write ("-------------------->batch_test ends\n")
         f.close ()
