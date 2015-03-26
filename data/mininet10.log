@@ -1,0 +1,76 @@
+-------------------->mininet with rounds 10
+-------------------->batch_test begins
+
+round 0
+add-flow s6(ms): 25.8948802948
+add-flow s6(ms): 26.7329216003
+add-flow s5(ms): 31.8088531494
+add-flow s5(ms): 24.81508255
+INSERT INTO tm values (1,2,3,1)(ms):187.875032425
+del-flows s6(ms): 26.1511802673
+del-flows s6(ms): 27.6010036469
+del-flows s5(ms): 25.5808830261
+del-flows s5(ms): 28.5830497742
+DELETE FROM tm WHERE fid = 1(ms):124.722957611
+
+round 1
+add-flow s6(ms): 28.400182724
+add-flow s6(ms): 25.6679058075
+add-flow s5(ms): 20.378112793
+add-flow s5(ms): 27.9970169067
+INSERT INTO tm values (1,2,3,1)(ms):130.757808685
+del-flows s6(ms): 24.2190361023
+del-flows s6(ms): 24.4598388672
+del-flows s5(ms): 29.0679931641
+del-flows s5(ms): 24.5881080627
+DELETE FROM tm WHERE fid = 1(ms):115.385055542
+
+round 2
+add-flow s6(ms): 33.1392288208
+add-flow s6(ms): 27.7619361877
+add-flow s4(ms): 34.0490341187
+add-flow s4(ms): 33.1828594208
+INSERT INTO tm values (1,1,3,1)(ms):143.868923187
+del-flows s4(ms): 27.7080535889
+del-flows s4(ms): 27.2331237793
+del-flows s6(ms): 26.0338783264
+del-flows s6(ms): 33.7538719177
+DELETE FROM tm WHERE fid = 1(ms):130.835056305
+
+round 3
+INSERT INTO tm values (1,1,2,1)(ms):15.2189731598
+DELETE FROM tm WHERE fid = 1(ms):0.221967697144
+
+round 4
+add-flow s6(ms): 19.4938182831
+add-flow s6(ms): 15.3930187225
+add-flow s5(ms): 16.1690711975
+add-flow s5(ms): 11.6908550262
+INSERT INTO tm values (1,2,3,1)(ms):73.2450485229
+del-flows s6(ms): 8.83102416992
+del-flows s6(ms): 8.76688957214
+del-flows s5(ms): 7.85493850708
+del-flows s5(ms): 8.70704650879
+DELETE FROM tm WHERE fid = 1(ms):38.8588905334
+
+round 5
+INSERT INTO tm values (1,1,2,1)(ms):6.01506233215
+DELETE FROM tm WHERE fid = 1(ms):0.107049942017
+
+round 6
+INSERT INTO tm values (1,1,2,1)(ms):7.17306137085
+DELETE FROM tm WHERE fid = 1(ms):0.164985656738
+
+round 7
+INSERT INTO tm values (1,1,2,1)(ms):7.77387619019
+DELETE FROM tm WHERE fid = 1(ms):1.62100791931
+
+round 8
+INSERT INTO tm values (1,1,2,1)(ms):7.30490684509
+DELETE FROM tm WHERE fid = 1(ms):0.127077102661
+
+round 9
+INSERT INTO tm values (1,1,2,1)(ms):9.56201553345
+DELETE FROM tm WHERE fid = 1(ms):0.331163406372
+
+-------------------->batch_test ends
