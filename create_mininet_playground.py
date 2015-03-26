@@ -286,9 +286,15 @@ def batch_test (dbname, username, rounds, topo_flag):
     finally:
         if conn: conn.close()
 
+def load_mininet_topo (dbname,username):
+    cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db"
+    os.system (cmd + " &")
+    # os.spawnl(os.P_NOWAIT, cmd)
+    print "load_mininet_topo successful: Fan's db.py running in the background"
+
 if __name__ == '__main__':
 
-    dbname = raw_input ('Input database name: (toy/isp)')
+    dbname = raw_input ('Input database name: (toy/isp/mininet)')
     username = 'mininet'
     sql_script = "/home/mininet/ravel/mininet_playground.sql"
 
@@ -304,6 +310,9 @@ if __name__ == '__main__':
         load_topo3switch (dbname, username)
     elif dbname == 'isp':
         load_ISP_topo_fewer_hosts (dbname, username)
+    elif dbname == 'mininet':
+        load_mininet_topo (dbname,username)
+        load_topo3switch (dbname, username)
     else:
         print 'wrong topology type\n'
 

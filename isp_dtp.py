@@ -1,4 +1,4 @@
-"""2015-03-25-18-27-20-686066
+"""2015-03-25-19-23-17-310875
 $ sudo mn --custom /home/mininet/ravel/isp_dtp.py --topo mytopo --test pingall
 $ sudo mn --custom /home/mininet/ravel/isp_dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """
