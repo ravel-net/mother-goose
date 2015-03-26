@@ -1,74 +1,188 @@
+-------------------->isp with rounds 10
 -------------------->batch_test begins
+
 round 0
-add-flow s6(ms): 10.1401805878
-add-flow s6(ms): 10.0381374359
-add-flow s4(ms): 10.5278491974
-add-flow s4(ms): 11.775970459
-INSERT INTO tm values (1,1,3,1)(ms):85.5400562286
-del-flows s4(ms): 11.4088058472
-del-flows s4(ms): 10.9741687775
-del-flows s6(ms): 12.6690864563
-del-flows s6(ms): 12.1941566467
-DELETE FROM tm WHERE fid = 1(ms):53.8401603699
+add-flow s60(ms): 10.5051994324
+add-flow s60(ms): 11.6260051727
+add-flow s112(ms): 11.7259025574
+add-flow s112(ms): 12.0890140533
+add-flow s34(ms): 11.0149383545
+add-flow s34(ms): 12.2811794281
+INSERT INTO tm values (1,1034,1112,1)(ms):136.197090149
+del-flows s60(ms): 10.3018283844
+del-flows s60(ms): 11.7118358612
+del-flows s112(ms): 12.4168395996
+del-flows s112(ms): 10.9488964081
+del-flows s34(ms): 10.2989673615
+del-flows s34(ms): 10.9179019928
+DELETE FROM tm WHERE fid = 1(ms):75.8681297302
 
 round 1
-INSERT INTO tm values (1,1,2,1)(ms):8.46195220947
-DELETE FROM tm WHERE fid = 1(ms):0.128984451294
+add-flow s253(ms): 11.6970539093
+add-flow s253(ms): 17.1141624451
+add-flow s472(ms): 12.1231079102
+add-flow s472(ms): 11.7120742798
+add-flow s60(ms): 10.7519626617
+add-flow s60(ms): 12.3870372772
+INSERT INTO tm values (1,1253,1472,1)(ms):111.648082733
+del-flows s472(ms): 11.1498832703
+del-flows s472(ms): 9.98520851135
+del-flows s253(ms): 11.775970459
+del-flows s253(ms): 12.2389793396
+del-flows s60(ms): 13.1800174713
+del-flows s60(ms): 10.8029842377
+DELETE FROM tm WHERE fid = 1(ms):77.1200656891
 
 round 2
-INSERT INTO tm values (1,1,2,1)(ms):4.42600250244
-DELETE FROM tm WHERE fid = 1(ms):0.205993652344
+add-flow s238(ms): 12.1779441833
+add-flow s238(ms): 11.6279125214
+add-flow s193(ms): 14.4350528717
+add-flow s193(ms): 12.4950408936
+add-flow s60(ms): 12.3178958893
+add-flow s60(ms): 10.3120803833
+INSERT INTO tm values (1,1193,1238,1)(ms):108.45208168
+del-flows s193(ms): 10.9968185425
+del-flows s193(ms): 12.326002121
+del-flows s238(ms): 10.9539031982
+del-flows s238(ms): 11.7650032043
+del-flows s60(ms): 11.4588737488
+del-flows s60(ms): 12.9220485687
+DELETE FROM tm WHERE fid = 1(ms):78.5949230194
 
 round 3
-INSERT INTO tm values (1,1,2,1)(ms):5.82504272461
-DELETE FROM tm WHERE fid = 1(ms):0.155925750732
+add-flow s60(ms): 11.785030365
+add-flow s60(ms): 12.6020908356
+add-flow s91(ms): 13.9470100403
+add-flow s91(ms): 13.8490200043
+add-flow s34(ms): 11.2860202789
+add-flow s34(ms): 10.9310150146
+add-flow s89(ms): 12.5830173492
+add-flow s89(ms): 11.167049408
+INSERT INTO tm values (1,1060,1089,1)(ms):138.612031937
+del-flows s91(ms): 12.9511356354
+del-flows s91(ms): 9.80806350708
+del-flows s60(ms): 11.2841129303
+del-flows s60(ms): 11.7609500885
+del-flows s34(ms): 12.1819972992
+del-flows s34(ms): 10.8089447021
+del-flows s89(ms): 10.8001232147
+del-flows s89(ms): 13.1461620331
+DELETE FROM tm WHERE fid = 1(ms):103.434801102
 
 round 4
-add-flow s6(ms): 13.0240917206
-add-flow s6(ms): 14.5688056946
-add-flow s5(ms): 12.6390457153
-add-flow s5(ms): 11.9960308075
-INSERT INTO tm values (1,2,3,1)(ms):65.8538341522
-del-flows s6(ms): 9.88292694092
-del-flows s6(ms): 12.2330188751
-del-flows s5(ms): 11.3980770111
-del-flows s5(ms): 12.1269226074
-DELETE FROM tm WHERE fid = 1(ms):53.1351566315
+add-flow s112(ms): 12.5041007996
+add-flow s112(ms): 11.7897987366
+add-flow s91(ms): 10.9941959381
+add-flow s91(ms): 12.4158859253
+INSERT INTO tm values (1,1112,1091,1)(ms):74.2819309235
+del-flows s91(ms): 11.482000351
+del-flows s91(ms): 12.1560096741
+del-flows s112(ms): 10.5669498444
+del-flows s112(ms): 12.5601291656
+DELETE FROM tm WHERE fid = 1(ms):53.9128780365
 
 round 5
-add-flow s6(ms): 10.5700492859
-add-flow s6(ms): 12.2740268707
-add-flow s5(ms): 11.3580226898
-add-flow s5(ms): 10.9939575195
-INSERT INTO tm values (1,2,3,1)(ms):56.9040775299
-del-flows s6(ms): 12.5980377197
-del-flows s6(ms): 10.3840827942
-del-flows s5(ms): 11.4769935608
-del-flows s5(ms): 11.3348960876
-DELETE FROM tm WHERE fid = 1(ms):52.8337955475
+add-flow s472(ms): 11.0149383545
+add-flow s472(ms): 10.9338760376
+add-flow s28(ms): 14.328956604
+add-flow s28(ms): 12.4359130859
+add-flow s91(ms): 11.687040329
+add-flow s91(ms): 11.079788208
+INSERT INTO tm values (1,1028,1472,1)(ms):109.167814255
+del-flows s28(ms): 12.4709606171
+del-flows s28(ms): 10.8420848846
+del-flows s91(ms): 12.5930309296
+del-flows s91(ms): 12.0050907135
+del-flows s472(ms): 11.2080574036
+del-flows s472(ms): 10.6699466705
+DELETE FROM tm WHERE fid = 1(ms):78.2208442688
 
 round 6
-INSERT INTO tm values (1,1,2,1)(ms):8.15486907959
-DELETE FROM tm WHERE fid = 1(ms):0.247955322266
+add-flow s89(ms): 10.9851360321
+add-flow s89(ms): 12.9179954529
+add-flow s34(ms): 14.4248008728
+add-flow s34(ms): 13.1039619446
+add-flow s91(ms): 11.7018222809
+add-flow s91(ms): 12.8200054169
+add-flow s253(ms): 11.8598937988
+add-flow s253(ms): 12.4180316925
+add-flow s60(ms): 11.8119716644
+add-flow s60(ms): 11.2910270691
+INSERT INTO tm values (1,1089,1253,1)(ms):167.458057404
+del-flows s253(ms): 12.5300884247
+del-flows s253(ms): 11.9252204895
+del-flows s34(ms): 12.0480060577
+del-flows s34(ms): 12.069940567
+del-flows s60(ms): 13.3020877838
+del-flows s60(ms): 13.475894928
+del-flows s89(ms): 14.9209499359
+del-flows s89(ms): 12.1400356293
+del-flows s91(ms): 12.9652023315
+del-flows s91(ms): 11.9528770447
+DELETE FROM tm WHERE fid = 1(ms):137.707948685
 
 round 7
-INSERT INTO tm values (1,1,2,1)(ms):6.44397735596
-DELETE FROM tm WHERE fid = 1(ms):0.188827514648
+add-flow s28(ms): 12.0661258698
+add-flow s28(ms): 24.4081020355
+add-flow s141(ms): 14.475107193
+add-flow s141(ms): 9.75584983826
+add-flow s91(ms): 20.7731723785
+add-flow s91(ms): 16.7169570923
+add-flow s34(ms): 12.6721858978
+add-flow s34(ms): 11.2359523773
+add-flow s60(ms): 12.4270915985
+add-flow s60(ms): 10.7569694519
+INSERT INTO tm values (1,1141,1028,1)(ms):199.146032333
+del-flows s28(ms): 24.3411064148
+del-flows s28(ms): 27.0729064941
+del-flows s34(ms): 31.7871570587
+del-flows s34(ms): 26.1750221252
+del-flows s141(ms): 27.036190033
+del-flows s141(ms): 15.4480934143
+del-flows s91(ms): 12.0310783386
+del-flows s91(ms): 14.2738819122
+del-flows s60(ms): 12.5160217285
+del-flows s60(ms): 16.9720649719
+DELETE FROM tm WHERE fid = 1(ms):218.252897263
 
 round 8
-INSERT INTO tm values (1,1,2,1)(ms):7.70115852356
-DELETE FROM tm WHERE fid = 1(ms):0.181198120117
+add-flow s193(ms): 33.4298610687
+add-flow s193(ms): 25.9530544281
+add-flow s141(ms): 12.7110481262
+add-flow s141(ms): 12.5761032104
+add-flow s60(ms): 27.5988578796
+add-flow s60(ms): 18.1739330292
+INSERT INTO tm values (1,1141,1193,1)(ms):178.9021492
+del-flows s193(ms): 11.3639831543
+del-flows s193(ms): 12.8090381622
+del-flows s141(ms): 9.21988487244
+del-flows s141(ms): 30.0538539886
+del-flows s60(ms): 30.1539897919
+del-flows s60(ms): 27.2970199585
+DELETE FROM tm WHERE fid = 1(ms):133.162021637
 
 round 9
-add-flow s6(ms): 11.167049408
-add-flow s6(ms): 12.1262073517
-add-flow s4(ms): 11.0120773315
-add-flow s4(ms): 12.2969150543
-INSERT INTO tm values (1,1,3,1)(ms):58.424949646
-del-flows s4(ms): 11.7919445038
-del-flows s4(ms): 9.2499256134
-del-flows s6(ms): 11.9111537933
-del-flows s6(ms): 13.3500099182
-DELETE FROM tm WHERE fid = 1(ms):53.3130168915
+add-flow s91(ms): 31.9728851318
+add-flow s91(ms): 27.7378559113
+add-flow s34(ms): 28.137922287
+add-flow s34(ms): 27.9719829559
+add-flow s28(ms): 30.7559967041
+add-flow s28(ms): 20.2329158783
+add-flow s253(ms): 14.2359733582
+add-flow s253(ms): 15.5110359192
+add-flow s60(ms): 12.5000476837
+add-flow s60(ms): 11.9299888611
+INSERT INTO tm values (1,1028,1253,1)(ms):283.061027527
+del-flows s28(ms): 12.5131607056
+del-flows s28(ms): 12.1278762817
+del-flows s253(ms): 12.2580528259
+del-flows s253(ms): 11.4040374756
+del-flows s34(ms): 9.4530582428
+del-flows s34(ms): 12.3100280762
+del-flows s60(ms): 10.3421211243
+del-flows s60(ms): 9.8021030426
+del-flows s91(ms): 12.4819278717
+del-flows s91(ms): 11.4760398865
+DELETE FROM tm WHERE fid = 1(ms):126.569986343
 
 -------------------->batch_test ends

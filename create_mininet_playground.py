@@ -42,11 +42,11 @@ def create_mininet_topo (dbname, username):
 
     timestamp = str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
     # timestamp = ""
-    filename = os.getcwd () + '/dtp.py'
+    filename = os.getcwd () + '/'+ dbname + '_dtp.py'
     fo = open(filename, "w")
     fo.write ('"""' + timestamp)
-    fo.write ('\n$ sudo mn --custom ~/ravel/dtp.py --topo mytopo --test pingall')
-    fo.write ('\n$ sudo mn --custom ~/ravel/dtp.py --topo mytopo --mac --switch ovsk --controller remote\n')
+    fo.write ('\n$ sudo mn --custom '+ filename + ' --topo mytopo --test pingall')
+    fo.write ('\n$ sudo mn --custom '+ filename + ' --topo mytopo --mac --switch ovsk --controller remote\n')
     fo.write ('"""')
 
     fo.write ('\n')
@@ -234,7 +234,7 @@ def load_schema (dbname, username, sql_script):
     finally:
         if conn: conn.close()
 
-def batch_test (dbname, username):
+def batch_test (dbname, username, rounds, topo_flag):
     try:
         conn = psycopg2.connect(database= dbname, user= username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
@@ -247,7 +247,8 @@ def batch_test (dbname, username):
         logfile = os.getcwd ()+'/log.txt'
         open(logfile, 'w').close()
         f = open(logfile, 'a')
-        f.write ("-------------------->batch_test begins\n")
+        f.write ("-------------------->" + topo_flag + ' with rounds ' + str (rounds) + '\n')
+        f.write ("-------------------->batch_test begins\n\n")
         f.flush ()
 
         def one_round (cur=cur, hosts=hosts, f=f):
@@ -266,7 +267,7 @@ def batch_test (dbname, username):
             f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
             f.flush ()
 
-        for i in range (0,10):
+        for i in range (0,rounds):
             print "round " + str (i)
             f.write ("round " + str (i) + '\n')
             f.flush ()
@@ -275,7 +276,8 @@ def batch_test (dbname, username):
 
         f.write ("-------------------->batch_test ends\n")
         f.close ()
-        logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
+        logdest = os.getcwd () + '/data/' + topo_flag + str (rounds) + '.log'
+        # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
         os.system ("cp "+ logfile + ' ' + logdest)
         
         print "-------------------->batch_test successful"
@@ -286,7 +288,7 @@ def batch_test (dbname, username):
 
 if __name__ == '__main__':
 
-    dbname = raw_input ('Input database name: ')
+    dbname = raw_input ('Input database name: (toy/isp)')
     username = 'mininet'
     sql_script = "/home/mininet/ravel/mininet_playground.sql"
 
@@ -296,18 +298,19 @@ if __name__ == '__main__':
 
     load_schema (dbname, username, sql_script)
 
-    topo_flag = raw_input ('Topology options (isp/toy): ')
-    if topo_flag == 'toy':
+    # topo_flag = raw_input ('Topology options (isp/toy): ')
+    # topo_flag = dbname
+    if dbname == 'toy':
         load_topo3switch (dbname, username)
-    elif topo_flag == 'isp':
+    elif dbname == 'isp':
         load_ISP_topo_fewer_hosts (dbname, username)
     else:
         print 'wrong topology type\n'
 
-    if (topo_flag == 'toy' or topo_flag == 'isp'):
+    if (dbname == 'toy' or dbname == 'isp'):
         create_mininet_topo (dbname, username)
 
-    batch_test (dbname, username)
+    batch_test (dbname, username, 10, topo_flag=dbname)
 
     del_flag = raw_input ('Clean the added database (y/n): ')
     if del_flag == 'y':

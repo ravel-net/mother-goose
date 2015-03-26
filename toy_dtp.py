@@ -1,6 +1,6 @@
-"""2015-03-25-18-19-44-224856
-$ sudo mn --custom ~/ravel/dtp.py --topo mytopo --test pingall
-$ sudo mn --custom ~/ravel/dtp.py --topo mytopo --mac --switch ovsk --controller remote
+"""2015-03-25-18-25-54-671138
+$ sudo mn --custom /home/mininet/ravel/toy_dtp.py --topo mytopo --test pingall
+$ sudo mn --custom /home/mininet/ravel/toy_dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """
 
 from mininet.topo import Topo
