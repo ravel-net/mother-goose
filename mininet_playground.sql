@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS mn_to_ex CASCADE;
-CREATE UNLOGGED TABLE mn_to_ex (
-       counts  	integer,
-       command  text
-);
+-- DROP TABLE IF EXISTS mn_to_ex CASCADE;
+-- CREATE UNLOGGED TABLE mn_to_ex (
+--        counts  	integer,
+--        command  text
+-- );
 
-DROP TABLE IF EXISTS clock CASCADE;
-CREATE UNLOGGED TABLE clock (
-       counts  	integer,
-       PRIMARY key (counts)
-);
+-- DROP TABLE IF EXISTS clock CASCADE;
+-- CREATE UNLOGGED TABLE clock (
+--        counts  	integer,
+--        PRIMARY key (counts)
+-- );
 -- INSERT into clock (counts) values (0) ; -- initialize clock
 
 DROP TABLE IF EXISTS p1 CASCADE;

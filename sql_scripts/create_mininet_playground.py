@@ -86,7 +86,7 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
     """)
     fo.write ('\n')
     fo.close ()
-    print "-------------------->create_mininet_topo successful"
+    print "--------------------> create_mininet_topo successful"
 
 
 def clean_db (dbname):
@@ -99,7 +99,7 @@ def clean_db (dbname):
         print "clean_db successful"
 
     except psycopg2.DatabaseError, e:
-        print "Unable to connect to database " + dbname 
+        print "clean_db error"
         print 'Error %s' % e    
 
     finally:
@@ -119,7 +119,7 @@ def create_db (dbname):
         else:
             print "database " + dbname + " exists, skip"
 
-        print "-------------------->create_db successful"
+        print "--------------------> create_db successful"
     except psycopg2.DatabaseError, e:
         print "create_db: unable to connect to database postgres, as user " + 'mininet'
         print 'Error %s' % e
@@ -143,7 +143,7 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
             cur.execute ("CREATE EXTENSION IF NOT EXISTS pgrouting;")
             cur.execute ("CREATE EXTENSION plsh;")
 
-        print "-------------------->add_pgrouting_plpy_plsh_extension successful"
+        print "--------------------> add_pgrouting_plpy_plsh_extension successful"
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
@@ -187,7 +187,7 @@ def load_ISP_topo_fewer_hosts (dbname, username):
         cur = conn.cursor()
         init_topology (cur)
 
-        print "-------------------->load_ISP_topo_fewer_hosts successful"
+        print "--------------------> load_ISP_topo_fewer_hosts successful"
 
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
@@ -211,7 +211,7 @@ def load_topo3switch (dbname, username):
         INSERT INTO tp(sid, nid) VALUES (4,5), (5,6), (6,4);
 """)
 
-        print "-------------------->load_topo3switch successful"
+        print "--------------------> load_topo3switch successful"
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
         print 'Error %s' % e    
@@ -228,7 +228,7 @@ def load_schema (dbname, username, sql_script):
         dbscript  = open (sql_script,'r').read()
         cur.execute(dbscript)
 
-        print "-------------------->load_schema successful"
+        print "--------------------> load_schema successful"
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
@@ -247,8 +247,8 @@ def batch_test (dbname, username, rounds, topo_flag):
         logfile = os.getcwd ()+'/log.txt'
         open(logfile, 'w').close()
         f = open(logfile, 'a')
-        f.write ("-------------------->" + topo_flag + ' with rounds ' + str (rounds) + '\n')
-        f.write ("-------------------->batch_test begins\n\n")
+        f.write ("--------------------> " + topo_flag + ' with rounds ' + str (rounds) + '\n')
+        f.write ("--------------------> batch_test begins\n\n")
         f.flush ()
 
         def one_round (cur=cur, hosts=hosts, f=f):
@@ -274,27 +274,61 @@ def batch_test (dbname, username, rounds, topo_flag):
             one_round ()
             f.write ('\n')
 
-        f.write ("-------------------->batch_test ends\n")
+        f.write ("--------------------> batch_test ends\n")
         f.close ()
         logdest = os.getcwd () + '/data/' + topo_flag + str (rounds) + '.log'
         # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
         os.system ("cp "+ logfile + ' ' + logdest)
         
-        print "-------------------->batch_test successful"
+        print "--------------------> batch_test successful"
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
         if conn: conn.close()
 
-def load_mininet_topo (dbname,username):
+def load_pox_module (dbname,username):
     cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db"
     os.system (cmd + " &")
-    # os.spawnl(os.P_NOWAIT, cmd)
-    print "load_mininet_topo successful: Fan's db.py running in the background"
+    print "--------------------> load_pox_module successful: Fan's db.py running in the background"
+
+def kill_pox_module ():
+    cmd = "pkill -f '/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db'"
+    os.system (cmd)
+    print "--------------------> kill pox module that populates mininet events to database"
+
+def load_database (dbname, username):
+
+    if dbname == 'toy' or dbname == 't':
+        load_topo3switch ('toy', username)
+
+    elif dbname == 'isp' or dbname == 'i':
+        load_ISP_topo_fewer_hosts ('isp', username)
+
+    elif dbname == 'mininet' or dbname == 'm':
+        load_topo3switch ('mininet', username)
+        load_pox_module ('mininet', username)
+
+
+def get_dbname ():
+    while True:
+        dbname = raw_input ('Input database name: toy (t) / isp (i) / mininet (m))')
+        if dbname.strip () == 'toy' or dbname.strip () == 'i':
+            return 'toy'
+            break
+        elif dbname.strip () == 'isp' or dbname.strip () == 'i':
+            return 'isp'
+            break
+        elif dbname.strip () == 'mininet' or dbname.strip () == 'm':
+            return 'mininet'
+            break
+        else:
+            print 'wrong topology type'
+
+
 
 if __name__ == '__main__':
 
-    dbname = raw_input ('Input database name: (toy/isp/mininet)')
+    dbname = get_dbname ()
     username = 'mininet'
     sql_script = "/home/mininet/ravel/mininet_playground.sql"
 
@@ -304,23 +338,24 @@ if __name__ == '__main__':
 
     load_schema (dbname, username, sql_script)
 
-    # topo_flag = raw_input ('Topology options (isp/toy): ')
-    # topo_flag = dbname
-    if dbname == 'toy':
-        load_topo3switch (dbname, username)
-    elif dbname == 'isp':
-        load_ISP_topo_fewer_hosts (dbname, username)
-    elif dbname == 'mininet':
-        load_mininet_topo (dbname,username)
-        load_topo3switch (dbname, username)
-    else:
-        print 'wrong topology type\n'
+    # load_database (dbname, username)
 
-    if (dbname == 'toy' or dbname == 'isp'):
-        create_mininet_topo (dbname, username)
+    # if (dbname == 'toy' or dbname == 'isp'):
+    #     create_mininet_topo (dbname, username)
 
-    batch_test (dbname, username, 10, topo_flag=dbname)
+    while True:
+        n = raw_input("Pick actions: 'e'(for exit) / 'b'(batch_test)")
+        if n.strip() == 'e':
+            t = raw_input("clean database? 'y'/'n'")
+            if t.strip () == 'y':
+                kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                kill_pox_module ()
+                break
+        elif n.strip () == 'b':
+            print 'start batch_test ()'
+            batch_test (dbname, username, 10, topo_flag=dbname)
 
-    del_flag = raw_input ('Clean the added database (y/n): ')
-    if del_flag == 'y':
-        clean_db (dbname)
+

@@ -2,75 +2,91 @@
 -------------------->batch_test begins
 
 round 0
-add-flow s6(ms): 25.8948802948
-add-flow s6(ms): 26.7329216003
-add-flow s5(ms): 31.8088531494
-add-flow s5(ms): 24.81508255
-INSERT INTO tm values (1,2,3,1)(ms):187.875032425
-del-flows s6(ms): 26.1511802673
-del-flows s6(ms): 27.6010036469
-del-flows s5(ms): 25.5808830261
-del-flows s5(ms): 28.5830497742
-DELETE FROM tm WHERE fid = 1(ms):124.722957611
+add-flow s6(ms): 9.74893569946
+add-flow s6(ms): 13.8819217682
+add-flow s4(ms): 11.1749172211
+add-flow s4(ms): 12.9089355469
+INSERT INTO tm values (1,1,3,1)(ms):89.3800258636
+del-flows s4(ms): 13.4990215302
+del-flows s4(ms): 11.8570327759
+del-flows s6(ms): 13.0128860474
+del-flows s6(ms): 12.0220184326
+DELETE FROM tm WHERE fid = 1(ms):57.4388504028
 
 round 1
-add-flow s6(ms): 28.400182724
-add-flow s6(ms): 25.6679058075
-add-flow s5(ms): 20.378112793
-add-flow s5(ms): 27.9970169067
-INSERT INTO tm values (1,2,3,1)(ms):130.757808685
-del-flows s6(ms): 24.2190361023
-del-flows s6(ms): 24.4598388672
-del-flows s5(ms): 29.0679931641
-del-flows s5(ms): 24.5881080627
-DELETE FROM tm WHERE fid = 1(ms):115.385055542
+add-flow s6(ms): 11.6240978241
+add-flow s6(ms): 13.3230686188
+add-flow s4(ms): 10.195016861
+add-flow s4(ms): 14.506816864
+INSERT INTO tm values (1,1,3,1)(ms):63.2700920105
+del-flows s4(ms): 12.843132019
+del-flows s4(ms): 13.1011009216
+del-flows s6(ms): 11.7959976196
+del-flows s6(ms): 13.3509635925
+DELETE FROM tm WHERE fid = 1(ms):58.168888092
 
 round 2
-add-flow s6(ms): 33.1392288208
-add-flow s6(ms): 27.7619361877
-add-flow s4(ms): 34.0490341187
-add-flow s4(ms): 33.1828594208
-INSERT INTO tm values (1,1,3,1)(ms):143.868923187
-del-flows s4(ms): 27.7080535889
-del-flows s4(ms): 27.2331237793
-del-flows s6(ms): 26.0338783264
-del-flows s6(ms): 33.7538719177
-DELETE FROM tm WHERE fid = 1(ms):130.835056305
+add-flow s6(ms): 12.4640464783
+add-flow s6(ms): 13.2868289948
+add-flow s4(ms): 11.6419792175
+add-flow s4(ms): 11.735200882
+INSERT INTO tm values (1,1,3,1)(ms):64.6319389343
+del-flows s4(ms): 13.7748718262
+del-flows s4(ms): 14.6479606628
+del-flows s6(ms): 13.7259960175
+del-flows s6(ms): 11.0380649567
+DELETE FROM tm WHERE fid = 1(ms):60.5430603027
 
 round 3
-INSERT INTO tm values (1,1,2,1)(ms):15.2189731598
-DELETE FROM tm WHERE fid = 1(ms):0.221967697144
+INSERT INTO tm values (1,1,2,1)(ms):8.43095779419
+DELETE FROM tm WHERE fid = 1(ms):0.159025192261
 
 round 4
-add-flow s6(ms): 19.4938182831
-add-flow s6(ms): 15.3930187225
-add-flow s5(ms): 16.1690711975
-add-flow s5(ms): 11.6908550262
-INSERT INTO tm values (1,2,3,1)(ms):73.2450485229
-del-flows s6(ms): 8.83102416992
-del-flows s6(ms): 8.76688957214
-del-flows s5(ms): 7.85493850708
-del-flows s5(ms): 8.70704650879
-DELETE FROM tm WHERE fid = 1(ms):38.8588905334
+INSERT INTO tm values (1,1,2,1)(ms):5.78212738037
+DELETE FROM tm WHERE fid = 1(ms):0.212907791138
 
 round 5
-INSERT INTO tm values (1,1,2,1)(ms):6.01506233215
-DELETE FROM tm WHERE fid = 1(ms):0.107049942017
+INSERT INTO tm values (1,1,2,1)(ms):7.86209106445
+DELETE FROM tm WHERE fid = 1(ms):0.253915786743
 
 round 6
-INSERT INTO tm values (1,1,2,1)(ms):7.17306137085
-DELETE FROM tm WHERE fid = 1(ms):0.164985656738
+add-flow s6(ms): 14.5530700684
+add-flow s6(ms): 14.496088028
+add-flow s4(ms): 11.9981765747
+add-flow s4(ms): 13.0569934845
+INSERT INTO tm values (1,1,3,1)(ms):67.8889751434
+del-flows s4(ms): 13.7660503387
+del-flows s4(ms): 11.3680362701
+del-flows s6(ms): 13.2739543915
+del-flows s6(ms): 12.7620697021
+DELETE FROM tm WHERE fid = 1(ms):57.4779510498
 
 round 7
-INSERT INTO tm values (1,1,2,1)(ms):7.77387619019
-DELETE FROM tm WHERE fid = 1(ms):1.62100791931
+add-flow s6(ms): 12.1049880981
+add-flow s6(ms): 11.1961364746
+add-flow s4(ms): 13.1680965424
+add-flow s4(ms): 13.1630897522
+INSERT INTO tm values (1,1,3,1)(ms):64.0370845795
+del-flows s4(ms): 15.2611732483
+del-flows s4(ms): 12.0689868927
+del-flows s6(ms): 13.1869316101
+del-flows s6(ms): 12.2718811035
+DELETE FROM tm WHERE fid = 1(ms):60.7419013977
 
 round 8
-INSERT INTO tm values (1,1,2,1)(ms):7.30490684509
-DELETE FROM tm WHERE fid = 1(ms):0.127077102661
+INSERT INTO tm values (1,1,2,1)(ms):7.3459148407
+DELETE FROM tm WHERE fid = 1(ms):0.203132629395
 
 round 9
-INSERT INTO tm values (1,1,2,1)(ms):9.56201553345
-DELETE FROM tm WHERE fid = 1(ms):0.331163406372
+add-flow s6(ms): 11.4719867706
+add-flow s6(ms): 13.2250785828
+add-flow s5(ms): 12.7561092377
+add-flow s5(ms): 14.1358375549
+INSERT INTO tm values (1,2,3,1)(ms):64.3429756165
+del-flows s6(ms): 11.7120742798
+del-flows s6(ms): 15.7461166382
+del-flows s5(ms): 11.8429660797
+del-flows s5(ms): 13.7341022491
+DELETE FROM tm WHERE fid = 1(ms):59.7329139709
 
 -------------------->batch_test ends
