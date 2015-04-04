@@ -287,12 +287,13 @@ def batch_test (dbname, username, rounds, topo_flag):
         if conn: conn.close()
 
 def load_pox_module (dbname,username):
-    cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db"
+    cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db"
+    # cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db"
     os.system (cmd + " &")
     print "--------------------> load_pox_module successful: Fan's db.py running in the background"
 
 def kill_pox_module ():
-    cmd = "pkill -f '/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db'"
+    cmd = "pkill -f '/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db'"
     os.system (cmd)
     print "--------------------> kill pox module that populates mininet events to database"
 
@@ -312,7 +313,7 @@ def load_database (dbname, username):
 def get_dbname ():
     while True:
         dbname = raw_input ('Input database name: toy (t) / isp (i) / mininet (m))')
-        if dbname.strip () == 'toy' or dbname.strip () == 'i':
+        if dbname.strip () == 'toy' or dbname.strip () == 't':
             return 'toy'
             break
         elif dbname.strip () == 'isp' or dbname.strip () == 'i':
@@ -330,15 +331,17 @@ if __name__ == '__main__':
 
     dbname = get_dbname ()
     username = 'mininet'
-    sql_script = "/home/mininet/ravel/mininet_playground.sql"
+    sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing.sql"
+    sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
 
     create_db (dbname)
 
     add_pgrouting_plpy_plsh_extension (dbname, username)
 
-    load_schema (dbname, username, sql_script)
+    load_schema (dbname, username, sql_script1)
+    # load_schema (dbname, username, sql_script2)
 
-    # load_database (dbname, username)
+    load_database (dbname, username)
 
     # if (dbname == 'toy' or dbname == 'isp'):
     #     create_mininet_topo (dbname, username)
