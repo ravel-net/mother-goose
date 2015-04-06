@@ -83,23 +83,55 @@ CREATE OR REPLACE RULE tick3 AS
        DO ALSO
            INSERT INTO clock values (NEW.counts);
 
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+---------- base tables 
+
 DROP TABLE IF EXISTS tp CASCADE;
 CREATE UNLOGGED TABLE tp (
        sid	integer,
        nid	integer,
+       ishost   integer,
        PRIMARY KEY (sid, nid)
 );
 CREATE INDEX ON tp(sid);
+
+-- DROP VIEW IF EXISTS tp CASCADE;
+-- CREATE OR REPLACE VIEW tp AS (
+--        SELECT DISTINCT
+--               in_switch AS sid,
+--        	      out_switch AS nid
+--        FROM pox_tp
+--        ORDER BY sid, nid
+-- );
 
 DROP TABLE IF EXISTS switches CASCADE;
 CREATE UNLOGGED TABLE switches (
        sid	integer
 );
 
+-- DROP VIEW IF EXISTS switches CASCADE;
+-- CREATE OR REPLACE VIEW switches AS (
+--        SELECT DISTINCT
+--               in_switch AS sid
+--        FROM pox_tp
+--        ORDER BY sid
+-- );
+
 DROP TABLE IF EXISTS hosts CASCADE;
 CREATE UNLOGGED TABLE hosts (
        hid	integer
+       -- h_uid	integer
 );
+
+
+CREATE OR REPLACE VIEW uhosts AS (
+       SELECT hid, 
+       	      row_number () OVER () as u_hid
+       FROM hosts
+);
+
 
 DROP TABLE IF EXISTS cf CASCADE;
 CREATE UNLOGGED TABLE cf (
@@ -120,8 +152,20 @@ CREATE UNLOGGED TABLE tm (
        PRIMARY KEY (fid)
 );
 
+-- uh1 = TD["new"]["src"]
+-- uh2 = TD["new"]["dst"]
+-- h1 = plpy.execute ("select hid from uhosts where u_hid =" + str (uh1))[0]['u_hid']
+-- h2 = plpy.execute ("select hid from uhosts where u_hid =" + str (uh2))[0]['u_hid']
+-- plpy.notice ("h1 is:" + str (h1))
+-- plpy.notice ("h2 is:" + str (h2))
+-- plpy.notice ("insert into tm values (" + str (TD["new"]["fid"]) + "),(" + str (h1) + '),(' + str (h2)+ '),('+ str (TD["new"]["vol"]) + ')')
+
+-- plpy.execute ("insert into tm values (" + str (TD["new"]["fid"]) + "),(" + str (h1) + '),(' + str (h2)+ '),('+ str (TD["new"]["vol"]) + ')')
+
 CREATE OR REPLACE FUNCTION tm_fun() RETURNS TRIGGER AS
 $$
+plpy.notice ("tm_fun")
+
 ct = plpy.execute("""select max (counts) from p1""")[0]['max']
 plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
 return None;
@@ -138,11 +182,30 @@ CREATE TRIGGER tm_del_trigger
      FOR EACH ROW
    EXECUTE PROCEDURE tm_fun();
 
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+---------- traffic matrix facing user
 
--- CREATE OR REPLACE RULE tm_in AS 
---        ON INSERT TO tm
---        DO ALSO
---        	  INSERT INTO p1 VALUES ((SELECT max (counts) FROM p1) + 1, 'on');
+DROP TABLE IF EXISTS utm CASCADE;
+CREATE UNLOGGED TABLE utm (
+       fid      integer,
+       host1	integer,
+       host2	integer,
+       PRIMARY KEY (fid)
+);
+
+CREATE OR REPLACE RULE utm_in_rule AS 
+       ON INSERT TO utm
+       DO ALSO
+       INSERT INTO tm VALUES (NEW.fid,
+       	      	      	     (SELECT hid FROM uhosts WHERE u_hid = NEW.host1),
+			     (SELECT hid FROM uhosts WHERE u_hid = NEW.host2),
+			     1);
+
+CREATE OR REPLACE RULE utm_del_rule AS 
+       ON DELETE TO utm
+       DO ALSO DELETE FROM tm WHERE tm.fid = OLD.fid;
 
 ----------------------------------------------------------------------
 -- routing application
@@ -161,19 +224,19 @@ CREATE OR REPLACE VIEW spv AS (
        FROM tm
 );
 
-DROP VIEW IF EXISTS spv2 CASCADE;
-CREATE OR REPLACE VIEW spv2 AS (
-       SELECT fid,
-       	      src,
-	      dst,
-	      (SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id,
-	      	      	     	       	             sid as source,
-						     nid as target,
-						     1.0::float8 as cost
-			                             FROM cf c
-						     WHERE fid = c.fid', src, dst,FALSE, FALSE))) as pv
-       FROM tm
-);
+-- DROP VIEW IF EXISTS spv2 CASCADE;
+-- CREATE OR REPLACE VIEW spv2 AS (
+--        SELECT fid,
+--        	      src,
+-- 	      dst,
+-- 	      (SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id,
+-- 	      	      	     	       	             sid as source,
+-- 						     nid as target,
+-- 						     1.0::float8 as cost
+-- 			                             FROM cf c
+-- 						     WHERE fid = c.fid', src, dst,FALSE, FALSE))) as pv
+--        FROM tm
+-- );
 
 DROP VIEW IF EXISTS spv_edge CASCADE;
 CREATE OR REPLACE VIEW spv_edge AS (
@@ -241,7 +304,7 @@ RETURNS TABLE (sid integer, nid integer, port bigint) AS
 $$
 
 WITH TMP AS (
-SELECT *, row_number () OVER () as port FROM tp
+SELECT tp.sid, tp.nid, row_number () OVER () as port FROM tp
 WHERE tp.sid = s OR tp.nid = s
 )
 (SELECT * 
