@@ -125,3 +125,29 @@ CREATE OR REPLACE RULE acl_constaint2 AS
            (DELETE FROM acl WHERE (src = 5 AND dst = 10);
 	    DELETE FROM acl WHERE (src = 7 AND dst = 8);
 	    );
+
+----------------------------------------------------------------------
+-- tenants
+----------------------------------------------------------------------
+
+-- DROP TABLE IF EXISTS tenant_hosts CASCADE;
+-- CREATE UNLOGGED TABLE tenant_hosts (
+--        hid	integer,
+--        PRIMARY key (hid)
+-- );
+
+-- CREATE OR REPLACE VIEW tenant_policy AS (
+--        SELECT DISTINCT host1, host2 FROM utm
+--        WHERE host1 IN (SELECT * FROM tenant_hosts)
+--        	     AND host2 IN (SELECT * FROM tenant_hosts)
+-- );
+
+-- CREATE OR REPLACE RULE tenant_policy_ins AS
+--        ON INSERT TO tenant_policy
+--        DO INSTEAD
+--        INSERT INTO utm (fid, host1, host2) values ((select max (counts) + 1 from clock), NEW.host1, NEW.host2);
+
+-- CREATE OR REPLACE RULE tenant_policy_del AS
+--        ON DELETE TO tenant_policy
+--        DO INSTEAD
+--        DELETE FROM utm WHERE host1 = OLD.host1 AND host2 = OLD.host2;

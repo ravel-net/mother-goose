@@ -28,14 +28,10 @@ def procedure ():
 
     load_database (dbname, username)
 
-    create_mininet_topo (dbname, username)
-
-    launch_mn_manual (dbname)
-
     while True:
-        n = raw_input("Pick actions: 'e'(exit) / 'b'(batch test)\n")
+        n = raw_input("select actions: \n\t'e'(exit) \n\t'b'(batch test) \n\t't'(dc tenant)\n")
         if n.strip() == 'e':
-            t = raw_input("clean database? 'y'/'n'")
+            t = raw_input("clean database? ('y'/'n'): ")
             if t.strip () == 'y':
                 kill_pox_module ()
                 clean_db (dbname)
@@ -47,6 +43,10 @@ def procedure ():
             print 'start batch_test ()'
             batch_test (dbname, username, 10, topo_flag=dbname)
 
+        elif n.strip () == 't':
+            print 'play with dc tenant'
+            create_tenant (dbname, username)
+            
 if __name__ == '__main__':
     # load_database ("f", "random")
     procedure ()

@@ -150,9 +150,15 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
         if conn: conn.close()
 
 def load_database (dbname, username):
-
-
     # print monitor_mininet, "before"
+    def print_mn_manual (dbname):
+        # print message, exit loop after user inputs 'y'
+        filename = os.getcwd () + '/topo/'+ dbname + '_dtp.py'
+        while True:
+            cmd = 'please run (press y to not repeat the message)\n' + 'sudo mn --custom '+ filename + ' --topo mytopo --mac --switch ovsk --controller remote\n'
+            n = raw_input(cmd)
+            if n.strip () == 'y':
+                break
 
     if dbname == 'toy' or dbname == 't':
         # load_topo3switch ('toy', username)
@@ -165,6 +171,9 @@ def load_database (dbname, username):
         load_fat_tree (switch_size, fanout_size, dbname, username)
 
     # print monitor_mininet, "after"
+    create_mininet_topo (dbname, username)
+
+    print_mn_manual (dbname)
 
     if monitor_mininet == 'y':
         load_pox_module (dbname, username)
@@ -187,8 +196,9 @@ def load_fat_tree (switch_size, fanout_size, dbname, username):
     for e in edges:
         cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',0,1);' )
 
+    conn.close ()
     print "--------------------> load_fat_tree successful"
-            
+
 
 def load_ISP_topo_fewer_hosts (dbname, username):
     def init_topology (cursor):
@@ -367,7 +377,7 @@ def get_dbname ():
     global fanout_size
 
     while True:
-        n = raw_input ('Pick topology type : \n \t\'t,\'y\'/\'n\'\'(toy w/o mininet monitor) \n \t\'i,/y/n\'(isp w/o mininet monitor) \n\t\'m,\'y\'/\'n\'\'(mininet) \n\t\'f\',switch_size,fanout_size,\'y\'/\'n\' (fattree w/o mininet monitor)\n')
+        n = raw_input ('select topology type : \n \t\'t,\'y\'/\'n\'\'(toy w/o mininet monitor) \n \t\'i,/y/n\'(isp w/o mininet monitor) \n\t\'m,\'y\'/\'n\'\'(mininet) \n\t\'f\',switch_size,fanout_size,\'y\'/\'n\' (fattree w/o mininet monitor)\n')
         if n.strip ().split (',')[0] == 't':
             monitor_mininet = n.strip ().split (',')[1]
             return 'toy'
@@ -388,12 +398,51 @@ def get_dbname ():
         else:
             print 'wrong topology type'
 
-def launch_mn_manual (dbname):
-    # print message, exit loop after user inputs 'y'
+def create_tenant (dbname, username):
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    filename = os.getcwd () + '/topo/'+ dbname + '_dtp.py'
-    while True:
-        cmd = 'please run (press y to ignore the message)\n' + 'sudo mn --custom '+ filename + ' --topo mytopo --mac --switch ovsk --controller remote\n'
-        n = raw_input(cmd)
-        if n.strip () == 'y':
-            break
+    cur.execute ("SELECT * FROM uhosts;")
+    cs = cur.fetchall ()
+    hosts = [int (s['u_hid']) for s in cs]
+
+    # cur.execute ("SELECT count(*) FROM switches;")
+    # cs = cur.fetchall ()
+    # ct = int (cs[0][0]) 
+    n = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
+    selected_hosts = [ hosts[i] for i in random.sample(xrange(len(hosts)), int (n)) ]
+    print selected_hosts
+
+    cur.execute (""" 
+
+DROP TABLE IF EXISTS tenant_hosts CASCADE;
+CREATE UNLOGGED TABLE tenant_hosts (
+       hid	integer,
+       PRIMARY key (hid)
+);
+
+CREATE OR REPLACE VIEW tenant_policy AS (
+       SELECT DISTINCT host1, host2 FROM utm
+       WHERE host1 IN (SELECT * FROM tenant_hosts)
+       	     AND host2 IN (SELECT * FROM tenant_hosts)
+);
+
+CREATE OR REPLACE RULE tenant_policy_ins AS
+       ON INSERT TO tenant_policy
+       DO INSTEAD
+       INSERT INTO utm (fid, host1, host2) values ((select max (counts) + 1 from clock), NEW.host1, NEW.host2);
+
+CREATE OR REPLACE RULE tenant_policy_del AS
+       ON DELETE TO tenant_policy
+       DO INSTEAD
+       DELETE FROM utm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
+
+""")
+
+    for h in selected_hosts:
+        cur.execute ("insert into tenant_hosts values (" + str (h) + ");")
+
+    print 'create tenant table and views, play with \'tenant_hosts\' and \'tenant_policy\''
+
+    conn.close()
