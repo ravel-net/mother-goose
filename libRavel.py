@@ -96,7 +96,7 @@ def clean_db (dbname):
         cur = conn.cursor()
 
         cur.execute ("drop database " + dbname)
-        print "clean_db successful"
+        print "--------------------> clean_db successful"
 
     except psycopg2.DatabaseError, e:
         print "clean_db error"
@@ -152,7 +152,7 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
 def load_database (dbname, username):
 
 
-    print monitor_mininet, "before"
+    # print monitor_mininet, "before"
 
     if dbname == 'toy' or dbname == 't':
         # load_topo3switch ('toy', username)
@@ -164,10 +164,9 @@ def load_database (dbname, username):
     elif dbname == 'fattree' or dbname == 'f':
         load_fat_tree (switch_size, fanout_size, dbname, username)
 
-    print monitor_mininet, "after"
+    # print monitor_mininet, "after"
 
     if monitor_mininet == 'y':
-        print monitor_mininet, "now"
         load_pox_module (dbname, username)
 
 def load_fat_tree (switch_size, fanout_size, dbname, username):
@@ -351,7 +350,7 @@ def batch_test (dbname, username, rounds, topo_flag):
         if conn: conn.close()
 
 def load_pox_module (dbname,username):
-    cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db"
+    cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db --dbname=" + str (dbname) + " --username=" + str (username)
     # cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.forwarding.l3_learning pox.host_tracker db"
     os.system (cmd + " &")
     print "--------------------> load_pox_module successful: Fan's db.py running in the background"
@@ -383,7 +382,7 @@ def get_dbname ():
         elif n.strip ().split (',')[0] == 'f':
             switch_size = int (n.strip ().split (',')[1]) 
             fanout_size = int (n.strip ().split (',')[2])
-            monitor_mininet = int (n.strip ().split (',')[3])
+            monitor_mininet = n.strip ().split (',')[3]
             return 'fattree'
             break
         else:
