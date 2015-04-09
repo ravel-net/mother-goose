@@ -1,5 +1,6 @@
 switch_size = 0
 fanout_size = 0
+monitor_mininet = 0
 
 def create_mininet_topo (dbname, username):
     try:
@@ -150,21 +151,24 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
 
 def load_database (dbname, username):
 
+
+    print monitor_mininet, "before"
+
     if dbname == 'toy' or dbname == 't':
         # load_topo3switch ('toy', username)
         load_topo3switch_new ('toy', username)
-
     elif dbname == 'isp' or dbname == 'i':
         load_ISP_topo_fewer_hosts ('isp', username)
-
     elif dbname == 'mininet' or dbname == 'm':
         load_topo3switch_new ('mininet', username)
-        load_pox_module ('mininet', username)
-
     elif dbname == 'fattree' or dbname == 'f':
-        # n = raw_input ("input switch size, fanout size: #,# \n")
-        # [switch_size, fanout_size] = map(int, n.strip ().split (','))
         load_fat_tree (switch_size, fanout_size, dbname, username)
+
+    print monitor_mininet, "after"
+
+    if monitor_mininet == 'y':
+        print monitor_mininet, "now"
+        load_pox_module (dbname, username)
 
 def load_fat_tree (switch_size, fanout_size, dbname, username):
     g = Graph.Tree(switch_size, fanout_size)
@@ -359,22 +363,27 @@ def kill_pox_module ():
     print "--------------------> kill pox module that populates mininet events to database"
 
 def get_dbname ():
+    global monitor_mininet
+    global switch_size
+    global fanout_size
+
     while True:
-        dbname = raw_input ('Pick topology type : \'t\'(toy) / \'i\'(isp) / \'m\'(mininet) / \'f\',switch_size,fanout_size (fattree)\n')
-        if dbname.strip () == 't':
+        n = raw_input ('Pick topology type : \n \t\'t,\'y\'/\'n\'\'(toy w/o mininet monitor) \n \t\'i,/y/n\'(isp w/o mininet monitor) \n\t\'m,\'y\'/\'n\'\'(mininet) \n\t\'f\',switch_size,fanout_size,\'y\'/\'n\' (fattree w/o mininet monitor)\n')
+        if n.strip ().split (',')[0] == 't':
+            monitor_mininet = n.strip ().split (',')[1]
             return 'toy'
             break
-        elif dbname.strip () == 'i':
+        elif n.strip ().split (',')[0] == 'i':
+            monitor_mininet = n.strip ().split (',')[1]
             return 'isp'
             break
-        elif dbname.strip () == 'm':
+        elif n.strip ().split (',')[0] == 'm':
             return 'mininet'
             break
-        elif dbname.strip ()[0] == 'f':
-            global switch_size
-            switch_size = int (dbname.strip ().split (',')[1]) 
-            global fanout_size
-            fanout_size = int (dbname.strip ().split (',')[2])
+        elif n.strip ().split (',')[0] == 'f':
+            switch_size = int (n.strip ().split (',')[1]) 
+            fanout_size = int (n.strip ().split (',')[2])
+            monitor_mininet = int (n.strip ().split (',')[3])
             return 'fattree'
             break
         else:

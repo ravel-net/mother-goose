@@ -1,3 +1,26 @@
+DROP TABLE IF EXISTS clock CASCADE;
+CREATE UNLOGGED TABLE clock (
+       counts  	integer,
+       PRIMARY key (counts)
+);
+INSERT into clock (counts) values (0) ; -- initialize clock
+
+
+CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
+$$
+plpy.notice ("engage ravel protocol")
+
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+
 DROP TABLE IF EXISTS pox_tp CASCADE;
 CREATE UNLOGGED TABLE pox_tp (
        in_switch  integer,
@@ -5,6 +28,16 @@ CREATE UNLOGGED TABLE pox_tp (
        out_switch integer,
        out_port   integer
 );
+
+-- CREATE OR REPLACE FUNCTION pox_tp_fun() RETURNS TRIGGER AS
+-- $$
+-- plpy.notice ("pox monitors mininet switch-switch links")
+
+-- ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+-- plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+-- return None;
+-- $$
+-- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 DROP TABLE IF EXISTS pox_switches CASCADE;
 CREATE UNLOGGED TABLE pox_switches (
@@ -23,13 +56,6 @@ CREATE UNLOGGED TABLE pox_hosts (
 ------------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
-
-DROP TABLE IF EXISTS clock CASCADE;
-CREATE UNLOGGED TABLE clock (
-       counts  	integer,
-       PRIMARY key (counts)
-);
-INSERT into clock (counts) values (0) ; -- initialize clock
 
 DROP TABLE IF EXISTS p1 CASCADE;
 CREATE UNLOGGED TABLE p1 (
@@ -98,20 +124,21 @@ CREATE UNLOGGED TABLE tp (
 );
 CREATE INDEX ON tp(sid);
 
-CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
-$$
-plpy.notice ("engage ravel protocol")
-
-ct = plpy.execute("""select max (counts) from clock""")[0]['max']
-plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
-return None;
-$$
-LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
 CREATE TRIGGER tp_up_trigger
      AFTER UPDATE ON tp
      FOR EACH ROW
    EXECUTE PROCEDURE protocol_fun();
+
+CREATE OR REPLACE RULE pox_tp_ins_rule AS
+       ON INSERT TO pox_tp
+       DO ALSO
+           UPDATE tp SET isactive = 1 WHERE sid = NEW.out_switch AND nid = NEW.in_switch;
+
+CREATE OR REPLACE RULE pox_tp_del_rule AS
+       ON DELETE TO pox_tp
+       DO ALSO
+           UPDATE tp SET isactive = 0 WHERE sid = OLD.out_switch AND nid = OLD.in_switch;
+
 
 -- DROP VIEW IF EXISTS tp CASCADE;
 -- CREATE OR REPLACE VIEW tp AS (

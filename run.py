@@ -33,7 +33,7 @@ def procedure ():
     launch_mn_manual (dbname)
 
     while True:
-        n = raw_input("Pick actions: 'e'(exit) / 'b'(batch test)")
+        n = raw_input("Pick actions: 'e'(exit) / 'b'(batch test)\n")
         if n.strip() == 'e':
             t = raw_input("clean database? 'y'/'n'")
             if t.strip () == 'y':
