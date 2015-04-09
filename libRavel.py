@@ -1,3 +1,6 @@
+switch_size = 0
+fanout_size = 0
+
 def create_mininet_topo (dbname, username):
     try:
         conn = psycopg2.connect(database= dbname, user= username)
@@ -148,7 +151,8 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
 def load_database (dbname, username):
 
     if dbname == 'toy' or dbname == 't':
-        load_topo3switch ('toy', username)
+        # load_topo3switch ('toy', username)
+        load_topo3switch_new ('toy', username)
 
     elif dbname == 'isp' or dbname == 'i':
         load_ISP_topo_fewer_hosts ('isp', username)
@@ -158,8 +162,8 @@ def load_database (dbname, username):
         load_pox_module ('mininet', username)
 
     elif dbname == 'fattree' or dbname == 'f':
-        n = raw_input ("input switch size, fanout size: #,# \n")
-        [switch_size, fanout_size] = map(int, n.strip ().split (','))
+        # n = raw_input ("input switch size, fanout size: #,# \n")
+        # [switch_size, fanout_size] = map(int, n.strip ().split (','))
         load_fat_tree (switch_size, fanout_size, dbname, username)
 
 def load_fat_tree (switch_size, fanout_size, dbname, username):
@@ -175,10 +179,10 @@ def load_fat_tree (switch_size, fanout_size, dbname, username):
 
         if g.degree (i) == 1:
             cur.execute ("insert into hosts (hid) values (" + str (i + switch_size) + ")")
-            cur.execute ("insert into tp (sid, nid, ishost) values (" + str (i) +','+ str (i+switch_size) + ", 1)")
+            cur.execute ("insert into tp (sid, nid, ishost,isactive) values (" + str (i) +','+ str (i+switch_size) + ", 1,1)")
 
     for e in edges:
-        cur.execute ('insert into tp (sid, nid, ishost) values (' + str (e[0]) + ',' + str (e[1]) + ',0);' )
+        cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',0,1);' )
 
     print "--------------------> load_fat_tree successful"
             
@@ -241,13 +245,13 @@ def load_topo3switch_new (dbname, username):
         TRUNCATE TABLE tm cascade;
         INSERT INTO switches(sid) VALUES (1),(2),(3);
         INSERT INTO hosts(hid) VALUES (4),(5),(6);
-        INSERT INTO tp(sid, nid, ishost) VALUES (1,4,1), (2,5,1), (3,6,1);
-        INSERT INTO tp(sid, nid, ishost) VALUES (1,2,0), (2,3,0), (3,1,0);
+        INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,4,1,1), (2,5,1,1), (3,6,1,1);
+        INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,2,0,1), (2,3,0,1), (3,1,0,1);
 """)
         print "--------------------> load_topo3switch successful"
     except psycopg2.DatabaseError, e:
         print "Unable to connect to database " + dbname + ", as user " + username
-        print 'Error %s' % e    
+        print 'Error %s' % e
 
     finally:
         if conn: conn.close()
@@ -356,17 +360,21 @@ def kill_pox_module ():
 
 def get_dbname ():
     while True:
-        dbname = raw_input ('Input database name: t(toy) / i(isp) / m(mininet) / f (fattree)')
-        if dbname.strip () == 'toy' or dbname.strip () == 't':
+        dbname = raw_input ('Pick topology type : \'t\'(toy) / \'i\'(isp) / \'m\'(mininet) / \'f\',switch_size,fanout_size (fattree)\n')
+        if dbname.strip () == 't':
             return 'toy'
             break
-        elif dbname.strip () == 'isp' or dbname.strip () == 'i':
+        elif dbname.strip () == 'i':
             return 'isp'
             break
-        elif dbname.strip () == 'mininet' or dbname.strip () == 'm':
+        elif dbname.strip () == 'm':
             return 'mininet'
             break
-        elif dbname.strip () == 'fattree' or dbname.strip () == 'f':
+        elif dbname.strip ()[0] == 'f':
+            global switch_size
+            switch_size = int (dbname.strip ().split (',')[1]) 
+            global fanout_size
+            fanout_size = int (dbname.strip ().split (',')[2])
             return 'fattree'
             break
         else:

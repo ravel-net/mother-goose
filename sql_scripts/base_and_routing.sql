@@ -93,6 +93,7 @@ CREATE UNLOGGED TABLE tp (
        sid	integer,
        nid	integer,
        ishost   integer,
+       isactive integer,
        PRIMARY KEY (sid, nid)
 );
 CREATE INDEX ON tp(sid);
@@ -220,7 +221,8 @@ CREATE OR REPLACE VIEW spv AS (
 	      	      	     	       	             sid as source,
 						     nid as target,
 						     1.0::float8 as cost
-			                             FROM tp', src, dst,FALSE, FALSE))) as pv
+			                             FROM tp
+						     WHERE isactive = 1', src, dst,FALSE, FALSE))) as pv
        FROM tm
 );
 
@@ -290,8 +292,8 @@ CREATE OR REPLACE RULE spv_constaint AS
        ON INSERT TO p3
        WHERE NEW.status = 'on'
        DO ALSO
-           (INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_ins);
-	    DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_del);
+           (DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_del);
+	    INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_ins);
             UPDATE p3 SET status = 'off' WHERE counts = NEW.counts;
 	    );
 
