@@ -250,3 +250,13 @@ add-flow s1(ms): 14.7299766541
 add-flow s1(ms): 12.1080875397
 add-flow s3(ms): 14.2221450806
 add-flow s3(ms): 14.1978263855
+del-flows s1(ms): 14.673948288
+del-flows s1(ms): 16.2210464478
+del-flows s3(ms): 13.8790607452
+del-flows s3(ms): 12.0677947998
+del-flows s2(ms): 12.4208927155
+del-flows s2(ms): 11.7309093475
+add-flow s2(ms): 12.9170417786
+add-flow s2(ms): 14.9779319763
+add-flow s3(ms): 13.4079456329
+add-flow s3(ms): 12.3829841614

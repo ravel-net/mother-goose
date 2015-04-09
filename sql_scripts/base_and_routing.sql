@@ -98,6 +98,21 @@ CREATE UNLOGGED TABLE tp (
 );
 CREATE INDEX ON tp(sid);
 
+CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
+$$
+plpy.notice ("engage ravel protocol")
+
+ct = plpy.execute("""select max (counts) from p1""")[0]['max']
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE TRIGGER tp_up_trigger
+     AFTER UPDATE ON tp
+     FOR EACH ROW
+   EXECUTE PROCEDURE protocol_fun();
+
 -- DROP VIEW IF EXISTS tp CASCADE;
 -- CREATE OR REPLACE VIEW tp AS (
 --        SELECT DISTINCT
