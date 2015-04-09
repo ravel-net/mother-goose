@@ -151,3 +151,33 @@ CREATE OR REPLACE RULE acl_constaint2 AS
 --        ON DELETE TO tenant_policy
 --        DO INSTEAD
 --        DELETE FROM utm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
+
+-- CREATE OR REPLACE FUNCTION tenant_policy_ins_fun() RETURNS TRIGGER AS
+-- $$
+-- plpy.notice ("tenant_policy_ins_fun")
+
+-- h1 = TD["new"]["host1"]
+-- h2 = TD["new"]["host2"]
+
+-- hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
+-- hosts = [h['hid'] for h in hs]
+
+-- if (h1 in hosts) & (h2 in hosts):
+--    plpy.execute ("INSERT INTO utm values ((select max (counts) +1 from clock), " +str (h1)+ "," + str (h2) + ");")
+
+-- return None;
+-- $$
+-- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+
+-- CREATE TRIGGER tenant_policy_ins_trigger
+--      INSTEAD OF INSERT ON tenant_policy
+--      FOR EACH ROW
+--    EXECUTE PROCEDURE tenant_policy_ins_fun();
+
+
+-- -- CREATE OR REPLACE RULE tenant_policy_ins AS
+-- --        ON INSERT TO tenant_policy
+-- --        DO INSTEAD
+-- --        INSERT INTO utm (fid, host1, host2) values ((select max (counts) + 1 from clock), NEW.host1, NEW.host2);
+

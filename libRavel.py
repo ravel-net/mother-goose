@@ -428,10 +428,27 @@ CREATE OR REPLACE VIEW tenant_policy AS (
        	     AND host2 IN (SELECT * FROM tenant_hosts)
 );
 
-CREATE OR REPLACE RULE tenant_policy_ins AS
-       ON INSERT TO tenant_policy
-       DO INSTEAD
-       INSERT INTO utm (fid, host1, host2) values ((select max (counts) + 1 from clock), NEW.host1, NEW.host2);
+CREATE OR REPLACE FUNCTION tenant_policy_ins_fun() RETURNS TRIGGER AS
+$$
+plpy.notice ("tenant_policy_ins_fun")
+
+h1 = TD["new"]["host1"]
+h2 = TD["new"]["host2"]
+
+hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
+hosts = [h['hid'] for h in hs]
+
+if (h1 in hosts) & (h2 in hosts):
+   plpy.execute ("INSERT INTO utm values ((select max (counts) +1 from clock), " +str (h1)+ "," + str (h2) + ");")
+
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE TRIGGER tenant_policy_ins_trigger
+     INSTEAD OF INSERT ON tenant_policy
+     FOR EACH ROW
+   EXECUTE PROCEDURE tenant_policy_ins_fun();
 
 CREATE OR REPLACE RULE tenant_policy_del AS
        ON DELETE TO tenant_policy
@@ -443,6 +460,6 @@ CREATE OR REPLACE RULE tenant_policy_del AS
     for h in selected_hosts:
         cur.execute ("insert into tenant_hosts values (" + str (h) + ");")
 
-    print 'create tenant table and views, play with \'tenant_hosts\' and \'tenant_policy\''
+    print '--------------------> create tenant, interact with \'tenant_hosts\' and \'tenant_policy\''
 
     conn.close()
