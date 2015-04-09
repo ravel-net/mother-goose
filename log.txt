@@ -260,3 +260,17 @@ add-flow s2(ms): 12.9170417786
 add-flow s2(ms): 14.9779319763
 add-flow s3(ms): 13.4079456329
 add-flow s3(ms): 12.3829841614
+add-flow s3(ms): 13.5021209717
+add-flow s3(ms): 13.3059024811
+add-flow s2(ms): 12.3798847198
+add-flow s2(ms): 13.2179260254
+del-flows s3(ms): 14.6420001984
+del-flows s3(ms): 12.9418373108
+del-flows s2(ms): 13.445854187
+del-flows s2(ms): 13.5841369629
+add-flow s1(ms): 10.4601383209
+add-flow s1(ms): 13.3340358734
+add-flow s2(ms): 14.8510932922
+add-flow s2(ms): 13.5090351105
+add-flow s3(ms): 11.5361213684
+add-flow s3(ms): 22.4030017853

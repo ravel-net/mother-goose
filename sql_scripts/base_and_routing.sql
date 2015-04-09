@@ -102,7 +102,7 @@ CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
 $$
 plpy.notice ("engage ravel protocol")
 
-ct = plpy.execute("""select max (counts) from p1""")[0]['max']
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
 plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
 return None;
 $$
@@ -178,25 +178,25 @@ CREATE UNLOGGED TABLE tm (
 
 -- plpy.execute ("insert into tm values (" + str (TD["new"]["fid"]) + "),(" + str (h1) + '),(' + str (h2)+ '),('+ str (TD["new"]["vol"]) + ')')
 
-CREATE OR REPLACE FUNCTION tm_fun() RETURNS TRIGGER AS
-$$
-plpy.notice ("tm_fun")
+-- CREATE OR REPLACE FUNCTION tm_fun() RETURNS TRIGGER AS
+-- $$
+-- plpy.notice ("tm_fun")
 
-ct = plpy.execute("""select max (counts) from p1""")[0]['max']
-plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
-return None;
-$$
-LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+-- ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+-- plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+-- return None;
+-- $$
+-- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 CREATE TRIGGER tm_in_trigger
      AFTER INSERT ON tm
      FOR EACH ROW
-   EXECUTE PROCEDURE tm_fun();
+   EXECUTE PROCEDURE protocol_fun();
 
 CREATE TRIGGER tm_del_trigger
      AFTER DELETE ON tm
      FOR EACH ROW
-   EXECUTE PROCEDURE tm_fun();
+   EXECUTE PROCEDURE protocol_fun();
 
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
@@ -630,4 +630,4 @@ CREATE OR REPLACE FUNCTION test() RETURNS text AS '
 -- common to all
 ----------------------------------------------------------------------
 
-INSERT into p1 values (0,'on') ;
+-- INSERT into p1 values (0,'on') ;
