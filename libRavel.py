@@ -30,7 +30,6 @@ def select_dbname ():
             break
         elif n.strip ().split (',')[0] == 'f':
             k_size = int (n.strip ().split (',')[1])
-            print k_size
             return 'fattree'
             break
         else:
@@ -205,9 +204,8 @@ def load_database (dbname, username):
     elif dbname == 'tree':
         load_tree (switch_size, fanout_size, dbname, username)
     elif dbname == 'fattree':
-        load_fattree (k_size)
+        load_fattree (k_size, dbname, username)
 
-    # print monitor_mininet, "after"
     create_mininet_topo (dbname, username)
     print_mn_manual (dbname)
 
@@ -216,9 +214,65 @@ def load_database (dbname, username):
 
 
 
-def load_fattree (k_size):
-    
+def igraph_fattree (k):
+    core_size = (k/2)**2
+    agg_size = (k/2) *k
+    eg_size = (k/2) *k
+    host_size = (k/2)**2 *k
 
+    # g = Graph(directed = True)    
+    g = Graph()    
+
+    g.add_vertices (core_size + agg_size + eg_size + host_size)
+    g.vs['type'] = ['core'] * core_size + ['agg'] * agg_size + ['edge'] * eg_size + ['host'] * host_size
+
+    for pod in range (0,k):
+        agg_offset = core_size + k/2 * pod
+        eg_offset = core_size + agg_size + k/2*pod
+        host_offset = core_size + agg_size + eg_size + (k/2)**2 * pod
+
+        for agg in range (0, k/2):
+            core_offset = agg * k/2
+
+            for core in range (0, k/2):
+                g.add_edge (agg_offset + agg, core_offset + core)
+                # connect core and aggregate routers
+
+            for eg in range (0, k/2):
+                g.add_edge (agg_offset + agg, eg_offset + eg)
+                # connect aggregate and edge routers
+
+        for eg in range (0, k/2):
+            for h in range (0, k/2):
+                g.add_edge (eg_offset + eg, host_offset + k/2*eg + h)
+                # connect edge routers and hosts
+    return g
+
+def load_fattree (k, dbname, username):
+    g = igraph_fattree (k)
+
+    edges = g.get_edgelist ()
+
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor()
+
+    global switch_size
+    switch_size = (k/2)**2 + (k/2) *k + (k/2) *k
+
+    for i in range (switch_size):
+        cur.execute ("insert into switches (sid) values (" +str (i) +")")
+
+    for i in range (switch_size, switch_size + (k/2)**2 *k):
+        cur.execute ("insert into hosts (hid) values (" + str (i) + ")")
+        # cur.execute ("insert into tp (sid, nid, ishost,isactive) values (" + str (i) +','+ str (i+switch_size) + ", 1,1)")
+
+    for e in edges:
+        cur.execute ('insert into tp (sid, nid, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',1);' )
+
+    conn.close ()
+    print "--------------------> load_fattree successful"
+    
 def load_tree (switch_size, fanout_size, dbname, username):
     g = Graph.Tree(switch_size, fanout_size)
     edges = g.get_edgelist ()

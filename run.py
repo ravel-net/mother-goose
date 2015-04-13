@@ -52,9 +52,10 @@ def procedure ():
             
 if __name__ == '__main__':
 
-    # procedure ()
-    d = select_dbname ()
-    print d
+    procedure ()
+    # d = select_dbname ()
+    # print d
+    # load_fattree (4)
 
 
 
