@@ -1,4 +1,4 @@
-"""2015-04-09-00-28-17-265461
+"""2015-04-09-08-19-32-678177
 $ sudo mn --custom /home/mininet/ravel/topo/toy_dtp.py --topo mytopo --test pingall
 $ sudo mn --custom /home/mininet/ravel/topo/toy_dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """

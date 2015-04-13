@@ -15,9 +15,10 @@ username = 'mininet'
 sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing.sql"
 sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
 
+
 def procedure ():
 
-    dbname = get_dbname ()
+    dbname = select_dbname ()
 
     create_db (dbname)
 
@@ -46,10 +47,14 @@ def procedure ():
         elif n.strip () == 't':
             print 'play with dc tenant'
             create_tenant (dbname, username)
+
+
             
 if __name__ == '__main__':
-    # load_database ("f", "random")
-    procedure ()
+
+    # procedure ()
+    d = select_dbname ()
+    print d
 
 
 

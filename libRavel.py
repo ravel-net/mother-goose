@@ -1,6 +1,41 @@
 switch_size = 0
 fanout_size = 0
 monitor_mininet = 0
+k_size = 0 # number of pods of the fat tree
+
+def select_dbname ():
+    global monitor_mininet
+    global switch_size
+    global fanout_size
+    global k_size
+
+    while True:
+        n = raw_input ('select topology type : \n \t\'t,\'y\'/\'n\'\'(toy w/o mininet monitor) \n \t\'i,/y/n\'(isp w/o mininet monitor) \n\t\'m,\'y\'/\'n\'\'(mininet) \n\t\'tree\',switch_size,fanout_size,\'y\'/\'n\' (tree w/o mininet monitor) \n\t\'f\',k_size (fat tree with k)\n')
+        if n.strip ().split (',')[0] == 't':
+            monitor_mininet = n.strip ().split (',')[1]
+            return 'toy'
+            break
+        elif n.strip ().split (',')[0] == 'i':
+            monitor_mininet = n.strip ().split (',')[1]
+            return 'isp'
+            break
+        elif n.strip ().split (',')[0] == 'm':
+            return 'mininet'
+            break
+        elif n.strip ().split (',')[0] == 'tree':
+            switch_size = int (n.strip ().split (',')[1]) 
+            fanout_size = int (n.strip ().split (',')[2])
+            monitor_mininet = n.strip ().split (',')[3]
+            return 'tree'
+            break
+        elif n.strip ().split (',')[0] == 'f':
+            k_size = int (n.strip ().split (',')[1])
+            print k_size
+            return 'fattree'
+            break
+        else:
+            print 'wrong topology type'
+
 
 def create_mininet_topo (dbname, username):
     try:
@@ -167,18 +202,24 @@ def load_database (dbname, username):
         load_ISP_topo_fewer_hosts ('isp', username)
     elif dbname == 'mininet' or dbname == 'm':
         load_topo3switch_new ('mininet', username)
-    elif dbname == 'fattree' or dbname == 'f':
-        load_fat_tree (switch_size, fanout_size, dbname, username)
+    elif dbname == 'tree':
+        load_tree (switch_size, fanout_size, dbname, username)
+    elif dbname == 'fattree':
+        load_fattree (k_size)
 
     # print monitor_mininet, "after"
     create_mininet_topo (dbname, username)
-
     print_mn_manual (dbname)
 
     if monitor_mininet == 'y':
         load_pox_module (dbname, username)
 
-def load_fat_tree (switch_size, fanout_size, dbname, username):
+
+
+def load_fattree (k_size):
+    
+
+def load_tree (switch_size, fanout_size, dbname, username):
     g = Graph.Tree(switch_size, fanout_size)
     edges = g.get_edgelist ()
 
@@ -197,7 +238,7 @@ def load_fat_tree (switch_size, fanout_size, dbname, username):
         cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',0,1);' )
 
     conn.close ()
-    print "--------------------> load_fat_tree successful"
+    print "--------------------> load_tree successful"
 
 
 def load_ISP_topo_fewer_hosts (dbname, username):
@@ -371,32 +412,6 @@ def kill_pox_module ():
     os.system (cmd)
     print "--------------------> kill pox module that populates mininet events to database"
 
-def get_dbname ():
-    global monitor_mininet
-    global switch_size
-    global fanout_size
-
-    while True:
-        n = raw_input ('select topology type : \n \t\'t,\'y\'/\'n\'\'(toy w/o mininet monitor) \n \t\'i,/y/n\'(isp w/o mininet monitor) \n\t\'m,\'y\'/\'n\'\'(mininet) \n\t\'f\',switch_size,fanout_size,\'y\'/\'n\' (fattree w/o mininet monitor)\n')
-        if n.strip ().split (',')[0] == 't':
-            monitor_mininet = n.strip ().split (',')[1]
-            return 'toy'
-            break
-        elif n.strip ().split (',')[0] == 'i':
-            monitor_mininet = n.strip ().split (',')[1]
-            return 'isp'
-            break
-        elif n.strip ().split (',')[0] == 'm':
-            return 'mininet'
-            break
-        elif n.strip ().split (',')[0] == 'f':
-            switch_size = int (n.strip ().split (',')[1]) 
-            fanout_size = int (n.strip ().split (',')[2])
-            monitor_mininet = n.strip ().split (',')[3]
-            return 'fattree'
-            break
-        else:
-            print 'wrong topology type'
 
 def create_tenant (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
