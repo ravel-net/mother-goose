@@ -11,15 +11,37 @@ from igraph import *
 execfile("libRavel.py")
 import libRavel
 
-username = 'mininet'
-sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing.sql"
-sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
+switch_size = 0
+fanout_size = 0
+monitor_mininet = 0
+k_size = 0 # number of pods of the fat tree
 
-def perform_test (dbname, username):
-    
+username = 'mininet'
+sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing_w.sql"
+sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
+sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo.sql"
+# without mininet operation, that is, no actual add_flow / del_flow,
+# just absolute value of postgres time
+
+def procedure_interactive ():
+
+    dbname = select_dbname ()
+    create_db (dbname)
+    add_pgrouting_plpy_plsh_extension (dbname, username)
+    load_schema (dbname, username, sql_script1)
+    # load_schema (dbname, username, sql_script2)
+    load_database (dbname, username)
+    perform_test (dbname, username)
+
+def procedure_batch ():
+
+    dbname = select_dbname ()
+    create_db (dbname)
+    add_pgrouting_plpy_plsh_extension (dbname, username)
+
     while True:
-        n = raw_input("select test actions: \n\t'e'(exit) \n\t'b'(batch test) \n\t't'(dc tenant)\n")
-        if n.strip() == 'e':
+        m = raw_input ("test or exit? (t/e) \n")
+        if m == 'e':
             t = raw_input("clean database? ('y'/'n'): ")
             if t.strip () == 'y':
                 kill_pox_module ()
@@ -28,32 +50,17 @@ def perform_test (dbname, username):
             elif t.strip () == 'n':
                 kill_pox_module ()
                 break
-        elif n.strip () == 'b':
-            print 'start batch_test ()'
-            batch_test (dbname, username, 10, topo_flag=dbname)
+        elif m == 't' :
+            n = raw_input("select test actions: \n\t r (routing) \n\t a (auto-re-routing) \n\t t (tenant) \n")
+            if n.strip () == 'r':
+                print "routing in postgres, no mininet operation"
+                load_schema (dbname, username, sql_script3)
+                load_database (dbname, username)
+                batch_test (dbname, username, 10, flag='routing')
 
-        elif n.strip () == 't':
-            print 'play with dc tenant'
-            create_tenant (dbname, username)
-            
 if __name__ == '__main__':
 
-    def procedure ():
-
-        dbname = select_dbname ()
-
-        create_db (dbname)
-
-        add_pgrouting_plpy_plsh_extension (dbname, username)
-
-        load_schema (dbname, username, sql_script1)
-        # load_schema (dbname, username, sql_script2)
-
-        load_database (dbname, username)
-
-        perform_test (dbname, username)
-
-    procedure ()
+    procedure_batch ()
 
     # d = select_dbname ()
     # print d

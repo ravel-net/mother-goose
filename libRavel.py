@@ -1,7 +1,62 @@
-switch_size = 0
-fanout_size = 0
-monitor_mininet = 0
-k_size = 0 # number of pods of the fat tree
+# new_add_flow_fun = """
+# CREATE OR REPLACE FUNCTION add_flow_fun ()
+# RETURNS TRIGGER
+# AS $$
+# f = TD["new"]["pid"]
+# s = TD["new"]["sid"]
+# n = TD["new"]["nid"]
+
+# u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
+# outport = str(u[0]['port'])
+# v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
+# inport = str (v[0]['port'])
+
+# cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
+# cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
+
+# fo = open ('/home/mininet/ravel/log.txt', 'a')
+# def logfunc(msg,f=fo):
+#     f.write(msg+'\n')
+
+# logfunc ('addflow')
+# logfunc ('addflow')
+
+# fo.flush ()
+
+# return None;
+# $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+# """
+
+# new_del_flow_fun = """ 
+# CREATE OR REPLACE FUNCTION del_flow_fun ()
+# RETURNS TRIGGER
+# AS $$
+# f = TD["old"]["pid"]
+# s = TD["old"]["sid"]
+# n = TD["old"]["nid"]
+
+# u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
+# outport = str(u[0]['port'])
+
+# v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
+# inport = str (v[0]['port'])
+
+# cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+# cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+
+# fo = open ('/home/mininet/ravel/log.txt', 'a')
+# def logfunc(msg,f=fo):
+#     f.write(msg+'\n')
+
+# logfunc ('delflow')
+
+# logfunc ('delflow')
+
+# fo.flush ()
+
+# return None;
+# $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+# """
 
 def select_dbname ():
     global monitor_mininet
@@ -207,9 +262,9 @@ def load_database (dbname, username):
         load_fattree (k_size, dbname, username)
 
     create_mininet_topo (dbname, username)
-    print_mn_manual (dbname)
 
     if monitor_mininet == 'y':
+        print_mn_manual (dbname)
         load_pox_module (dbname, username)
 
 
@@ -402,7 +457,7 @@ def load_schema (dbname, username, sql_script):
     finally:
         if conn: conn.close()
 
-def batch_test (dbname, username, rounds, topo_flag):
+def batch_test (dbname, username, rounds, flag):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -411,14 +466,18 @@ def batch_test (dbname, username, rounds, topo_flag):
     hosts = [h['hid'] for h in cs]
     # print hosts
 
+    if dbname == 'fattree':
+        logdestfile = dbname + str (k_size) + '_' + flag + '_' + str (rounds)
+
     logfile = os.getcwd ()+'/log.txt'
+
     open(logfile, 'w').close()
     f = open(logfile, 'a')
-    f.write ("--------------------> " + topo_flag + ' with rounds ' + str (rounds) + '\n')
+    f.write ("--------------------> " + flag + ' with rounds ' + str (rounds) + '\n')
     f.write ("--------------------> batch_test begins\n\n")
     f.flush ()
 
-    def one_round (cur=cur, hosts=hosts, f=f):
+    def routing_one_round (cur=cur, hosts=hosts, f=f):
         indices = random.sample(range(len(hosts)), 2)
         [h1,h2] = [hosts[i] for i in sorted(indices)]
 
@@ -434,16 +493,18 @@ def batch_test (dbname, username, rounds, topo_flag):
         f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
-    for i in range (0,rounds):
-        print "round " + str (i)
-        f.write ("round " + str (i) + '\n')
-        f.flush ()
-        one_round ()
-        f.write ('\n')
+    if flag == 'routing':
+
+        for i in range (0,rounds):
+            print "round " + str (i)
+            f.write ("round " + str (i) + '\n')
+            f.flush ()
+            routing_one_round ()
+            f.write ('\n')
 
     f.write ("--------------------> batch_test ends\n")
     f.close ()
-    logdest = os.getcwd () + '/data/' + topo_flag + str (rounds) + '.log'
+    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
     # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
     os.system ("cp "+ logfile + ' ' + logdest)
 
@@ -528,3 +589,25 @@ CREATE OR REPLACE RULE tenant_policy_del AS
     print '--------------------> create tenant, interact with \'tenant_hosts\' and \'tenant_policy\''
 
     conn.close()
+
+def perform_test (dbname, username):
+    
+    while True:
+        n = raw_input("select test actions: \n\t'e'(exit) \n\t'b'(batch test) \n\t't'(dc tenant)\n")
+        if n.strip() == 'e':
+            t = raw_input("clean database? ('y'/'n'): ")
+            if t.strip () == 'y':
+                kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                kill_pox_module ()
+                break
+        elif n.strip () == 'b':
+            print 'start batch_test ()'
+            print 'flag = routing'
+            batch_test (dbname, username, 10, flag='routing')
+
+        elif n.strip () == 't':
+            print 'play with dc tenant'
+            create_tenant (dbname, username)

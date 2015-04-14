@@ -1,596 +1,220 @@
--------------------->mininet with rounds 10
--------------------->batch_test begins
+--------------------> routing with rounds 10
+--------------------> batch_test begins
 
 round 0
-add-flow s6(ms): 9.74893569946
-add-flow s6(ms): 13.8819217682
-add-flow s4(ms): 11.1749172211
-add-flow s4(ms): 12.9089355469
-INSERT INTO tm values (1,1,3,1)(ms):89.3800258636
-del-flows s4(ms): 13.4990215302
-del-flows s4(ms): 11.8570327759
-del-flows s6(ms): 13.0128860474
-del-flows s6(ms): 12.0220184326
-DELETE FROM tm WHERE fid = 1(ms):57.4388504028
+addflow
+addflow
+INSERT INTO tm values (1,22,23,1)(ms):36.5459918976
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):9.10592079163
 
 round 1
-add-flow s6(ms): 11.6240978241
-add-flow s6(ms): 13.3230686188
-add-flow s4(ms): 10.195016861
-add-flow s4(ms): 14.506816864
-INSERT INTO tm values (1,1,3,1)(ms):63.2700920105
-del-flows s4(ms): 12.843132019
-del-flows s4(ms): 13.1011009216
-del-flows s6(ms): 11.7959976196
-del-flows s6(ms): 13.3509635925
-DELETE FROM tm WHERE fid = 1(ms):58.168888092
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,25,31,1)(ms):21.4631557465
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):4.13990020752
 
 round 2
-add-flow s6(ms): 12.4640464783
-add-flow s6(ms): 13.2868289948
-add-flow s4(ms): 11.6419792175
-add-flow s4(ms): 11.735200882
-INSERT INTO tm values (1,1,3,1)(ms):64.6319389343
-del-flows s4(ms): 13.7748718262
-del-flows s4(ms): 14.6479606628
-del-flows s6(ms): 13.7259960175
-del-flows s6(ms): 11.0380649567
-DELETE FROM tm WHERE fid = 1(ms):60.5430603027
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,22,30,1)(ms):11.5900039673
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):6.46686553955
 
 round 3
-INSERT INTO tm values (1,1,2,1)(ms):8.43095779419
-DELETE FROM tm WHERE fid = 1(ms):0.159025192261
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,24,28,1)(ms):10.5848312378
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):7.24220275879
 
 round 4
-INSERT INTO tm values (1,1,2,1)(ms):5.78212738037
-DELETE FROM tm WHERE fid = 1(ms):0.212907791138
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,24,27,1)(ms):8.35609436035
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):4.53305244446
 
 round 5
-INSERT INTO tm values (1,1,2,1)(ms):7.86209106445
-DELETE FROM tm WHERE fid = 1(ms):0.253915786743
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,22,29,1)(ms):9.51194763184
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):6.38198852539
 
 round 6
-add-flow s6(ms): 14.5530700684
-add-flow s6(ms): 14.496088028
-add-flow s4(ms): 11.9981765747
-add-flow s4(ms): 13.0569934845
-INSERT INTO tm values (1,1,3,1)(ms):67.8889751434
-del-flows s4(ms): 13.7660503387
-del-flows s4(ms): 11.3680362701
-del-flows s6(ms): 13.2739543915
-del-flows s6(ms): 12.7620697021
-DELETE FROM tm WHERE fid = 1(ms):57.4779510498
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,26,34,1)(ms):13.4000778198
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):6.61706924438
 
 round 7
-add-flow s6(ms): 12.1049880981
-add-flow s6(ms): 11.1961364746
-add-flow s4(ms): 13.1680965424
-add-flow s4(ms): 13.1630897522
-INSERT INTO tm values (1,1,3,1)(ms):64.0370845795
-del-flows s4(ms): 15.2611732483
-del-flows s4(ms): 12.0689868927
-del-flows s6(ms): 13.1869316101
-del-flows s6(ms): 12.2718811035
-DELETE FROM tm WHERE fid = 1(ms):60.7419013977
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,30,33,1)(ms):13.0751132965
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):7.1918964386
 
 round 8
-INSERT INTO tm values (1,1,2,1)(ms):7.3459148407
-DELETE FROM tm WHERE fid = 1(ms):0.203132629395
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,23,32,1)(ms):13.2961273193
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):6.48617744446
 
 round 9
-add-flow s6(ms): 11.4719867706
-add-flow s6(ms): 13.2250785828
-add-flow s5(ms): 12.7561092377
-add-flow s5(ms): 14.1358375549
-INSERT INTO tm values (1,2,3,1)(ms):64.3429756165
-del-flows s6(ms): 11.7120742798
-del-flows s6(ms): 15.7461166382
-del-flows s5(ms): 11.8429660797
-del-flows s5(ms): 13.7341022491
-DELETE FROM tm WHERE fid = 1(ms):59.7329139709
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+addflow
+INSERT INTO tm values (1,22,30,1)(ms):12.6750469208
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+delflow
+DELETE FROM tm WHERE fid = 1(ms):5.88703155518
 
--------------------->batch_test ends
-add-flow s6(ms): 27.8339385986
-add-flow s6(ms): 9.01699066162
-add-flow s4(ms): 9.23609733582
-add-flow s4(ms): 11.9721889496
-add-flow s1(ms): 11.353969574
-add-flow s1(ms): 10.0769996643
-add-flow s3(ms): 12.02917099
-add-flow s3(ms): 11.7220878601
-del-flows s1(ms): 11.7099285126
-del-flows s1(ms): 10.3600025177
-del-flows s3(ms): 12.1080875397
-del-flows s3(ms): 13.6859416962
-add-flow s3(ms): 10.5669498444
-add-flow s3(ms): 10.7529163361
-add-flow s1(ms): 13.5478973389
-add-flow s1(ms): 11.7988586426
-del-flows s1(ms): 9.5911026001
-del-flows s1(ms): 11.1410617828
-del-flows s3(ms): 10.5540752411
-del-flows s3(ms): 12.099981308
-add-flow s3(ms): 12.0210647583
-add-flow s3(ms): 10.5829238892
-add-flow s1(ms): 11.0569000244
-add-flow s1(ms): 9.23585891724
-del-flows s1(ms): 12.1428966522
-del-flows s1(ms): 11.4278793335
-del-flows s3(ms): 8.84795188904
-del-flows s3(ms): 12.4549865723
-add-flow s3(ms): 11.6410255432
-add-flow s3(ms): 10.5850696564
-add-flow s2(ms): 12.7851963043
-add-flow s2(ms): 10.2210044861
-del-flows s3(ms): 11.9678974152
-del-flows s3(ms): 11.5420818329
-del-flows s2(ms): 9.94300842285
-del-flows s2(ms): 11.1591815948
-add-flow s3(ms): 9.97996330261
-add-flow s3(ms): 12.570142746
-add-flow s1(ms): 12.332201004
-add-flow s1(ms): 11.1689567566
-add-flow s3(ms): 12.9539966583
-add-flow s3(ms): 14.7700309753
-add-flow s1(ms): 12.1760368347
-add-flow s1(ms): 11.4920139313
-del-flows s1(ms): 13.9648914337
-del-flows s1(ms): 13.188123703
-del-flows s3(ms): 13.5171413422
-del-flows s3(ms): 10.910987854
-add-flow s3(ms): 10.0200176239
-add-flow s3(ms): 12.3620033264
-add-flow s5(ms): 11.6910934448
-add-flow s5(ms): 11.8329524994
-add-flow s0(ms): 10.5271339417
-add-flow s0(ms): 10.8609199524
-add-flow s1(ms): 9.26303863525
-add-flow s1(ms): 11.3899707794
-del-flows s0(ms): 10.9069347382
-del-flows s0(ms): 13.3001804352
-del-flows s1(ms): 11.2850666046
-del-flows s1(ms): 11.036157608
-del-flows s3(ms): 10.8599662781
-del-flows s3(ms): 10.8630657196
-del-flows s5(ms): 13.729095459
-del-flows s5(ms): 9.51600074768
-add-flow s3(ms): 14.6789550781
-add-flow s3(ms): 16.2172317505
-add-flow s5(ms): 14.3749713898
-add-flow s5(ms): 13.7741565704
-add-flow s0(ms): 15.1619911194
-add-flow s0(ms): 16.9260501862
-add-flow s1(ms): 13.7760639191
-add-flow s1(ms): 14.396905899
-add-flow s3(ms): 13.9520168304
-add-flow s3(ms): 15.7489776611
-add-flow s1(ms): 15.6331062317
-add-flow s1(ms): 12.1459960938
-add-flow s0(ms): 13.6351585388
-add-flow s0(ms): 14.4109725952
-add-flow s4(ms): 16.0939693451
-add-flow s4(ms): 15.6669616699
-add-flow s2(ms): 22.0820903778
-add-flow s2(ms): 17.4601078033
-add-flow s10(ms): 20.6048488617
-add-flow s10(ms): 22.2661495209
-add-flow s11(ms): 18.4631347656
-add-flow s11(ms): 19.2470550537
-del-flows s11(ms): 19.1230773926
-del-flows s11(ms): 24.178981781
-del-flows s2(ms): 20.68400383
-del-flows s2(ms): 17.8470611572
-del-flows s10(ms): 22.2129821777
-del-flows s10(ms): 20.546913147
-add-flow s18(ms): 19.4020271301
-add-flow s18(ms): 24.0969657898
-add-flow s2(ms): 20.6458568573
-add-flow s2(ms): 21.5671062469
-add-flow s10(ms): 18.8949108124
-add-flow s10(ms): 22.1199989319
-add-flow s4(ms): 20.4632282257
-add-flow s4(ms): 19.7079181671
-add-flow s0(ms): 20.8389759064
-add-flow s0(ms): 19.2050933838
-add-flow s11(ms): 22.607088089
-add-flow s11(ms): 29.611825943
-add-flow s1(ms): 32.5858592987
-add-flow s1(ms): 37.6319885254
-add-flow s0(ms): 33.2760810852
-add-flow s0(ms): 31.4888954163
-add-flow s10(ms): 27.9018878937
-add-flow s10(ms): 28.7299156189
-add-flow s8(ms): 26.5851020813
-add-flow s8(ms): 29.3071269989
-add-flow s0(ms): 31.4679145813
-add-flow s0(ms): 54.8021793365
-add-flow s1(ms): 28.4600257874
-add-flow s1(ms): 29.7620296478
-add-flow s12(ms): 34.3151092529
-add-flow s12(ms): 30.7629108429
-add-flow s89(ms): 32.44805336
-add-flow s89(ms): 31.8059921265
-add-flow s1(ms): 22.607088089
-add-flow s1(ms): 28.3980369568
-add-flow s79(ms): 35.3989601135
-add-flow s79(ms): 31.8629741669
-add-flow s14(ms): 31.3889980316
-add-flow s14(ms): 28.2640457153
-add-flow s0(ms): 31.2919616699
-add-flow s0(ms): 28.6111831665
-add-flow s7(ms): 30.9119224548
-add-flow s7(ms): 28.7539958954
-add-flow s1(ms): 15.6378746033
-add-flow s1(ms): 17.333984375
-add-flow s2(ms): 15.5019760132
-add-flow s2(ms): 15.2719020844
-add-flow s3(ms): 16.5910720825
-add-flow s3(ms): 18.4900760651
-add-flow s1(ms): 15.0599479675
-add-flow s1(ms): 15.8050060272
-add-flow s0(ms): 14.4100189209
-add-flow s0(ms): 16.2808895111
-add-flow s4(ms): 15.9888267517
-add-flow s4(ms): 17.4789428711
-add-flow s3(ms): 28.4049510956
-add-flow s3(ms): 10.4570388794
-add-flow s1(ms): 12.8481388092
-add-flow s1(ms): 12.5968456268
-add-flow s2(ms): 13.060092926
-add-flow s2(ms): 13.9338970184
-add-flow s3(ms): 13.2410526276
-add-flow s3(ms): 14.9960517883
-del-flows s2(ms): 14.3799781799
-del-flows s2(ms): 11.4779472351
-del-flows s3(ms): 12.6390457153
-del-flows s3(ms): 15.1569843292
-add-flow s2(ms): 15.9080028534
-add-flow s2(ms): 13.167142868
-add-flow s1(ms): 14.7299766541
-add-flow s1(ms): 12.1080875397
-add-flow s3(ms): 14.2221450806
-add-flow s3(ms): 14.1978263855
-del-flows s1(ms): 14.673948288
-del-flows s1(ms): 16.2210464478
-del-flows s3(ms): 13.8790607452
-del-flows s3(ms): 12.0677947998
-del-flows s2(ms): 12.4208927155
-del-flows s2(ms): 11.7309093475
-add-flow s2(ms): 12.9170417786
-add-flow s2(ms): 14.9779319763
-add-flow s3(ms): 13.4079456329
-add-flow s3(ms): 12.3829841614
-add-flow s3(ms): 13.5021209717
-add-flow s3(ms): 13.3059024811
-add-flow s2(ms): 12.3798847198
-add-flow s2(ms): 13.2179260254
-del-flows s3(ms): 14.6420001984
-del-flows s3(ms): 12.9418373108
-del-flows s2(ms): 13.445854187
-del-flows s2(ms): 13.5841369629
-add-flow s1(ms): 10.4601383209
-add-flow s1(ms): 13.3340358734
-add-flow s2(ms): 14.8510932922
-add-flow s2(ms): 13.5090351105
-add-flow s3(ms): 11.5361213684
-add-flow s3(ms): 22.4030017853
-add-flow s3(ms): 15.289068222
-add-flow s3(ms): 16.4339542389
-add-flow s2(ms): 12.433052063
-add-flow s2(ms): 10.488986969
-del-flows s3(ms): 14.7819519043
-del-flows s3(ms): 12.1800899506
-del-flows s2(ms): 15.2869224548
-del-flows s2(ms): 15.8269405365
-add-flow s1(ms): 20.9100246429
-add-flow s1(ms): 28.5120010376
-add-flow s2(ms): 12.9928588867
-add-flow s2(ms): 14.7399902344
-add-flow s3(ms): 13.1070613861
-add-flow s3(ms): 12.6130580902
-del-flows s2(ms): 21.4860439301
-del-flows s2(ms): 26.5209674835
-del-flows s3(ms): 13.4980678558
-del-flows s3(ms): 17.3621177673
-del-flows s1(ms): 14.3249034882
-del-flows s1(ms): 9.14692878723
-add-flow s3(ms): 11.9619369507
-add-flow s3(ms): 13.032913208
-add-flow s2(ms): 20.3499794006
-add-flow s2(ms): 9.98401641846
-add-flow s3(ms): 15.3298377991
-add-flow s3(ms): 15.1078701019
-add-flow s2(ms): 12.7811431885
-add-flow s2(ms): 13.0681991577
-del-flows s3(ms): 14.848947525
-del-flows s3(ms): 14.6911144257
-del-flows s2(ms): 13.6852264404
-del-flows s2(ms): 14.1780376434
-add-flow s1(ms): 14.307975769
-add-flow s1(ms): 12.6969814301
-add-flow s2(ms): 12.8600597382
-add-flow s2(ms): 13.9050483704
-add-flow s3(ms): 13.1230354309
-add-flow s3(ms): 11.2249851227
-del-flows s2(ms): 12.7029418945
-del-flows s2(ms): 13.0620002747
-del-flows s3(ms): 13.797044754
-del-flows s3(ms): 12.3529434204
-del-flows s1(ms): 13.3979320526
-del-flows s1(ms): 10.9760761261
-add-flow s1(ms): 12.9251480103
-add-flow s1(ms): 13.8649940491
-add-flow s2(ms): 11.6059780121
-add-flow s2(ms): 10.3449821472
-add-flow s3(ms): 12.2058391571
-add-flow s3(ms): 12.9160881042
-add-flow s3(ms): 22.1281051636
-add-flow s3(ms): 11.4560127258
-add-flow s2(ms): 11.9340419769
-add-flow s2(ms): 11.7571353912
-del-flows s3(ms): 13.514995575
-del-flows s3(ms): 12.8519535065
-del-flows s2(ms): 10.8768939972
-del-flows s2(ms): 11.6889476776
-add-flow s1(ms): 13.5979652405
-add-flow s1(ms): 12.8021240234
-add-flow s2(ms): 12.4540328979
-add-flow s2(ms): 12.8450393677
-add-flow s3(ms): 12.3751163483
-add-flow s3(ms): 13.1318569183
-del-flows s2(ms): 9.00220870972
-del-flows s2(ms): 9.80997085571
-del-flows s3(ms): 13.7541294098
-del-flows s3(ms): 13.5021209717
-del-flows s1(ms): 11.5370750427
-del-flows s1(ms): 13.7548446655
-add-flow s3(ms): 12.5889778137
-add-flow s3(ms): 14.9009227753
-add-flow s2(ms): 11.5919113159
-add-flow s2(ms): 11.6150379181
-add-flow s3(ms): 10.7800960541
-add-flow s3(ms): 15.1631832123
-add-flow s2(ms): 14.7290229797
-add-flow s2(ms): 12.8920078278
-del-flows s3(ms): 12.1371746063
-del-flows s3(ms): 12.9029750824
-del-flows s2(ms): 13.2670402527
-del-flows s2(ms): 14.3818855286
-add-flow s2(ms): 12.6729011536
-add-flow s2(ms): 13.0460262299
-add-flow s3(ms): 13.8070583344
-add-flow s3(ms): 12.1459960938
-add-flow s3(ms): 12.6640796661
-add-flow s3(ms): 11.7959976196
-add-flow s1(ms): 13.7188434601
-add-flow s1(ms): 12.9611492157
-add-flow s2(ms): 12.4840736389
-add-flow s2(ms): 13.8461589813
-add-flow s3(ms): 13.7441158295
-add-flow s3(ms): 12.5420093536
-del-flows s2(ms): 12.6769542694
-del-flows s2(ms): 12.6769542694
-del-flows s3(ms): 13.7238502502
-del-flows s3(ms): 16.3061618805
-del-flows s3(ms): 11.962890625
-del-flows s3(ms): 12.4619007111
-del-flows s2(ms): 13.7369632721
-del-flows s2(ms): 11.2648010254
-add-flow s3(ms): 13.5011672974
-add-flow s3(ms): 13.9009952545
-add-flow s2(ms): 47.2202301025
-add-flow s2(ms): 19.6599960327
-add-flow s2(ms): 13.335943222
-add-flow s2(ms): 13.4110450745
-add-flow s3(ms): 12.96210289
-add-flow s3(ms): 12.9480361938
-del-flows s3(ms): 11.8191242218
-del-flows s3(ms): 12.2919082642
-del-flows s2(ms): 13.1099224091
-del-flows s2(ms): 12.8579139709
-del-flows s2(ms): 14.3940448761
-del-flows s2(ms): 11.8069648743
-del-flows s3(ms): 14.3959522247
-del-flows s3(ms): 15.0058269501
-add-flow s2(ms): 11.8870735168
-add-flow s2(ms): 13.2110118866
-add-flow s3(ms): 16.3209438324
-add-flow s3(ms): 16.9670581818
-add-flow s19(ms): 12.5119686127
-add-flow s19(ms): 11.2891197205
-add-flow s49(ms): 10.8399391174
-add-flow s49(ms): 10.51902771
-add-flow s1(ms): 10.6298923492
-add-flow s1(ms): 10.1449489594
-add-flow s0(ms): 11.6322040558
-add-flow s0(ms): 10.1330280304
-add-flow s3(ms): 11.6040706635
-add-flow s3(ms): 9.74988937378
-add-flow s9(ms): 14.9760246277
-add-flow s9(ms): 11.2318992615
-del-flows s19(ms): 9.79518890381
-del-flows s19(ms): 10.9331607819
-del-flows s3(ms): 9.95182991028
-del-flows s3(ms): 10.5261802673
-del-flows s0(ms): 11.7340087891
-del-flows s0(ms): 11.0640525818
-del-flows s9(ms): 9.81593132019
-del-flows s9(ms): 10.4510784149
-del-flows s49(ms): 11.3840103149
-del-flows s49(ms): 11.4138126373
-del-flows s1(ms): 11.6541385651
-del-flows s1(ms): 10.7989311218
-add-flow s19(ms): 21.3220119476
-add-flow s19(ms): 30.3099155426
-add-flow s0(ms): 26.428937912
-add-flow s0(ms): 28.2039642334
-add-flow s11(ms): 24.9888896942
-add-flow s11(ms): 29.3710231781
-add-flow s1(ms): 25.7630348206
-add-flow s1(ms): 69.5278644562
-add-flow s3(ms): 17.2820091248
-add-flow s3(ms): 24.8470306396
-add-flow s11(ms): 39.6888256073
-add-flow s11(ms): 36.4451408386
-add-flow s8(ms): 31.9938659668
-add-flow s8(ms): 28.2561779022
-add-flow s49(ms): 24.7747898102
-add-flow s49(ms): 21.8222141266
-add-flow s1(ms): 30.7469367981
-add-flow s1(ms): 30.4691791534
-del-flows s3(ms): 117.496013641
-del-flows s3(ms): 91.7952060699
-del-flows s0(ms): 63.570022583
-del-flows s0(ms): 50.3480434418
-del-flows s11(ms): 88.497877121
-del-flows s11(ms): 92.4019813538
-del-flows s19(ms): 129.700899124
-del-flows s19(ms): 74.166059494
-del-flows s1(ms): 41.0468578339
-del-flows s1(ms): 58.6700439453
-del-flows s1(ms): 59.7479343414
-del-flows s1(ms): 40.6160354614
-del-flows s8(ms): 101.789951324
-del-flows s8(ms): 75.2558708191
-del-flows s49(ms): 53.8990497589
-del-flows s49(ms): 46.6630458832
-del-flows s11(ms): 56.4961433411
-del-flows s11(ms): 48.9189624786
-add-flow s3(ms): 30.3959846497
-add-flow s3(ms): 12.3870372772
-add-flow s2(ms): 12.6760005951
-add-flow s2(ms): 13.1630897522
-del-flows s3(ms): 10.6201171875
-del-flows s3(ms): 11.1241340637
-del-flows s2(ms): 14.4338607788
-del-flows s2(ms): 12.2561454773
-add-flow s1(ms): 13.0100250244
-add-flow s1(ms): 12.2828483582
-add-flow s2(ms): 12.5939846039
-add-flow s2(ms): 9.6869468689
-add-flow s3(ms): 10.3960037231
-add-flow s3(ms): 13.9679908752
-del-flows s2(ms): 14.4519805908
-del-flows s2(ms): 10.8489990234
-del-flows s3(ms): 13.4468078613
-del-flows s3(ms): 9.01484489441
-del-flows s1(ms): 13.0507946014
-del-flows s1(ms): 15.2111053467
-add-flow s1(ms): 10.5910301208
-add-flow s1(ms): 12.4459266663
-add-flow s2(ms): 11.5358829498
-add-flow s2(ms): 12.1619701385
-add-flow s3(ms): 13.4859085083
-add-flow s3(ms): 9.97686386108
-add-flow s6(ms): 24.7068405151
-add-flow s6(ms): 32.1979522705
-add-flow s63(ms): 31.5968990326
-add-flow s63(ms): 32.399892807
-add-flow s0(ms): 35.1901054382
-add-flow s0(ms): 31.6600799561
-add-flow s55(ms): 32.8869819641
-add-flow s55(ms): 31.1059951782
-add-flow s5(ms): 35.1159572601
-add-flow s5(ms): 27.9731750488
-del-flows s6(ms): 23.3099460602
-del-flows s6(ms): 29.8631191254
-del-flows s55(ms): 29.6080112457
-del-flows s55(ms): 28.9440155029
-del-flows s5(ms): 32.0491790771
-del-flows s5(ms): 30.3010940552
-del-flows s63(ms): 25.7749557495
-del-flows s63(ms): 36.2269878387
-del-flows s0(ms): 31.9650173187
-del-flows s0(ms): 29.088973999
-add-flow s58(ms): 19.5369720459
-add-flow s58(ms): 35.1498126984
-add-flow s55(ms): 32.0529937744
-add-flow s55(ms): 29.972076416
-add-flow s5(ms): 34.7318649292
-add-flow s5(ms): 31.9328308105
-del-flows s58(ms): 20.4339027405
-del-flows s58(ms): 33.6692333221
-del-flows s5(ms): 33.5960388184
-del-flows s5(ms): 31.9449901581
-del-flows s55(ms): 32.4549674988
-del-flows s55(ms): 36.8330478668
-add-flow s12(ms): 42.6950454712
-add-flow s12(ms): 19.9589729309
-add-flow s4(ms): 19.2589759827
-add-flow s4(ms): 27.4798870087
-add-flow s13(ms): 27.2438526154
-add-flow s13(ms): 21.1551189423
-add-flow s12(ms): 20.0581550598
-add-flow s12(ms): 22.0420360565
-add-flow s13(ms): 21.6999053955
-add-flow s13(ms): 24.759054184
-add-flow s4(ms): 21.9740867615
-add-flow s4(ms): 24.3260860443
-del-flows s4(ms): 20.210981369
-del-flows s4(ms): 24.374961853
-del-flows s12(ms): 25.5138874054
-del-flows s12(ms): 26.547908783
-del-flows s13(ms): 27.9531478882
-del-flows s13(ms): 22.1178531647
-del-flows s13(ms): 25.9780883789
-del-flows s13(ms): 19.7541713715
-del-flows s4(ms): 25.7210731506
-del-flows s4(ms): 22.4759578705
-del-flows s12(ms): 21.299123764
-del-flows s12(ms): 22.2148895264
-add-flow s13(ms): 21.9399929047
-add-flow s13(ms): 20.6339359283
-add-flow s12(ms): 23.0689048767
-add-flow s12(ms): 24.2309570312
-add-flow s5(ms): 28.0439853668
-add-flow s5(ms): 24.0349769592
-add-flow s5(ms): 19.3371772766
-add-flow s5(ms): 17.0159339905
-add-flow s12(ms): 20.455121994
-add-flow s12(ms): 19.3378925323
-add-flow s13(ms): 21.4068889618
-add-flow s13(ms): 30.2910804749
-del-flows s13(ms): 18.9990997314
-del-flows s13(ms): 24.0149497986
-del-flows s12(ms): 24.3000984192
-del-flows s12(ms): 24.8548984528
-del-flows s5(ms): 22.0251083374
-del-flows s5(ms): 23.2911109924
-del-flows s5(ms): 19.5109844208
-del-flows s5(ms): 17.8411006927
-del-flows s12(ms): 20.5180644989
-del-flows s12(ms): 22.1090316772
-del-flows s13(ms): 23.3249664307
-del-flows s13(ms): 19.0980434418
-add-flow s12(ms): 22.0720767975
-add-flow s12(ms): 26.2429714203
-add-flow s4(ms): 22.6240158081
-add-flow s4(ms): 23.5240459442
-add-flow s13(ms): 23.0770111084
-add-flow s13(ms): 25.2239704132
-add-flow s12(ms): 25.584936142
-add-flow s12(ms): 23.5471725464
-add-flow s13(ms): 23.463010788
-add-flow s13(ms): 25.6521701813
-add-flow s4(ms): 24.2459774017
-add-flow s4(ms): 21.2380886078
-add-flow s60(ms): 18.1488990784
-add-flow s60(ms): 27.4038314819
-add-flow s34(ms): 26.0469913483
-add-flow s34(ms): 24.1651535034
-add-flow s3(ms): 14.2860412598
-add-flow s3(ms): 22.7291584015
-add-flow s2(ms): 23.4730243683
-add-flow s2(ms): 25.5010128021
-del-flows s3(ms): 13.9648914337
-del-flows s3(ms): 39.3309593201
-del-flows s2(ms): 27.058839798
-del-flows s2(ms): 25.6998538971
-i
-i
-i
-i
-delflow
-delflow
-delflow
-delflow
+--------------------> batch_test ends
