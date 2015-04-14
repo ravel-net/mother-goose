@@ -19,7 +19,7 @@ k_size = 0 # number of pods of the fat tree
 username = 'mininet'
 sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing_w.sql"
 sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
-sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo.sql"
+sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo_optimized.sql"
 # without mininet operation, that is, no actual add_flow / del_flow,
 # just absolute value of postgres time
 
