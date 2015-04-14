@@ -461,50 +461,83 @@ def batch_test (dbname, username, rounds, flag):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
     cur.execute ("SELECT * FROM hosts;")
     cs = cur.fetchall ()
     hosts = [h['hid'] for h in cs]
-    # print hosts
+
+    cur.execute ("SELECT sid,nid FROM tp;")
+    cs = cur.fetchall ()
+    links = [[h['sid'], h['nid']] for h in cs]
+    # print links
 
     if dbname == 'fattree':
         logdestfile = dbname + str (k_size) + '_' + flag + '_' + str (rounds)
-
     logfile = os.getcwd ()+'/log.txt'
 
     open(logfile, 'w').close()
     f = open(logfile, 'a')
-    f.write ("--------------------> " + flag + ' with rounds ' + str (rounds) + '\n')
-    f.write ("--------------------> batch_test begins\n\n")
-    f.flush ()
 
-    def routing_one_round (cur=cur, hosts=hosts, f=f):
+    def routing_ins (fid, cur=cur, hosts=hosts, f=f):
         indices = random.sample(range(len(hosts)), 2)
         [h1,h2] = [hosts[i] for i in sorted(indices)]
 
-        t1 = time.time ()
-        cur.execute ("INSERT INTO tm values (1,%s,%s,1);",([int (h1),int (h2)]))
-        t2 = time.time ()
-        # f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
-        f.write ('ins|' + str ((t2-t1)*1000) + '\n')
-        f.flush ()
+        # cur.execute ("SELECT * from cf;")
+        # cs = cur.fetchall ()
+        # print 'routing_ins'
+        # print cs
 
         t1 = time.time ()
-        cur.execute ("DELETE FROM tm WHERE fid = 1;")
+        cur.execute ("INSERT INTO tm values (%s,%s,%s,1);",([int (fid),int (h1),int (h2)]))
         t2 = time.time ()
-        # f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
-        f.write ('del|' + str ((t2-t1)*1000)+ '\n')
+        f.write ('----route_ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
+
+    def routing_del (fid, cur=cur, hosts=hosts, f=f):
+        t1 = time.time ()
+        cur.execute ("DELETE FROM tm WHERE fid =" +str (fid)+ ";")
+        t2 = time.time ()
+        f.write ('----route_del----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+        
+
+    def routing_link (cur=cur, hosts=hosts, f=f, links = links):
+        link = random.sample(links, 1)[0]
+        print link
+
+        t1 = time.time ()
+        cur.execute ("UPDATE tp SET isactive = 0 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
+        t2 = time.time ()
+        f.write ('----link_down----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        # cur.execute ("SELECT * from cf;")
+        # cs = cur.fetchall ()
+        # print 'link_down'
+        # print cs
+
+        t1 = time.time ()
+        cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
+        t2 = time.time ()
+        f.write ('----link_up-----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        # cur.execute ("SELECT * from cf;")
+        # cs = cur.fetchall ()
+        # print 'link_up'
+        # print cs
 
     if flag == 'routing':
 
         for i in range (0,rounds):
-            print "round " + str (i)
-            # f.write ("round " + str (i) + '\n')
-            # f.flush ()
-            routing_one_round ()
-            # f.write ('\n')
+            routing_ins (i)
 
-    f.write ("--------------------> batch_test ends\n")
+        for i in range (0,rounds):
+            routing_link ()
+            
+        for i in range (0, rounds):
+            routing_del (i)
+
     f.close ()
     logdest = os.getcwd () + '/data/' + logdestfile + '.log'
     # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")

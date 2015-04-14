@@ -1,24 +1,20 @@
---------------------> routing with rounds 10
---------------------> batch_test begins
-
-i|i|i|i|i|i|i|i|i|i|ins|48.9299297333
-d|d|d|d|d|d|d|d|d|d|del|10.6601715088
-i|i|i|i|i|i|i|i|i|i|ins|10.7011795044
-d|d|d|d|d|d|d|d|d|d|del|5.08999824524
-i|i|i|i|i|i|ins|9.82093811035
-d|d|d|d|d|d|del|4.04191017151
-i|i|i|i|i|i|i|i|i|i|ins|11.4378929138
-d|d|d|d|d|d|d|d|d|d|del|5.88488578796
-i|i|i|i|i|i|i|i|i|i|ins|15.4769420624
-d|d|d|d|d|d|d|d|d|d|del|5.71489334106
-i|i|i|i|i|i|i|i|i|i|ins|12.0320320129
-d|d|d|d|d|d|d|d|d|d|del|5.695104599
-i|i|i|i|i|i|i|i|i|i|ins|15.0258541107
-d|d|d|d|d|d|d|d|d|d|del|5.9859752655
-i|i|i|i|i|i|i|i|i|i|ins|11.8730068207
-d|d|d|d|d|d|d|d|d|d|del|6.02984428406
-i|i|i|i|i|i|i|i|i|i|ins|15.7380104065
-d|d|d|d|d|d|d|d|d|d|del|10.3421211243
-i|i|ins|8.59808921814
-d|d|del|2.90203094482
---------------------> batch_test ends
+iiiiii----route_ins----35.1669788361
+iiiiiiiiii----route_ins----25.3939628601
+iiiiiiiiii----route_ins----36.6129875183
+iiiiiiiiii----route_ins----61.4211559296
+iiiiiiiiii----route_ins----54.7409057617
+iiiiiiiiii----route_ins----70.100069046
+iiiiiiiiii----route_ins----75.7250785828
+iiiiii----route_ins----84.8469734192
+iiiiiiiiii----route_ins----107.464075089
+iiiiiiiiii----route_ins----103.347063065
+dddddd----route_ins----107.491016388
+dddddddddd----route_ins----96.7869758606
+dddddddddd----route_ins----65.0889873505
+dddddddddd----route_ins----77.1110057831
+dddddddddd----route_ins----58.5188865662
+dddddddddd----route_ins----49.6160984039
+dddddddddd----route_ins----48.8569736481
+dddddd----route_ins----27.3950099945
+dddddddddd----route_ins----13.8759613037
+dddddddddd----route_ins----6.95705413818

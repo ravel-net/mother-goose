@@ -338,8 +338,8 @@ fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg)
 
-logfunc ('i|')
-logfunc ('i|')
+logfunc ('i')
+logfunc ('i')
 
 fo.flush ()
 
@@ -426,9 +426,9 @@ fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg)
 
-logfunc ('d|')
+logfunc ('d')
 
-logfunc ('d|')
+logfunc ('d')
 
 fo.flush ()
 
