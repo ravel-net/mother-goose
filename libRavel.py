@@ -484,23 +484,25 @@ def batch_test (dbname, username, rounds, flag):
         t1 = time.time ()
         cur.execute ("INSERT INTO tm values (1,%s,%s,1);",([int (h1),int (h2)]))
         t2 = time.time ()
-        f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
+        # f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
+        f.write ('ins|' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         t1 = time.time ()
         cur.execute ("DELETE FROM tm WHERE fid = 1;")
         t2 = time.time ()
-        f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
+        # f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
+        f.write ('del|' + str ((t2-t1)*1000)+ '\n')
         f.flush ()
 
     if flag == 'routing':
 
         for i in range (0,rounds):
             print "round " + str (i)
-            f.write ("round " + str (i) + '\n')
-            f.flush ()
+            # f.write ("round " + str (i) + '\n')
+            # f.flush ()
             routing_one_round ()
-            f.write ('\n')
+            # f.write ('\n')
 
     f.write ("--------------------> batch_test ends\n")
     f.close ()

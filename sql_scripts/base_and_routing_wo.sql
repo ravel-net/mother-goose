@@ -336,10 +336,10 @@ cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + o
 
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
-    f.write(msg+'\n')
+    f.write(msg)
 
-logfunc ('addflow')
-logfunc ('addflow')
+logfunc ('i|')
+logfunc ('i|')
 
 fo.flush ()
 
@@ -424,11 +424,11 @@ cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + 
 
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
-    f.write(msg+'\n')
+    f.write(msg)
 
-logfunc ('delflow')
+logfunc ('d|')
 
-logfunc ('delflow')
+logfunc ('d|')
 
 fo.flush ()
 
