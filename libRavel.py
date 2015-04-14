@@ -1,63 +1,3 @@
-# new_add_flow_fun = """
-# CREATE OR REPLACE FUNCTION add_flow_fun ()
-# RETURNS TRIGGER
-# AS $$
-# f = TD["new"]["pid"]
-# s = TD["new"]["sid"]
-# n = TD["new"]["nid"]
-
-# u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
-# outport = str(u[0]['port'])
-# v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
-# inport = str (v[0]['port'])
-
-# cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
-# cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
-
-# fo = open ('/home/mininet/ravel/log.txt', 'a')
-# def logfunc(msg,f=fo):
-#     f.write(msg+'\n')
-
-# logfunc ('addflow')
-# logfunc ('addflow')
-
-# fo.flush ()
-
-# return None;
-# $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-# """
-
-# new_del_flow_fun = """ 
-# CREATE OR REPLACE FUNCTION del_flow_fun ()
-# RETURNS TRIGGER
-# AS $$
-# f = TD["old"]["pid"]
-# s = TD["old"]["sid"]
-# n = TD["old"]["nid"]
-
-# u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
-# outport = str(u[0]['port'])
-
-# v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
-# inport = str (v[0]['port'])
-
-# cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
-# cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
-
-# fo = open ('/home/mininet/ravel/log.txt', 'a')
-# def logfunc(msg,f=fo):
-#     f.write(msg+'\n')
-
-# logfunc ('delflow')
-
-# logfunc ('delflow')
-
-# fo.flush ()
-
-# return None;
-# $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-# """
-
 def select_dbname ():
     global monitor_mininet
     global switch_size
@@ -323,7 +263,10 @@ def load_fattree (k, dbname, username):
         # cur.execute ("insert into tp (sid, nid, ishost,isactive) values (" + str (i) +','+ str (i+switch_size) + ", 1,1)")
 
     for e in edges:
-        cur.execute ('insert into tp (sid, nid, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',1);' )
+        if e[1] < switch_size:
+            cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',0,1);' )
+        else:
+            cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',1,1);' )
 
     conn.close ()
     print "--------------------> load_fattree successful"
@@ -466,7 +409,7 @@ def batch_test (dbname, username, rounds, flag):
     cs = cur.fetchall ()
     hosts = [h['hid'] for h in cs]
 
-    cur.execute ("SELECT sid,nid FROM tp;")
+    cur.execute ("SELECT sid,nid FROM tp where ishost = 0;")
     cs = cur.fetchall ()
     links = [[h['sid'], h['nid']] for h in cs]
     # print links
@@ -481,7 +424,6 @@ def batch_test (dbname, username, rounds, flag):
     def routing_ins (fid, cur=cur, hosts=hosts, f=f):
         indices = random.sample(range(len(hosts)), 2)
         [h1,h2] = [hosts[i] for i in sorted(indices)]
-
         # cur.execute ("SELECT * from cf;")
         # cs = cur.fetchall ()
         # print 'routing_ins'

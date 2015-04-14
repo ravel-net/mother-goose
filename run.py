@@ -54,9 +54,10 @@ def procedure_batch ():
             n = raw_input("select test actions: \n\t r (routing) \n\t a (auto-re-routing) \n\t t (tenant) \n")
             if n.strip () == 'r':
                 print "routing in postgres, no mininet operation"
+                r = raw_input ("input rounds #:\n")
                 load_schema (dbname, username, sql_script3)
                 load_database (dbname, username)
-                batch_test (dbname, username, 10, flag='routing')
+                batch_test (dbname, username, int (r), flag='routing')
 
 if __name__ == '__main__':
 
