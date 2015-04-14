@@ -1,4 +1,4 @@
-"""2015-04-05-19-09-34-642392
+"""2015-04-13-09-25-06-908112
 $ sudo mn --custom /home/mininet/ravel/topo/isp_dtp.py --topo mytopo --test pingall
 $ sudo mn --custom /home/mininet/ravel/topo/isp_dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """
@@ -14,17 +14,17 @@ class MyTopo( Topo ):
         # Initialize topology
         Topo.__init__( self )
     
-        h1060 = self.addHost('h1060')
-        h1034 = self.addHost('h1034')
-        h1112 = self.addHost('h1112')
-        h1141 = self.addHost('h1141')
-        h1193 = self.addHost('h1193')
-        h1238 = self.addHost('h1238')
-        h1028 = self.addHost('h1028')
-        h1089 = self.addHost('h1089')
-        h1091 = self.addHost('h1091')
-        h1253 = self.addHost('h1253')
-        h1472 = self.addHost('h1472')
+        h11 = self.addHost('h11')
+        h8 = self.addHost('h8')
+        h9 = self.addHost('h9')
+        h1 = self.addHost('h1')
+        h10 = self.addHost('h10')
+        h5 = self.addHost('h5')
+        h2 = self.addHost('h2')
+        h4 = self.addHost('h4')
+        h6 = self.addHost('h6')
+        h3 = self.addHost('h3')
+        h7 = self.addHost('h7')
 
         s216 = self.addSwitch('s216')
         s213 = self.addSwitch('s213')
@@ -427,17 +427,17 @@ class MyTopo( Topo ):
         self.addLink(s556,s472)
         self.addLink(s556,s555)
         self.addLink(s557,s472)
-        self.addLink(h1060,s60)
-        self.addLink(h1034,s34)
-        self.addLink(h1112,s112)
-        self.addLink(h1141,s141)
-        self.addLink(h1193,s193)
-        self.addLink(h1238,s238)
-        self.addLink(h1028,s28)
-        self.addLink(h1089,s89)
-        self.addLink(h1091,s91)
-        self.addLink(h1253,s253)
-        self.addLink(h1472,s472)
+        self.addLink(h1,s60)
+        self.addLink(h2,s34)
+        self.addLink(h3,s112)
+        self.addLink(h4,s141)
+        self.addLink(h5,s193)
+        self.addLink(h6,s238)
+        self.addLink(h7,s28)
+        self.addLink(h8,s89)
+        self.addLink(h9,s91)
+        self.addLink(h10,s253)
+        self.addLink(h11,s472)
 
 topos = { 'mytopo': ( lambda: MyTopo() ) }
     

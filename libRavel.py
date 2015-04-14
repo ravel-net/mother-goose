@@ -305,7 +305,7 @@ def load_ISP_topo_fewer_hosts (dbname, username):
         for edge in f:
             ed = edge[:-1].split()
             try:
-                cursor.execute("""INSERT INTO tp(sid, nid) VALUES (%s, %s);""", (int(ed[0]), int(ed[1])))
+                cursor.execute("""INSERT INTO tp(sid, nid, isactive) VALUES (%s, %s,1);""", (int(ed[0]), int(ed[1])))
             except psycopg2.DatabaseError, e:
                 print "Unable to insert into topology table: %s" % str(e)
 
@@ -322,10 +322,10 @@ def load_ISP_topo_fewer_hosts (dbname, username):
             nd = node[:-1]
             try:
                 cursor.execute ("""INSERT INTO hosts VALUES (%s);""", ([int (nd)+1000]))
-                cursor.execute ("""INSERT INTO tp(sid, nid) VALUES (%s, %s);""",(int(nd)+1000,int(nd)))
+                cursor.execute ("""INSERT INTO tp(sid, nid, isactive) VALUES (%s, %s,1);""",(int(nd)+1000,int(nd)))
             except psycopg2.DatabaseError, e:
                 print "Unable to insert into hosts table: %s" % str(e)
-        print "Initialize topology table with edges in " + ISP_edges_file + "\n"
+        print "Initialize topology table with edges in " + ISP_edges_file
 
     try:
         conn = psycopg2.connect(database= dbname, user= username)
@@ -403,56 +403,52 @@ def load_schema (dbname, username, sql_script):
         if conn: conn.close()
 
 def batch_test (dbname, username, rounds, topo_flag):
-    try:
-        conn = psycopg2.connect(database= dbname, user= username)
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
-        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute ("SELECT * FROM hosts;")
-        cs = cur.fetchall ()
-        hosts = [h['hid'] for h in cs]
-        # print hosts
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute ("SELECT * FROM hosts;")
+    cs = cur.fetchall ()
+    hosts = [h['hid'] for h in cs]
+    # print hosts
 
-        logfile = os.getcwd ()+'/log.txt'
-        open(logfile, 'w').close()
-        f = open(logfile, 'a')
-        f.write ("--------------------> " + topo_flag + ' with rounds ' + str (rounds) + '\n')
-        f.write ("--------------------> batch_test begins\n\n")
+    logfile = os.getcwd ()+'/log.txt'
+    open(logfile, 'w').close()
+    f = open(logfile, 'a')
+    f.write ("--------------------> " + topo_flag + ' with rounds ' + str (rounds) + '\n')
+    f.write ("--------------------> batch_test begins\n\n")
+    f.flush ()
+
+    def one_round (cur=cur, hosts=hosts, f=f):
+        indices = random.sample(range(len(hosts)), 2)
+        [h1,h2] = [hosts[i] for i in sorted(indices)]
+
+        t1 = time.time ()
+        cur.execute ("INSERT INTO tm values (1,%s,%s,1);",([int (h1),int (h2)]))
+        t2 = time.time ()
+        f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
-        def one_round (cur=cur, hosts=hosts, f=f):
-            indices = random.sample(range(len(hosts)), 2)
-            [h1,h2] = [hosts[i] for i in sorted(indices)]
-            
-            t1 = time.time ()
-            cur.execute ("INSERT INTO tm values (1,%s,%s,1);",([int (h1),int (h2)]))
-            t2 = time.time ()
-            f.write ("INSERT INTO tm values (1," + str (h1) + "," + str (h2)+",1)(ms):" + str ((t2-t1)*1000) + '\n')
-            f.flush ()
+        t1 = time.time ()
+        cur.execute ("DELETE FROM tm WHERE fid = 1;")
+        t2 = time.time ()
+        f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
+        f.flush ()
 
-            t1 = time.time ()
-            cur.execute ("DELETE FROM tm WHERE fid = 1;")
-            t2 = time.time ()
-            f.write ("DELETE FROM tm WHERE fid = 1(ms):" + str ((t2-t1)*1000) + '\n')
-            f.flush ()
+    for i in range (0,rounds):
+        print "round " + str (i)
+        f.write ("round " + str (i) + '\n')
+        f.flush ()
+        one_round ()
+        f.write ('\n')
 
-        for i in range (0,rounds):
-            print "round " + str (i)
-            f.write ("round " + str (i) + '\n')
-            f.flush ()
-            one_round ()
-            f.write ('\n')
+    f.write ("--------------------> batch_test ends\n")
+    f.close ()
+    logdest = os.getcwd () + '/data/' + topo_flag + str (rounds) + '.log'
+    # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
+    os.system ("cp "+ logfile + ' ' + logdest)
 
-        f.write ("--------------------> batch_test ends\n")
-        f.close ()
-        logdest = os.getcwd () + '/data/' + topo_flag + str (rounds) + '.log'
-        # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
-        os.system ("cp "+ logfile + ' ' + logdest)
-        
-        print "--------------------> batch_test successful"
-    except psycopg2.DatabaseError, e:
-        print 'Error %s' % e
-    finally:
-        if conn: conn.close()
+    print "--------------------> batch_test successful"
+    conn.close()
 
 def load_pox_module (dbname,username):
     cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db --dbname=" + str (dbname) + " --username=" + str (username)

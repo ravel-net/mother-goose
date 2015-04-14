@@ -1,3 +1,29 @@
+DROP TABLE IF EXISTS p2 CASCADE;
+CREATE UNLOGGED TABLE p2 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS p3 CASCADE;
+CREATE UNLOGGED TABLE p3 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+CREATE OR REPLACE RULE tick2 AS
+       ON UPDATE TO p2
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO p3 values (NEW.counts, 'on');
+
+CREATE OR REPLACE RULE tick3 AS
+       ON UPDATE TO p3
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO clock values (NEW.counts);
+
 ----------------------------------------------------------------------
 -- obs application
 ----------------------------------------------------------------------
