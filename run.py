@@ -51,7 +51,7 @@ def procedure_batch ():
                 kill_pox_module ()
                 break
         elif m == 't' :
-            n = raw_input("select test actions: \n\t r (routing) \n\t a (auto-re-routing) \n\t t (tenant) \n")
+            n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n")
             if n.strip () == 'r':
                 print "routing in postgres, no mininet operation"
                 r = raw_input ("input rounds #:\n")
@@ -66,6 +66,3 @@ if __name__ == '__main__':
     # d = select_dbname ()
     # print d
     # load_fattree (4)
-
-
-
