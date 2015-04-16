@@ -1,4 +1,4 @@
-"""2015-04-14-07-27-14-335134
+"""2015-04-14-19-01-37-908286
 $ sudo mn --custom /home/mininet/ravel/topo/fattree_dtp.py --topo mytopo --test pingall
 $ sudo mn --custom /home/mininet/ravel/topo/fattree_dtp.py --topo mytopo --mac --switch ovsk --controller remote
 """
