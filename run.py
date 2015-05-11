@@ -51,13 +51,20 @@ def procedure_batch ():
                 kill_pox_module ()
                 break
         elif m == 't' :
-            n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n")
-            if n.strip () == 'r':
-                print "routing in postgres, no mininet operation"
-                r = raw_input ("input rounds #:\n")
-                load_schema (dbname, username, sql_script3)
-                load_database (dbname, username)
-                batch_test (dbname, username, int (r), flag='routing')
+            r = raw_input ("input rounds #:\n")
+            load_schema (dbname, username, sql_script3)
+            load_database (dbname, username)
+            batch_test (dbname, username, int (r))
+
+            # if n.strip () == 'r':
+            #     print "routing in postgres, no mininet actions"
+
+            # elif n.strip () == 't':
+            #     print "tenant operation in postgres, no mininet actions"
+            #     r = raw_input ("input rounds #:\n")
+            #     load_schema (dbname, username, sql_script3)
+            #     load_database (dbname, username)
+            #     batch_test (dbname, username, int (r), flag='tenant')
 
 if __name__ == '__main__':
 

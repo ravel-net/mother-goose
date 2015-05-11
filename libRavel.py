@@ -400,7 +400,7 @@ def load_schema (dbname, username, sql_script):
     finally:
         if conn: conn.close()
 
-def batch_test (dbname, username, rounds, flag):
+def batch_test (dbname, username, rounds):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -415,7 +415,7 @@ def batch_test (dbname, username, rounds, flag):
     # print links
 
     if dbname == 'fattree':
-        logdestfile = dbname + str (k_size) + '_' + flag + '_' + str (rounds)
+        logdestfile = dbname + str (k_size) + '_' + str (rounds)
     logfile = os.getcwd ()+'/log.txt'
 
     open(logfile, 'w').close()
@@ -443,14 +443,14 @@ def batch_test (dbname, username, rounds, flag):
         f.flush ()
         
 
-    def routing_link (cur=cur, hosts=hosts, f=f, links = links):
+    def link_updown (flag, cur=cur, hosts=hosts, f=f, links = links):
         link = random.sample(links, 1)[0]
         print link
 
         t1 = time.time ()
         cur.execute ("UPDATE tp SET isactive = 0 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
         t2 = time.time ()
-        f.write ('----link_down----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----'+flag+'_linkdown----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         # cur.execute ("SELECT * from cf;")
@@ -461,7 +461,7 @@ def batch_test (dbname, username, rounds, flag):
         t1 = time.time ()
         cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
         t2 = time.time ()
-        f.write ('----link_up-----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----'+flag+'_linkup-----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         # cur.execute ("SELECT * from cf;")
@@ -469,24 +469,57 @@ def batch_test (dbname, username, rounds, flag):
         # print 'link_up'
         # print cs
 
-    if flag == 'routing':
+    def tenant_fullmesh_clean (cur = cur):
+        cur.execute ("truncate tm;")
+        cur.execute ("truncate utm;")
+        cur.execute ("truncate cf;")
+        cur.execute ("truncate tenant_hosts;")
 
-        for i in range (0,rounds):
-            routing_ins (i)
+    def tenant_fullmesh (hosts, cur = cur, f=f):
+        l = len (hosts)
+        for i in range (l):
+            for j in range (i+1,l):
+                t1 = time.time ()
+                cur.execute ("INSERT INTO tenant_policy values (%s,%s);",([int (hosts[i]), int (hosts[j])]))
+                t2 = time.time ()
+                f.write ('----tenant_fullmesh_ins----' + str ((t2-t1)*1000) + '\n')
+                f.flush ()
 
-        for i in range (0,rounds):
-            routing_link ()
-            
-        for i in range (0, rounds):
-            routing_del (i)
+    while True:
+        n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)")
+        if n == 'r':
+            for i in range (0,rounds):
+                routing_ins (i)
 
-    f.close ()
-    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
-    # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
-    os.system ("cp "+ logfile + ' ' + logdest)
+            for i in range (0,rounds):
+                link_updown ('routing')
 
-    print "--------------------> batch_test successful"
-    conn.close()
+            for i in range (0, rounds):
+                routing_del (i)
+
+        elif n == 't':
+
+            s = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
+            selected_hosts = create_tenant (dbname, username, int (s))
+
+            tenant_fullmesh (selected_hosts)
+
+            for i in range (0,rounds):
+                link_updown ('tenant_fullmesh')
+
+            tenant_fullmesh_clean ()
+
+        elif n == 'e':
+            f.close ()
+            logdest = os.getcwd () + '/data/' + logdestfile + '.log'
+            # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
+            os.system ("cp "+ logfile + ' ' + logdest)
+
+            print "--------------------> batch_test successful"
+            conn.close()
+
+            break
+    
 
 def load_pox_module (dbname,username):
     cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db --dbname=" + str (dbname) + " --username=" + str (username)
@@ -501,7 +534,7 @@ def kill_pox_module ():
     print "--------------------> kill pox module that populates mininet events to database"
 
 
-def create_tenant (dbname, username):
+def create_tenant (dbname, username, size):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -513,9 +546,8 @@ def create_tenant (dbname, username):
     # cur.execute ("SELECT count(*) FROM switches;")
     # cs = cur.fetchall ()
     # ct = int (cs[0][0]) 
-    n = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
-    selected_hosts = [ hosts[i] for i in random.sample(xrange(len(hosts)), int (n)) ]
-    print selected_hosts
+    selected_hosts = [ hosts[i] for i in random.sample(xrange(len(hosts)), size) ]
+    # print selected_hosts
 
     cur.execute (""" 
 
@@ -541,8 +573,10 @@ h2 = TD["new"]["host2"]
 hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
 hosts = [h['hid'] for h in hs]
 
+fid = int (plpy.execute ("select count(*) +1 as c from utm")[0]['c']) 
+
 if (h1 in hosts) & (h2 in hosts):
-   plpy.execute ("INSERT INTO utm values ((select max (counts) +1 from clock), " +str (h1)+ "," + str (h2) + ");")
+    plpy.execute ("INSERT INTO utm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
 
 return None;
 $$
@@ -566,6 +600,7 @@ CREATE OR REPLACE RULE tenant_policy_del AS
     print '--------------------> create tenant, interact with \'tenant_hosts\' and \'tenant_policy\''
 
     conn.close()
+    return selected_hosts
 
 def perform_test (dbname, username):
     
