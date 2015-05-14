@@ -33,7 +33,7 @@ def procedure_interactive ():
     load_database (dbname, username)
     perform_test (dbname, username)
 
-def procedure_batch ():
+def procedure ():
 
     dbname = select_dbname ()
     create_db (dbname)
@@ -51,10 +51,24 @@ def procedure_batch ():
                 kill_pox_module ()
                 break
         elif m == 't' :
-            r = raw_input ("input rounds #:\n")
-            load_schema (dbname, username, sql_script3)
-            load_database (dbname, username)
-            batch_test (dbname, username, int (r))
+            m2 = raw_input ("interactive or batch? (i/b) \n")
+            if m2.strip () == 'b':
+                r = raw_input ("input rounds #:\n")
+                load_schema (dbname, username, sql_script3)
+                load_database (dbname, username)
+                batch_test (dbname, username, int (r))
+            elif m2.strip () == 'i':
+                load_schema (dbname, username, sql_script3)
+                load_database (dbname, username)
+
+if __name__ == '__main__':
+
+    procedure ()
+
+    # d = select_dbname ()
+    # print d
+    # load_fattree (4)
+
 
             # if n.strip () == 'r':
             #     print "routing in postgres, no mininet actions"
@@ -65,11 +79,3 @@ def procedure_batch ():
             #     load_schema (dbname, username, sql_script3)
             #     load_database (dbname, username)
             #     batch_test (dbname, username, int (r), flag='tenant')
-
-if __name__ == '__main__':
-
-    procedure_batch ()
-
-    # d = select_dbname ()
-    # print d
-    # load_fattree (4)

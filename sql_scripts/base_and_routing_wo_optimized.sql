@@ -82,28 +82,10 @@ CREATE OR REPLACE RULE pox_tp_del_rule AS
        DO ALSO
            UPDATE tp SET isactive = 0 WHERE sid = OLD.out_switch AND nid = OLD.in_switch;
 
-
--- DROP VIEW IF EXISTS tp CASCADE;
--- CREATE OR REPLACE VIEW tp AS (
---        SELECT DISTINCT
---               in_switch AS sid,
---        	      out_switch AS nid
---        FROM pox_tp
---        ORDER BY sid, nid
--- );
-
 DROP TABLE IF EXISTS switches CASCADE;
 CREATE UNLOGGED TABLE switches (
        sid	integer
 );
-
--- DROP VIEW IF EXISTS switches CASCADE;
--- CREATE OR REPLACE VIEW switches AS (
---        SELECT DISTINCT
---               in_switch AS sid
---        FROM pox_tp
---        ORDER BY sid
--- );
 
 DROP TABLE IF EXISTS hosts CASCADE;
 CREATE UNLOGGED TABLE hosts (
@@ -111,7 +93,7 @@ CREATE UNLOGGED TABLE hosts (
        -- h_uid	integer
 );
 
-
+-- hosts exposed to operator
 CREATE OR REPLACE VIEW uhosts AS (
        SELECT hid, 
        	      row_number () OVER () as u_hid
@@ -214,6 +196,24 @@ CREATE OR REPLACE RULE utm_in_rule AS
 CREATE OR REPLACE RULE utm_del_rule AS 
        ON DELETE TO utm
        DO ALSO DELETE FROM tm WHERE tm.fid = OLD.fid;
+
+----------------------------------------------------------------------
+-- waypoint application
+----------------------------------------------------------------------
+
+-- CREATE OR REPLACE VIEW wp AS (
+--        SELECT sid
+--        FROM switches
+-- );
+
+CREATE TABLE wp
+AS (SELECT sid, 1 as isactive
+    FROM switches);
+
+CREATE OR REPLACE RULE wp_up AS
+       ON UPDATE TO wp
+       DO ALSO
+       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
 
 ----------------------------------------------------------------------
 -- routing application
