@@ -198,24 +198,6 @@ CREATE OR REPLACE RULE utm_del_rule AS
        DO ALSO DELETE FROM tm WHERE tm.fid = OLD.fid;
 
 ----------------------------------------------------------------------
--- waypoint application
-----------------------------------------------------------------------
-
--- CREATE OR REPLACE VIEW wp AS (
---        SELECT sid
---        FROM switches
--- );
-
-CREATE TABLE wp
-AS (SELECT sid, 1 as isactive
-    FROM switches);
-
-CREATE OR REPLACE RULE wp_up AS
-       ON UPDATE TO wp
-       DO ALSO
-       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
-
-----------------------------------------------------------------------
 -- routing application
 ----------------------------------------------------------------------
 ------------------------------------------------------------

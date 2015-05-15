@@ -60,6 +60,12 @@ def procedure ():
             elif m2.strip () == 'i':
                 load_schema (dbname, username, sql_script3)
                 load_database (dbname, username)
+                while True:
+                    m3 = raw_input("load waypoint (w)?")
+                    if m3.strip () == 'w':
+                        load_wp_schema (dbname, username)
+                        break
+                    
 
 if __name__ == '__main__':
 

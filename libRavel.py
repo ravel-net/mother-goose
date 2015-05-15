@@ -500,7 +500,7 @@ def batch_test (dbname, username, rounds):
         elif n == 't':
 
             s = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
-            selected_hosts = create_tenant (dbname, username, int (s))
+            selected_hosts = load_tenant_schema (dbname, username, int (s))
 
             tenant_fullmesh (selected_hosts)
 
@@ -534,7 +534,30 @@ def kill_pox_module ():
     print "--------------------> kill pox module that populates mininet events to database"
 
 
-def create_tenant (dbname, username, size):
+def load_wp_schema (dbname, username):
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    cur.execute (""" 
+----------------------------------------------------------------------
+-- waypoint application
+----------------------------------------------------------------------
+CREATE TABLE wp
+AS (SELECT sid, 1 as isactive
+    FROM switches);
+
+CREATE OR REPLACE RULE wp_up AS
+       ON UPDATE TO wp
+       DO ALSO
+       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+
+""")
+
+    print "-------------------->load_wp_schema successful"
+    conn.close()
+
+def load_tenant_schema (dbname, username, size):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -622,4 +645,4 @@ def perform_test (dbname, username):
 
         elif n.strip () == 't':
             print 'play with dc tenant'
-            create_tenant (dbname, username)
+            load_tenant_schema (dbname, username)
