@@ -25,7 +25,7 @@ def select_dbname ():
             break
         elif n.strip ().split (',')[0] == 'f':
             k_size = int (n.strip ().split (',')[1])
-            return 'fattree'
+            return 'fattree' + n.strip ().split (',')[1]
             break
         else:
             print 'wrong topology type'
@@ -135,6 +135,8 @@ def clean_db (dbname):
         if conn: conn.close()
 
 def create_db (dbname):
+    global database_exists
+
     try:
         conn = psycopg2.connect(database= 'postgres', user= 'mininet')
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
@@ -145,8 +147,10 @@ def create_db (dbname):
         dblist = [c[i][0] for i in range (len (c))]
         if dbname not in dblist:
             cur.execute ("CREATE DATABASE " + dbname + ";")
+            database_exists = 0
         else:
             print "database " + dbname + " exists, skip"
+            database_exists = 1
 
         print "--------------------> create_db successful"
     except psycopg2.DatabaseError, e:
@@ -191,14 +195,14 @@ def load_database (dbname, username):
 
     if dbname == 'toy' or dbname == 't':
         # load_topo3switch ('toy', username)
-        load_topo3switch_new ('toy', username)
-    elif dbname == 'isp' or dbname == 'i':
+        load_topo4switch ('toy', username)
+    elif dbname[0:3] == 'isp' or dbname == 'i':
         load_ISP_topo_fewer_hosts ('isp', username)
     elif dbname == 'mininet' or dbname == 'm':
         load_topo3switch_new ('mininet', username)
     elif dbname == 'tree':
         load_tree (switch_size, fanout_size, dbname, username)
-    elif dbname == 'fattree':
+    elif dbname[0:7] == 'fattree':
         load_fattree (k_size, dbname, username)
 
     create_mininet_topo (dbname, username)
@@ -244,13 +248,12 @@ def igraph_fattree (k):
     return g
 
 def load_fattree (k, dbname, username):
-    g = igraph_fattree (k)
-
-    edges = g.get_edgelist ()
-
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor()
+
+    g = igraph_fattree (k)
+    edges = g.get_edgelist ()
 
     global switch_size
     switch_size = (k/2)**2 + (k/2) *k + (k/2) *k
@@ -362,33 +365,27 @@ def load_topo3switch_new (dbname, username):
     finally:
         if conn: conn.close()
 
-def load_topo3switch (dbname, username):
-    try:
-        conn = psycopg2.connect(database= dbname, user= username)
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
-        cur = conn.cursor()
-        cur.execute ("""
+def load_topo4switch (dbname, username):
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor()
+    cur.execute ("""
         TRUNCATE TABLE tp cascade;
         TRUNCATE TABLE cf cascade;
         TRUNCATE TABLE tm cascade;
-        INSERT INTO switches(sid) VALUES (4),(5),(6);
-        INSERT INTO hosts(hid) VALUES (1),(2),(3);
-        INSERT INTO tp(sid, nid) VALUES (1,4), (2,5), (3,6);
-        INSERT INTO tp(sid, nid) VALUES (4,5), (5,6), (6,4);
+        INSERT INTO switches(sid) VALUES (1),(2),(3),(4);
+        INSERT INTO hosts(hid) VALUES (5),(6),(7),(8);
+        INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,5,1,1), (2,6,1,1), (3,7,1,1), (4,8,1,1);
+        INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,2,0,1), (2,3,0,1), (3,4,0,1),(4,1,0,1);
 """)
+    print "--------------------> load_topo4switch successful"
+    if conn: conn.close()
 
-        print "--------------------> load_topo3switch successful"
-    except psycopg2.DatabaseError, e:
-        print "Unable to connect to database " + dbname + ", as user " + username
-        print 'Error %s' % e    
-
-    finally:
-        if conn: conn.close()
 
 def load_schema (dbname, username, sql_script):
     try:
         conn = psycopg2.connect(database= dbname, user= username)
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         cur = conn.cursor()
 
         dbscript  = open (sql_script,'r').read()
@@ -400,7 +397,9 @@ def load_schema (dbname, username, sql_script):
     finally:
         if conn: conn.close()
 
-def batch_test (dbname, username, rounds):
+def batch_test (dbname, username, rounds, default):
+    global logdest
+
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -412,10 +411,9 @@ def batch_test (dbname, username, rounds):
     cur.execute ("SELECT sid,nid FROM tp where ishost = 0;")
     cs = cur.fetchall ()
     links = [[h['sid'], h['nid']] for h in cs]
-    # print links
 
-    if dbname == 'fattree':
-        logdestfile = dbname + str (k_size) + '_' + str (rounds)
+    if dbname[0:7] == 'fattree':
+        logdestfile = dbname + '_' + str (rounds)
     logfile = os.getcwd ()+'/log.txt'
 
     open(logfile, 'w').close()
@@ -461,7 +459,7 @@ def batch_test (dbname, username, rounds):
         t1 = time.time ()
         cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
         t2 = time.time ()
-        f.write ('----'+flag+'_linkup-----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----'+flag+'_linkup----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         # cur.execute ("SELECT * from cf;")
@@ -485,8 +483,11 @@ def batch_test (dbname, username, rounds):
                 f.write ('----tenant_fullmesh_ins----' + str ((t2-t1)*1000) + '\n')
                 f.flush ()
 
-    while True:
+    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
+
+    while default == 1:
         n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)")
+
         if n == 'r':
             for i in range (0,rounds):
                 routing_ins (i)
@@ -497,29 +498,60 @@ def batch_test (dbname, username, rounds):
             for i in range (0, rounds):
                 routing_del (i)
 
+            logdest += 'routing'
+
         elif n == 't':
 
             s = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
             selected_hosts = load_tenant_schema (dbname, username, int (s))
-
             tenant_fullmesh (selected_hosts)
-
-            for i in range (0,rounds):
-                link_updown ('tenant_fullmesh')
-
+            # for i in range (0,rounds):
+            #     link_updown ('tenant_fullmesh')
             tenant_fullmesh_clean ()
+
+            logdest += 'tenant' + str (s)
 
         elif n == 'e':
             f.close ()
-            logdest = os.getcwd () + '/data/' + logdestfile + '.log'
             # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
             os.system ("cp "+ logfile + ' ' + logdest)
 
             print "--------------------> batch_test successful"
             conn.close()
-
             break
     
+    if default == 2:
+        for i in range (0,rounds):
+            routing_ins (i)
+
+        for i in range (0,rounds):
+            link_updown ('routing')
+
+        for i in range (0, rounds):
+            routing_del (i)
+        
+        logdest += 'routing'
+        f.close ()
+        os.system ("cp "+ logfile + ' ' + logdest)
+
+        print "--------------------> batch_test successful"
+        conn.close()
+
+
+    if default == 3:
+        selected_hosts = load_tenant_schema (dbname, username, 100)
+        tenant_fullmesh (selected_hosts)
+        for i in range (0,rounds):
+            link_updown ('tenant_fullmesh')
+        tenant_fullmesh_clean ()
+
+        logdest += 'tenant10'
+        f.close ()
+        os.system ("cp "+ logfile + ' ' + logdest)
+
+        print "--------------------> batch_test successful"
+        conn.close()
+
 
 def load_pox_module (dbname,username):
     cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db --dbname=" + str (dbname) + " --username=" + str (username)

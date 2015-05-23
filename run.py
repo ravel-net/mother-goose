@@ -54,21 +54,32 @@ def procedure ():
             m2 = raw_input ("interactive or batch? (i/b) \n")
             if m2.strip () == 'b':
                 r = raw_input ("input rounds #:\n")
-                load_schema (dbname, username, sql_script3)
-                load_database (dbname, username)
-                batch_test (dbname, username, int (r))
+                if database_exists == 0:
+                    load_schema (dbname, username, sql_script3)
+                    load_database (dbname, username)
+                batch_test (dbname, username, int (r), 1)
             elif m2.strip () == 'i':
-                load_schema (dbname, username, sql_script3)
-                load_database (dbname, username)
+                if database_exists == 0:
+                    load_schema (dbname, username, sql_script3)
+                    load_database (dbname, username)
                 while True:
-                    m3 = raw_input("load waypoint (w)?")
+                    m3 = raw_input("load waypoint (w), or exi t(e) ")
                     if m3.strip () == 'w':
                         load_wp_schema (dbname, username)
                         break
-                    
+                    elif m3.strip () == 'e':
+                        break
 
+def batch ():
+    for dbname in ['fattree16', 'fattree32', 'fattree64']:
+        # routing with linkup, linkdown
+        # batch_test (dbname, username, 1, 2)
+        # tenant with linkup, linkdown
+        batch_test (dbname, username, 1, 3)
+                    
 if __name__ == '__main__':
 
+    # batch ()
     procedure ()
 
     # d = select_dbname ()
