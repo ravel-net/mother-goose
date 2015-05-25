@@ -601,15 +601,7 @@ def load_mt_schema (dbname, username):
 ----------------------------------------------------------------------
 -- maintenance application
 ----------------------------------------------------------------------
-DROP TABLE IF EXISTS mt CASCADE;
-CREATE TABLE mt
-AS (SELECT sid, 1 as isactive
-    FROM switches);
-
-CREATE OR REPLACE RULE mt_up AS
-       ON UPDATE TO mt
-       DO ALSO
-       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+    insert into mt_tb values (1),(64),(100),(122),(160),(200);
 """)
 
     print "-------------------->load_mt_schema successful"

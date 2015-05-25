@@ -565,3 +565,76 @@ CREATE TRIGGER del_flow_trigger
 --     cur.execute ("""
 
 --     """)
+
+----------------------------------------------------------------------
+-- maintenance (mt) application
+----------------------------------------------------------------------
+-- DROP TABLE IF EXISTS mt CASCADE;
+-- CREATE TABLE mt
+-- AS (SELECT sid, 1 as isactive
+--     FROM switches);
+
+-- CREATE OR REPLACE RULE mt_up AS
+--        ON UPDATE TO mt
+--        DO ALSO
+--        	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+
+DROP TABLE IF EXISTS mt_tb CASCADE;
+CREATE UNLOGGED TABLE mt_tb (
+       sid	integer
+);
+
+CREATE OR REPLACE VIEW mt AS (
+       SELECT mt_tb.sid,
+	      sum (isactive) AS isactive 
+       FROM mt_tb, tp
+       WHERE mt_tb.sid = tp.sid
+       GROUP BY mt_tb.sid 
+);
+
+CREATE OR REPLACE RULE mt2tp AS
+       ON UPDATE TO mt
+       DO INSTEAD
+       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+
+----------------------------------------------------------------------
+-- acl application
+----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS acl_tb CASCADE;
+CREATE UNLOGGED TABLE acl_tb (
+       sid	integer,
+       nid 	integer
+);
+
+CREATE OR REPLACE VIEW acl AS(
+       SELECT sid, 1 as isactive
+       FROM switches);
+
+
+CREATE OR REPLACE RULE mt2tp AS
+       ON UPDATE TO mt
+       DO INSTEAD
+       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+
+----------------------------------------------------------------------
+-- load_balance application
+----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS lb_tb CASCADE;
+CREATE UNLOGGED TABLE lb_tb (
+       sid	integer,
+       nid 	integer
+);
+
+CREATE OR REPLACE VIEW lb AS(
+       SELECT sid, nid, count (*) AS load 
+       FROM lb_tb, tm
+       WHERE lb_tb.sid = tm.src AND lb_tb.nid = tm.dst
+       GROUP BY sid, nid
+       );
+
+CREATE OR REPLACE RULE lb2tm AS
+       ON UPDATE TO mt
+       DO INSTEAD
+       	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
