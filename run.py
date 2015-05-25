@@ -63,9 +63,12 @@ def procedure ():
                     load_schema (dbname, username, sql_script3)
                     load_database (dbname, username)
                 while True:
-                    m3 = raw_input("load waypoint (w), or exi t(e) ")
-                    if m3.strip () == 'w':
-                        load_wp_schema (dbname, username)
+                    m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
+                    if m3.strip () == 'm':
+                        load_mt_schema (dbname, username)
+                        break
+                    elif m3.strip () == 't':
+                        load_tenant_schema (dbname, username, 10)
                         break
                     elif m3.strip () == 'e':
                         break

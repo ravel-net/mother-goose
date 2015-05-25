@@ -408,6 +408,10 @@ def batch_test (dbname, username, rounds, default):
     cs = cur.fetchall ()
     hosts = [h['hid'] for h in cs]
 
+    cur.execute ("SELECT * FROM switches;")
+    cs = cur.fetchall ()
+    switches = [h['sid'] for h in cs]
+
     cur.execute ("SELECT sid,nid FROM tp where ishost = 0;")
     cs = cur.fetchall ()
     links = [[h['sid'], h['nid']] for h in cs]
@@ -439,7 +443,19 @@ def batch_test (dbname, username, rounds, default):
         t2 = time.time ()
         f.write ('----route_del----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
-        
+
+    def mt_updown (cur = cur, hosts = hosts, f=f):
+        s = random.sample (switches,1)[0]
+        print s
+
+        t1 = time.time ()
+        cur.execute ("UPDATE mt SET isactive = 0 WHERE sid = %s;",([s]))
+        t2 = time.time ()
+        f.write ('----maintenance_down----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        cur.execute ("UPDATE mt SET isactive = 1 WHERE sid = %s;",([s]))
+
 
     def link_updown (flag, cur=cur, hosts=hosts, f=f, links = links):
         link = random.sample(links, 1)[0]
@@ -486,7 +502,7 @@ def batch_test (dbname, username, rounds, default):
     logdest = os.getcwd () + '/data/' + logdestfile + '.log'
 
     while default == 1:
-        n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)")
+        n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n")
 
         if n == 'r':
             for i in range (0,rounds):
@@ -510,6 +526,16 @@ def batch_test (dbname, username, rounds, default):
             tenant_fullmesh_clean ()
 
             logdest += 'tenant' + str (s)
+
+        elif n == 'm':
+            selected_hosts = load_tenant_schema (dbname, username, 10)
+            tenant_fullmesh (selected_hosts)
+
+            load_mt_schema (dbname, username)
+            for i in range (0, rounds):
+                mt_updown ()
+
+            tenant_fullmesh_clean ()
 
         elif n == 'e':
             f.close ()
@@ -566,28 +592,32 @@ def kill_pox_module ():
     print "--------------------> kill pox module that populates mininet events to database"
 
 
-def load_wp_schema (dbname, username):
+def load_mt_schema (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     cur.execute (""" 
 ----------------------------------------------------------------------
--- waypoint application
+-- maintenance application
 ----------------------------------------------------------------------
-CREATE TABLE wp
+DROP TABLE IF EXISTS mt CASCADE;
+CREATE TABLE mt
 AS (SELECT sid, 1 as isactive
     FROM switches);
 
-CREATE OR REPLACE RULE wp_up AS
-       ON UPDATE TO wp
+CREATE OR REPLACE RULE mt_up AS
+       ON UPDATE TO mt
        DO ALSO
        	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
-
 """)
 
-    print "-------------------->load_wp_schema successful"
+    print "-------------------->load_mt_schema successful"
     conn.close()
+
+
+
+
 
 def load_tenant_schema (dbname, username, size):
     conn = psycopg2.connect(database= dbname, user= username)

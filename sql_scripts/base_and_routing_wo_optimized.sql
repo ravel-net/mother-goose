@@ -120,8 +120,6 @@ CREATE UNLOGGED TABLE tm (
        PRIMARY KEY (fid)
 );
 
-
-
 -- CREATE TRIGGER tm_in_trigger
 --      AFTER INSERT ON tm
 --      FOR EACH ROW
@@ -181,8 +179,8 @@ DROP TABLE IF EXISTS utm CASCADE;
 CREATE UNLOGGED TABLE utm (
        fid      integer,
        host1	integer,
-       host2	integer,
-       PRIMARY KEY (fid)
+       host2	integer
+       -- PRIMARY KEY (fid)
 );
 
 CREATE OR REPLACE RULE utm_in_rule AS 
@@ -202,10 +200,59 @@ CREATE OR REPLACE RULE utm_del_rule AS
 ----------------------------------------------------------------------
 ------------------------------------------------------------
 
+DROP TABLE IF EXISTS spv_tb_ins CASCADE;
+CREATE UNLOGGED TABLE spv_tb_ins (
+       fid  	integer,
+       pid	integer,
+       sid	integer,
+       nid 	integer
+);
+
+DROP TABLE IF EXISTS spv_tb_del CASCADE;
+CREATE UNLOGGED TABLE spv_tb_del (
+       fid  	integer,
+       pid	integer,
+       sid	integer,
+       nid 	integer
+);
+
 -- CREATE TRIGGER tm_in_trigger
 --      AFTER INSERT ON tm
 --      FOR EACH ROW
 --    EXECUTE PROCEDURE protocol_fun();
+
+CREATE OR REPLACE FUNCTION tp2spv_fun () RETURNS TRIGGER
+AS $$
+
+isactive = TD["new"]["isactive"]
+sid = TD["new"]["sid"]
+nid = TD["new"]["nid"]
+
+plpy.notice ("tp2spv_fun executed")
+
+if isactive == 0:
+   fid_delta = plpy.execute ("SELECT fid FROM cf where (sid =" + str (sid) + "and nid =" + str (nid) +") or (sid = "+str (nid)+" and nid = "+str (sid)+");")
+   if len (fid_delta) != 0:
+      for fid in fid_delta:
+          plpy.execute ("INSERT INTO spv_tb_del (SELECT * FROM cf WHERE fid = "+str (fid["fid"])+");")
+
+          s = plpy.execute ("SELECT * FROM tm WHERE fid =" +str (fid["fid"]))[0]["src"]
+          d = plpy.execute ("SELECT * FROM tm WHERE fid =" +str (fid["fid"]))[0]["dst"]
+
+          pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
+	     
+          for i in range (len (pv)):	   		     
+              if i + 2 < len (pv):
+                  plpy.execute ("INSERT INTO spv_tb_ins (fid,pid,sid,nid) VALUES (" + str (fid["fid"]) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
+	      
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE TRIGGER tp_up_spv_trigger
+     AFTER UPDATE ON tp
+     FOR EACH ROW
+   EXECUTE PROCEDURE tp2spv_fun();
+
 
 DROP VIEW IF EXISTS spv CASCADE;
 CREATE OR REPLACE VIEW spv AS (
@@ -249,65 +296,11 @@ CREATE OR REPLACE VIEW spv_ins AS (
        ORDER BY fid
 );
 
-DROP TABLE IF EXISTS spv_tb_ins CASCADE;
-CREATE UNLOGGED TABLE spv_tb_ins (
-       fid  	integer,
-       pid	integer,
-       sid	integer,
-       nid 	integer
-);
-
-CREATE TRIGGER tp_up_spv_trigger
-     AFTER UPDATE ON tp
-     FOR EACH ROW
-   EXECUTE PROCEDURE tp2spv_fun();
-
-CREATE OR REPLACE FUNCTION tp2spv_fun () RETURNS TRIGGER
-AS $$
-
-isactive = TD["new"]["isactive"]
-sid = TD["new"]["sid"]
-nid = TD["new"]["nid"]
-
-if isactive == 0:
-   fid_delta = plpy.execute ("SELECT fid FROM cf where sid =" + str (sid) + "and nid =" + str (nid) +";")
-   if len (fid_delta) != 0:
-      for fid in fid_delta:
-          plpy.execute ("INSERT INTO spv_tb_del (SELECT * FROM cf WHERE fid = "+str (fid["fid"])+");")
-
-          s = plpy.execute ("SELECT * FROM tm WHERE fid =" +str (fid["fid"]))[0]["src"]
-          d = plpy.execute ("SELECT * FROM tm WHERE fid =" +str (fid["fid"]))[0]["dst"]
-
-          pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
-	     
-          for i in range (len (pv)):	   		     
-              if i + 2 < len (pv):
-                  plpy.execute ("INSERT INTO spv_tb_ins (fid,pid,sid,nid) VALUES (" + str (fid["fid"]) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
-	      
-return None;
-$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
-
-
-
-
-
-
 DROP VIEW IF EXISTS spv_del CASCADE;
 CREATE OR REPLACE VIEW spv_del AS (
        SELECT * FROM cf
        EXCEPT (SELECT * FROM spv_switch)
        ORDER BY fid
-);
-
-
-
-DROP TABLE IF EXISTS spv_tb_del CASCADE;
-CREATE UNLOGGED TABLE spv_tb_del (
-       fid  	integer,
-       pid	integer,
-       sid	integer,
-       nid 	integer
 );
 
 -- DROP VIEW IF EXISTS spv_del CASCADE;
@@ -327,12 +320,25 @@ CREATE UNLOGGED TABLE p_spv (
        PRIMARY key (counts)
 );
 
+-- CREATE OR REPLACE RULE spv_constaint AS
+--        ON INSERT TO p_spv
+--        WHERE NEW.status = 'on'
+--        DO ALSO
+--            (DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_del);
+--             INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_ins);
+--             UPDATE p_spv SET status = 'off' WHERE counts = NEW.counts;
+-- 	    );
+------------------------------------------------------------
+-- optimized
+------------------------------------------------------------
 CREATE OR REPLACE RULE spv_constaint AS
        ON INSERT TO p_spv
        WHERE NEW.status = 'on'
        DO ALSO
            (DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_tb_del);
-	    INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_tb_ins);
+            INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_tb_ins);
+	    DELETE FROM spv_tb_del ;   
+	    DELETE FROM spv_tb_ins ;   
             UPDATE p_spv SET status = 'off' WHERE counts = NEW.counts;
 	    );
 
@@ -527,3 +533,35 @@ CREATE TRIGGER del_flow_trigger
      AFTER DELETE ON cf
      FOR EACH ROW
    EXECUTE PROCEDURE del_flow_fun();
+
+-- ----------------------------------------------------------------------
+-- -- obs application
+-- ----------------------------------------------------------------------
+-- DROP TABLE IF EXISTS selected_switches CASCADE;
+-- CREATE UNLOGGED TABLE selected_switches (
+--        sid    	
+--        oid  	integer
+-- );
+
+-- CREATE TABLE obs_participants
+-- AS (SELECT sid, 1 as isactive
+--     FROM obs_participants);
+
+-- CREATE OR REPLACE RULE wp_up AS
+--        ON UPDATE TO wp
+--        DO ALSO
+--        	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+
+
+-- def load_obs_schema (dbname, username, size):
+--     conn = psycopg2.connect(database= dbname, user= username)
+--     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+--     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+--     cur.execute ("SELECT * FROM switches;")
+--     cs = cur.fetchall ()
+--     selected_switches = [int (s['sid']) for s in cs]
+
+--     cur.execute ("""
+
+--     """)
