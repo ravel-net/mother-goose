@@ -6,6 +6,13 @@ CREATE UNLOGGED TABLE clock (
 INSERT into clock (counts) values (0) ; -- initialize clock
 
 
+DROP TABLE IF EXISTS p_spv CASCADE;
+CREATE UNLOGGED TABLE p_spv (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
 CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
 $$
 plpy.notice ("engage ravel protocol")
@@ -18,8 +25,6 @@ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 ------------------------------------------------------------
 ------------------------------------------------------------
-------------------------------------------------------------
-------------------------------------------------------------
 
 DROP TABLE IF EXISTS pox_tp CASCADE;
 CREATE UNLOGGED TABLE pox_tp (
@@ -28,16 +33,6 @@ CREATE UNLOGGED TABLE pox_tp (
        out_switch integer,
        out_port   integer
 );
-
--- CREATE OR REPLACE FUNCTION pox_tp_fun() RETURNS TRIGGER AS
--- $$
--- plpy.notice ("pox monitors mininet switch-switch links")
-
--- ct = plpy.execute("""select max (counts) from clock""")[0]['max']
--- plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
--- return None;
--- $$
--- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 DROP TABLE IF EXISTS pox_switches CASCADE;
 CREATE UNLOGGED TABLE pox_switches (
@@ -52,7 +47,7 @@ CREATE UNLOGGED TABLE pox_hosts (
        port	integer
 );
 
-------------------------------------------------------------
+
 ------------------------------------------------------------
 ------------------------------------------------------------
 ---------- base tables 
@@ -90,10 +85,8 @@ CREATE UNLOGGED TABLE switches (
 DROP TABLE IF EXISTS hosts CASCADE;
 CREATE UNLOGGED TABLE hosts (
        hid	integer
-       -- h_uid	integer
 );
 
--- hosts exposed to operator
 CREATE OR REPLACE VIEW uhosts AS (
        SELECT hid, 
        	      row_number () OVER () as u_hid
@@ -120,55 +113,27 @@ CREATE UNLOGGED TABLE tm (
        PRIMARY KEY (fid)
 );
 
--- CREATE TRIGGER tm_in_trigger
---      AFTER INSERT ON tm
---      FOR EACH ROW
---    EXECUTE PROCEDURE protocol_fun();
+DROP TABLE IF EXISTS tm_delta CASCADE;
+CREATE UNLOGGED TABLE tm_delta (
+       fid      integer,
+       src	integer,
+       dst	integer,
+       vol	integer,
+       isadd	integer
+);
 
-CREATE OR REPLACE FUNCTION tm_ins_fun ()
-RETURNS TRIGGER
-AS $$
-f = TD["new"]["fid"]
-s = TD["new"]["src"]
-d = TD["new"]["dst"]
-plpy.notice (f)
-plpy.notice (s)
-plpy.notice (d)
-pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id,
-	      	      	     	       	             sid as source,
-						     nid as target,
-						     1.0::float8 as cost
-			                             FROM tp
-						     WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
-l = len (pv)
-for i in range (l):
-    if i + 2 < l:
-       plpy.execute ("INSERT INTO cf (fid,pid,sid,nid) VALUES (" + str (f) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");") 
-return None;
-$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+CREATE OR REPLACE RULE tm_ins AS
+       ON INSERT TO tm
+       DO ALSO
+           INSERT INTO tm_delta values (NEW.fid, NEW.src, NEW.dst, NEW.vol, 1);
 
-CREATE TRIGGER tm_ins_trigger
-     AFTER INSERT ON tm
-     FOR EACH ROW
-   EXECUTE PROCEDURE tm_ins_fun();
+CREATE OR REPLACE RULE tm_del AS
+       ON DELETE TO tm
+       DO ALSO(
+           INSERT INTO tm_delta values (OLD.fid, OLD.src, OLD.dst, OLD.vol, 0);
+	   DELETE FROM tm_delta WHERE fid = OLD.fid AND isadd = 1;
+	   );
 
-
-CREATE OR REPLACE FUNCTION tm_del_fun ()
-RETURNS TRIGGER
-AS $$
-f = TD["old"]["fid"]
-plpy.notice (f)
-
-plpy.execute("DELETE FROM cf WHERE fid = " + str (f) + ";")
-
-return None;
-$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
-
-CREATE TRIGGER tm_del_trigger
-     AFTER DELETE ON tm
-     FOR EACH ROW
-   EXECUTE PROCEDURE tm_del_fun();
 
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
@@ -196,9 +161,14 @@ CREATE OR REPLACE RULE utm_del_rule AS
        DO ALSO DELETE FROM tm WHERE tm.fid = OLD.fid;
 
 ----------------------------------------------------------------------
--- routing application
 ----------------------------------------------------------------------
-------------------------------------------------------------
+-- routing application
+
+-- CREATE TRIGGER tm_in_trigger
+--      AFTER INSERT ON tm
+--      FOR EACH ROW
+--    EXECUTE PROCEDURE protocol_fun();
+
 
 DROP TABLE IF EXISTS spv_tb_ins CASCADE;
 CREATE UNLOGGED TABLE spv_tb_ins (
@@ -216,10 +186,46 @@ CREATE UNLOGGED TABLE spv_tb_del (
        nid 	integer
 );
 
--- CREATE TRIGGER tm_in_trigger
---      AFTER INSERT ON tm
---      FOR EACH ROW
---    EXECUTE PROCEDURE protocol_fun();
+CREATE OR REPLACE FUNCTION spv_constraint1_fun ()
+RETURNS TRIGGER
+AS $$
+
+if TD["new"]["status"] == 'on':
+    tm = plpy.execute ("SELECT * FROM tm_delta;")
+
+    for t in tm:
+        if t["isadd"] == 1:
+            f = t["fid"]	   
+            s = t["src"]
+            d = t["dst"]
+            pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
+	   
+            l = len (pv)
+            for i in range (l):
+                if i + 2 < l:
+                    plpy.execute ("INSERT INTO cf (fid,pid,sid,nid) VALUES (" + str (f) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
+
+        elif t["isadd"] == 0:
+            f = t["fid"]
+            plpy.execute ("DELETE FROM cf WHERE fid =" +str (f) +";")
+
+    plpy.execute ("DELETE FROM tm_delta;")
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE TRIGGER spv_constraint1
+     AFTER INSERT ON p_spv
+     FOR EACH ROW
+   EXECUTE PROCEDURE spv_constraint1_fun();
+
+-- CREATE OR REPLACE FUNCTION tm_del2spv_fun ()
+-- RETURNS TRIGGER
+-- AS $$
+-- f = TD["old"]["fid"]
+-- plpy.notice (f)
+-- plpy.execute("INSERT INTO spv_tb_del VALUES (fid) (" + str (f) + ");")
+-- return None;
+-- $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION tp2spv_fun () RETURNS TRIGGER
 AS $$
@@ -252,7 +258,6 @@ CREATE TRIGGER tp_up_spv_trigger
      AFTER UPDATE ON tp
      FOR EACH ROW
    EXECUTE PROCEDURE tp2spv_fun();
-
 
 DROP VIEW IF EXISTS spv CASCADE;
 CREATE OR REPLACE VIEW spv AS (
@@ -312,14 +317,6 @@ CREATE OR REPLACE VIEW spv_del AS (
 ------------------------------------------------------------
 ------------------------------------------------------------
 -- priority
-
-DROP TABLE IF EXISTS p_spv CASCADE;
-CREATE UNLOGGED TABLE p_spv (
-       counts  	integer,
-       status 	text,
-       PRIMARY key (counts)
-);
-
 -- CREATE OR REPLACE RULE spv_constaint AS
 --        ON INSERT TO p_spv
 --        WHERE NEW.status = 'on'
@@ -331,7 +328,7 @@ CREATE UNLOGGED TABLE p_spv (
 ------------------------------------------------------------
 -- optimized
 ------------------------------------------------------------
-CREATE OR REPLACE RULE spv_constaint AS
+CREATE OR REPLACE RULE spv_constaint2 AS
        ON INSERT TO p_spv
        WHERE NEW.status = 'on'
        DO ALSO

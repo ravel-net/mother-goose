@@ -20,6 +20,7 @@ username = 'mininet'
 sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing_w.sql"
 sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
 sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo_optimized.sql"
+primitive = "/home/mininet/ravel/sql_scripts/primitive.sql"
 # without mininet operation, that is, no actual add_flow / del_flow,
 # just absolute value of postgres time
 
@@ -41,27 +42,17 @@ def procedure ():
 
     while True:
         m = raw_input ("test or exit? (t/e) \n")
-        if m == 'e':
-            t = raw_input("clean database? ('y'/'n'): ")
-            if t.strip () == 'y':
-                kill_pox_module ()
-                clean_db (dbname)
-                break
-            elif t.strip () == 'n':
-                kill_pox_module ()
-                break
-        elif m == 't' :
+        if m == 't' :
+            if database_exists == 0:
+                load_schema (dbname, username, primitive)
+                init_database (dbname, username)
+
             m2 = raw_input ("interactive or batch? (i/b) \n")
             if m2.strip () == 'b':
                 r = raw_input ("input rounds #:\n")
-                if database_exists == 0:
-                    load_schema (dbname, username, sql_script3)
-                    load_database (dbname, username)
                 batch_test (dbname, username, int (r), 1)
+
             elif m2.strip () == 'i':
-                if database_exists == 0:
-                    load_schema (dbname, username, sql_script3)
-                    load_database (dbname, username)
                 while True:
                     m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
                     if m3.strip () == 'm':
@@ -72,6 +63,16 @@ def procedure ():
                         break
                     elif m3.strip () == 'e':
                         break
+
+        elif m == 'e':
+            t = raw_input("clean database? ('y'/'n'): ")
+            if t.strip () == 'y':
+                kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                kill_pox_module ()
+                break
 
 def batch ():
     for dbname in ['fattree16', 'fattree32', 'fattree64']:

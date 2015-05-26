@@ -182,7 +182,7 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
     finally:
         if conn: conn.close()
 
-def load_database (dbname, username):
+def init_database (dbname, username):
     # print monitor_mininet, "before"
     def print_mn_manual (dbname):
         # print message, exit loop after user inputs 'y'
@@ -203,7 +203,7 @@ def load_database (dbname, username):
     elif dbname == 'tree':
         load_tree (switch_size, fanout_size, dbname, username)
     elif dbname[0:7] == 'fattree':
-        load_fattree (k_size, dbname, username)
+        init_fattree (k_size, dbname, username)
 
     create_mininet_topo (dbname, username)
 
@@ -211,7 +211,7 @@ def load_database (dbname, username):
         print_mn_manual (dbname)
         load_pox_module (dbname, username)
 
-
+    print "--------------------> init_database successful"
 
 def igraph_fattree (k):
     core_size = (k/2)**2
@@ -247,7 +247,7 @@ def igraph_fattree (k):
                 # connect edge routers and hosts
     return g
 
-def load_fattree (k, dbname, username):
+def init_fattree (k, dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor()
@@ -272,7 +272,7 @@ def load_fattree (k, dbname, username):
             cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',1,1);' )
 
     conn.close ()
-    print "--------------------> load_fattree successful"
+    print "--------------------> init_fattree successful"
     
 def load_tree (switch_size, fanout_size, dbname, username):
     g = Graph.Tree(switch_size, fanout_size)
