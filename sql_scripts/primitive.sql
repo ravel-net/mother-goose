@@ -160,6 +160,16 @@ CREATE OR REPLACE RULE utm_del_rule AS
        ON DELETE TO utm
        DO ALSO DELETE FROM tm WHERE tm.fid = OLD.fid;
 
+CREATE OR REPLACE RULE utm_up_rule AS 
+       ON UPDATE TO utm
+       DO ALSO (
+       	  DELETE FROM tm WHERE tm.fid = OLD.fid;
+	  INSERT INTO tm VALUES (OLD.fid,
+	  	      (SELECT hid FROM uhosts WHERE u_hid = NEW.host1),
+		      (SELECT hid FROM uhosts WHERE u_hid = NEW.host2),
+		      1);
+       );
+
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 -- routing application
@@ -677,25 +687,40 @@ CREATE OR REPLACE VIEW lb AS(
        GROUP BY sid
        );
 
+-- CREATE OR REPLACE RULE lb2utm AS
+--        ON UPDATE TO lb
+--        DO INSTEAD 
+--        	  DELETE FROM utm WHERE fid IN (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
+
+-- UPDATE utm SET host2 = (SELECT sid FROM lb WHERE load = (SELECT min (load) FROM lb limit 1))
+-- WHERE fid IN (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load))
+
 CREATE OR REPLACE RULE lb2utm AS
        ON UPDATE TO lb
-       DO INSTEAD
-       	  DELETE FROM utm WHERE fid IN (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
+       DO INSTEAD 
+          UPDATE utm
+          SET host2 =
+	      (SELECT sid
+	       FROM lb
+	       WHERE load = (SELECT min (load) FROM lb LIMIT (OLD.load - NEW.load))
+	       LIMIT 1)
+          WHERE fid IN
+       	      (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
 
 ----------------------------------------------------------------------
 -- way point application
 ----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS wp_tb CASCADE;
-CREATE UNLOGGED TABLE wp_tb (
-       fid	integer,
-       wid	integer
-);
+-- DROP TABLE IF EXISTS wp_tb CASCADE;
+-- CREATE UNLOGGED TABLE wp_tb (
+--        fid	integer,
+--        wid	integer
+-- );
 
-DROP VIEW IF EXISTS wp CASCADE;
-CREATE OR REPLACE VIEW wp AS (
-       SELECT DISTINCT wp_tb.fid, wp_tb.wid, 1 as isAbsent
-       FROM wp_tb, cf
-       WHERE wp_tb.fid = cf.fid
-       	     AND wp_tb.wid NOT IN (SELECT sid FROM cf WHERE cf.fid = wp_tb.fid)
-);
+-- DROP VIEW IF EXISTS wp CASCADE;
+-- CREATE OR REPLACE VIEW wp AS (
+--        SELECT DISTINCT wp_tb.fid, wp_tb.wid, 1 as isAbsent
+--        FROM wp_tb, cf
+--        WHERE wp_tb.fid = cf.fid
+--        	     AND wp_tb.wid NOT IN (SELECT sid FROM cf WHERE cf.fid = wp_tb.fid)
+-- );
