@@ -109,8 +109,8 @@ CREATE UNLOGGED TABLE tm (
        fid      integer,
        src	integer,
        dst	integer,
-       vol	integer,
-       PRIMARY KEY (fid)
+       vol	integer
+       -- PRIMARY KEY (fid)
 );
 
 DROP TABLE IF EXISTS tm_delta CASCADE;
@@ -131,7 +131,7 @@ CREATE OR REPLACE RULE tm_del AS
        ON DELETE TO tm
        DO ALSO(
            INSERT INTO tm_delta values (OLD.fid, OLD.src, OLD.dst, OLD.vol, 0);
-	   DELETE FROM tm_delta WHERE fid = OLD.fid AND isadd = 1;
+	   DELETE FROM tm_delta WHERE tm_delta.fid = OLD.fid AND isadd = 1;
 	   );
 
 
@@ -164,11 +164,70 @@ CREATE OR REPLACE RULE utm_del_rule AS
 ----------------------------------------------------------------------
 -- routing application
 
+
 -- CREATE TRIGGER tm_in_trigger
 --      AFTER INSERT ON tm
 --      FOR EACH ROW
 --    EXECUTE PROCEDURE protocol_fun();
 
+
+DROP TABLE IF EXISTS rtm_clock CASCADE;
+CREATE UNLOGGED TABLE rtm_clock (
+       counts  	integer
+);
+INSERT into rtm_clock (counts) values (0) ;
+
+CREATE TRIGGER rtm_clock_ins
+     AFTER INSERT ON rtm_clock
+     FOR EACH ROW
+   EXECUTE PROCEDURE protocol_fun();
+
+
+DROP TABLE IF EXISTS rtm CASCADE;
+CREATE UNLOGGED TABLE rtm (
+       fid      integer,
+       host1	integer,
+       host2	integer
+);
+
+CREATE OR REPLACE RULE rtm_ins AS
+       ON INSERT TO rtm
+       DO ALSO (
+       	  INSERT INTO utm VALUES (NEW.fid, NEW.host1, NEW.host2);
+	  INSERT INTO rtm_clock VALUES (1);
+       );
+
+CREATE OR REPLACE RULE rtm_del AS
+       ON DELETE TO rtm
+       DO ALSO (
+       	  DELETE FROM utm WHERE fid = OLD.fid;
+	  INSERT INTO rtm_clock VALUES (2);
+       );
+
+-- CREATE OR REPLACE FUNCTION rtm_del_fun() RETURNS TRIGGER AS
+-- $$
+-- plpy.notice ("rtm_del_fun")
+-- f = TD["old"]["fid"]
+
+-- plpy.execute ("DELETE FROM utm WHERE utm.fid = " + str (f) + ";")
+-- plpy.execute ("INSERT INTO rtm_clock VALUES (2);")
+-- return None;
+-- $$
+-- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+-- CREATE TRIGGER rtm_del_trigger
+--      AFTER DELETE ON rtm
+--      FOR EACH ROW
+--    EXECUTE PROCEDURE rtm_del_fun ();
+
+
+
+-- CREATE OR REPLACE RULE rtm_del AS
+--        ON DELETE TO rtm
+--        DO INSTEAD (
+--           DELETE FROM utm WHERE utm.fid = OLD.fid;
+--           INSERT INTO rtm_clock VALUES (2);
+--        );
 
 DROP TABLE IF EXISTS spv_tb_ins CASCADE;
 CREATE UNLOGGED TABLE spv_tb_ins (
@@ -189,7 +248,7 @@ CREATE UNLOGGED TABLE spv_tb_del (
 CREATE OR REPLACE FUNCTION spv_constraint1_fun ()
 RETURNS TRIGGER
 AS $$
-
+plpy.notice ("hello")
 if TD["new"]["status"] == 'on':
     tm = plpy.execute ("SELECT * FROM tm_delta;")
 
@@ -259,6 +318,23 @@ CREATE TRIGGER tp_up_spv_trigger
      FOR EACH ROW
    EXECUTE PROCEDURE tp2spv_fun();
 
+CREATE OR REPLACE RULE spv_constaint2 AS
+       ON INSERT TO p_spv
+       WHERE NEW.status = 'on'
+       DO ALSO
+           (UPDATE p_spv SET status = 'off' WHERE counts = NEW.counts;
+	   DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_tb_del);
+           INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_tb_ins);
+	   DELETE FROM spv_tb_del ;   
+	   DELETE FROM spv_tb_ins ;   
+	   );
+
+CREATE OR REPLACE RULE tick_spv AS
+       ON UPDATE TO p_spv
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO clock values (NEW.counts);
+
 DROP VIEW IF EXISTS spv CASCADE;
 CREATE OR REPLACE VIEW spv AS (
        SELECT fid,
@@ -307,43 +383,6 @@ CREATE OR REPLACE VIEW spv_del AS (
        EXCEPT (SELECT * FROM spv_switch)
        ORDER BY fid
 );
-
--- DROP VIEW IF EXISTS spv_del CASCADE;
--- CREATE OR REPLACE VIEW spv_del AS (
---        SELECT DISTINCT fid FROM cf
---        EXCEPT (SELECT DISTINCT fid FROM spv_switch)
--- );
-
-------------------------------------------------------------
-------------------------------------------------------------
--- priority
--- CREATE OR REPLACE RULE spv_constaint AS
---        ON INSERT TO p_spv
---        WHERE NEW.status = 'on'
---        DO ALSO
---            (DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_del);
---             INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_ins);
---             UPDATE p_spv SET status = 'off' WHERE counts = NEW.counts;
--- 	    );
-------------------------------------------------------------
--- optimized
-------------------------------------------------------------
-CREATE OR REPLACE RULE spv_constaint2 AS
-       ON INSERT TO p_spv
-       WHERE NEW.status = 'on'
-       DO ALSO
-           (DELETE FROM cf WHERE (fid,pid,sid,nid) IN (SELECT * FROM spv_tb_del);
-            INSERT INTO cf (fid,pid,sid,nid) (SELECT * FROM spv_tb_ins);
-	    DELETE FROM spv_tb_del ;   
-	    DELETE FROM spv_tb_ins ;   
-            UPDATE p_spv SET status = 'off' WHERE counts = NEW.counts;
-	    );
-
-CREATE OR REPLACE RULE tick_spv AS
-       ON UPDATE TO p_spv
-       WHERE (NEW.status = 'off')
-       DO ALSO
-           INSERT INTO clock values (NEW.counts);
 
 ------------------------------------------------------------
 -- auxiliary function
@@ -638,7 +677,25 @@ CREATE OR REPLACE VIEW lb AS(
        GROUP BY sid
        );
 
--- CREATE OR REPLACE RULE lb2utm AS
---        ON UPDATE TO lb
---        DO INSTEAD
---        	  UPDATE tp SET isactive = NEW.isactive WHERE sid = NEW.sid OR nid = NEW.sid;
+CREATE OR REPLACE RULE lb2utm AS
+       ON UPDATE TO lb
+       DO INSTEAD
+       	  DELETE FROM utm WHERE fid IN (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
+
+----------------------------------------------------------------------
+-- way point application
+----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS wp_tb CASCADE;
+CREATE UNLOGGED TABLE wp_tb (
+       fid	integer,
+       wid	integer
+);
+
+DROP VIEW IF EXISTS wp CASCADE;
+CREATE OR REPLACE VIEW wp AS (
+       SELECT DISTINCT wp_tb.fid, wp_tb.wid, 1 as isAbsent
+       FROM wp_tb, cf
+       WHERE wp_tb.fid = cf.fid
+       	     AND wp_tb.wid NOT IN (SELECT sid FROM cf WHERE cf.fid = wp_tb.fid)
+);
