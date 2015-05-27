@@ -724,3 +724,39 @@ CREATE OR REPLACE RULE lb2utm AS
 --        WHERE wp_tb.fid = cf.fid
 --        	     AND wp_tb.wid NOT IN (SELECT sid FROM cf WHERE cf.fid = wp_tb.fid)
 -- );
+
+------------------------------------------------------------------
+------------------------------------------------------------------
+------------------------------------------------------------------
+-- horizontal orchestration of lb, acl, and rt
+
+DROP TABLE IF EXISTS p_lb CASCADE;
+CREATE UNLOGGED TABLE p_lb (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS p_acl CASCADE;
+CREATE UNLOGGED TABLE p_acl (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS p_rt CASCADE;
+CREATE UNLOGGED TABLE p_rt (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+CREATE OR REPLACE FUNCTION horizontal_protocol_fun() RETURNS TRIGGER AS
+$$
+plpy.notice ("engage ravel horizontal_protocol")
+
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p_lb VALUES (" + str (ct+1) + ", 'on');")
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
