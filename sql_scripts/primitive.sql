@@ -783,10 +783,10 @@ CREATE UNLOGGED TABLE p3 (
 );
 
 CREATE OR REPLACE RULE lb_constraint AS
-       ON UPDATE TO p1
+       ON INSERT TO p1
        WHERE (NEW.status = 'on')
        DO ALSO (
-           UPDATE lb SET load = 3 WHERE load > 3
+           UPDATE lb SET load = 3 WHERE load > 3;
 	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
 	  );
 
@@ -797,10 +797,10 @@ CREATE OR REPLACE RULE p12 AS
            INSERT INTO p2 values (NEW.counts, 'on');
 
 CREATE OR REPLACE RULE acl_constraint AS
-       ON UPDATE TO p2
+       ON INSERT TO p2
        WHERE (NEW.status = 'on')
        DO ALSO (
-           UPDATE acl SET isviolated = 0 WHERE isviolated = 1
+           UPDATE acl SET isviolated = 0 WHERE isviolated = 1;
 	   UPDATE p2 SET status = 'off' WHERE counts = NEW.counts;
 	  );
 
@@ -816,7 +816,7 @@ CREATE TRIGGER rt_constraint_trigger
    EXECUTE PROCEDURE spv_constraint1_fun();
 
 CREATE OR REPLACE RULE rt_constraint AS
-       ON UPDATE TO p3
+       ON INSERT TO p3
        WHERE (NEW.status = 'on')
        DO ALSO (
 	   UPDATE p3 SET status = 'off' WHERE counts = NEW.counts;
