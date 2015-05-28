@@ -727,53 +727,113 @@ CREATE OR REPLACE RULE lb2utm AS
 ------------------------------------------------------------------
 -- horizontal orchestration of lb, acl, and rt
 
-DROP TABLE IF EXISTS p_lb CASCADE;
-CREATE UNLOGGED TABLE p_lb (
-       counts  	integer,
-       status 	text,
-       PRIMARY key (counts)
-);
+-- DROP TABLE IF EXISTS p_lb CASCADE;
+-- CREATE UNLOGGED TABLE p_lb (
+--        counts  	integer,
+--        status 	text,
+--        PRIMARY key (counts)
+-- );
 
-DROP TABLE IF EXISTS p_acl CASCADE;
-CREATE UNLOGGED TABLE p_acl (
-       counts  	integer,
-       status 	text,
-       PRIMARY key (counts)
-);
+-- DROP TABLE IF EXISTS p_acl CASCADE;
+-- CREATE UNLOGGED TABLE p_acl (
+--        counts  	integer,
+--        status 	text,
+--        PRIMARY key (counts)
+-- );
 
-DROP TABLE IF EXISTS p_rt CASCADE;
-CREATE UNLOGGED TABLE p_rt (
-       counts  	integer,
-       status 	text,
-       PRIMARY key (counts)
-);
+-- DROP TABLE IF EXISTS p_rt CASCADE;
+-- CREATE UNLOGGED TABLE p_rt (
+--        counts  	integer,
+--        status 	text,
+--        PRIMARY key (counts)
+-- );
 
-CREATE OR REPLACE FUNCTION horizontal_protocol_fun() RETURNS TRIGGER AS
-$$
-plpy.notice ("engage ravel horizontal_protocol")
-
-ct = plpy.execute("""select max (counts) from clock""")[0]['max']
-plpy.execute ("INSERT INTO p_lb VALUES (" + str (ct+1) + ", 'on');")
-return None;
-$$
-LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
+-- CREATE OR REPLACE FUNCTION horizontal_protocol_fun() RETURNS TRIGGER AS
+-- $$
+-- plpy.notice ("engage ravel horizontal_protocol")
+-- ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+-- plpy.execute ("INSERT INTO p_lb VALUES (" + str (ct+1) + ", 'on');")
+-- return None;
+-- $$
+-- LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 -- horizontal orchestration of lb, rt
 
-CREATE OR REPLACE RULE tick_lb AS
-       ON UPDATE TO p_lb
+DROP TABLE IF EXISTS p1 CASCADE;
+CREATE UNLOGGED TABLE p1 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS p2 CASCADE;
+CREATE UNLOGGED TABLE p2 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS p3 CASCADE;
+CREATE UNLOGGED TABLE p3 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+CREATE OR REPLACE RULE lb_constraint AS
+       ON UPDATE TO p1
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           UPDATE lb SET load = 3 WHERE load > 3
+	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE p12 AS
+       ON UPDATE TO p1
        WHERE (NEW.status = 'off')
        DO ALSO
-           INSERT INTO p_rt values (NEW.counts, 'on');
+           INSERT INTO p2 values (NEW.counts, 'on');
 
-CREATE OR REPLACE RULE tick_rt AS
-       ON UPDATE TO p_rt
+CREATE OR REPLACE RULE acl_constraint AS
+       ON UPDATE TO p2
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           UPDATE acl SET isviolated = 0 WHERE isviolated = 1
+	   UPDATE p2 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE p23 AS
+       ON UPDATE TO p2
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO p3 values (NEW.counts, 'on');
+
+CREATE TRIGGER rt_constraint_trigger
+     AFTER INSERT ON p3
+     FOR EACH ROW
+   EXECUTE PROCEDURE spv_constraint1_fun();
+
+CREATE OR REPLACE RULE rt_constraint AS
+       ON UPDATE TO p3
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+	   UPDATE p3 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE p3c AS
+       ON UPDATE TO p3
        WHERE (NEW.status = 'off')
        DO ALSO
            INSERT INTO clock values (NEW.counts);
 
+CREATE OR REPLACE FUNCTION protocolp1_fun() RETURNS TRIGGER AS
+$$
+plpy.notice ("engage ravel protocolp1_fun starting with p1")
 
-
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
