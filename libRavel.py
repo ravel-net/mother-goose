@@ -565,13 +565,13 @@ def batch_test (dbname, username, rounds, default):
 
 
     if default == 3:
-        selected_hosts = load_tenant_schema (dbname, username, 100)
+        selected_hosts = load_tenant_schema (dbname, username, 20)
         tenant_fullmesh (selected_hosts)
         for i in range (0,rounds):
             link_updown ('tenant_fullmesh')
         tenant_fullmesh_clean ()
 
-        logdest += 'tenant10'
+        logdest += 'tenant20'
         f.close ()
         os.system ("cp "+ logfile + ' ' + logdest)
 
@@ -635,7 +635,7 @@ CREATE UNLOGGED TABLE tenant_hosts (
 );
 
 CREATE OR REPLACE VIEW tenant_policy AS (
-       SELECT DISTINCT host1, host2 FROM utm
+       SELECT DISTINCT host1, host2 FROM rtm
        WHERE host1 IN (SELECT * FROM tenant_hosts)
        	     AND host2 IN (SELECT * FROM tenant_hosts)
 );
@@ -650,10 +650,10 @@ h2 = TD["new"]["host2"]
 hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
 hosts = [h['hid'] for h in hs]
 
-fid = int (plpy.execute ("select count(*) +1 as c from utm")[0]['c']) 
+fid = int (plpy.execute ("select count(*) +1 as c from rtm")[0]['c']) 
 
 if (h1 in hosts) & (h2 in hosts):
-    plpy.execute ("INSERT INTO utm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
+    plpy.execute ("INSERT INTO rtm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
 
 return None;
 $$
@@ -667,7 +667,7 @@ CREATE TRIGGER tenant_policy_ins_trigger
 CREATE OR REPLACE RULE tenant_policy_del AS
        ON DELETE TO tenant_policy
        DO INSTEAD
-       DELETE FROM utm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
+       DELETE FROM rtm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
 
 """)
 
