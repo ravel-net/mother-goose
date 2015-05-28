@@ -700,12 +700,10 @@ CREATE OR REPLACE RULE lb2utm AS
        DO INSTEAD 
           UPDATE utm
           SET host2 =
-	      (SELECT sid
-	       FROM lb
-	       WHERE load = (SELECT min (load) FROM lb LIMIT (OLD.load - NEW.load))
-	       LIMIT 1)
-          WHERE fid IN
-       	      (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
+	      (SELECT sid FROM lb
+	       WHERE load = (SELECT min (load) FROM lb LIMIT (OLD.load - NEW.load)) LIMIT 1)
+              WHERE fid IN
+       	       (SELECT fid FROM utm WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
 
 ----------------------------------------------------------------------
 -- way point application
@@ -724,7 +722,6 @@ CREATE OR REPLACE RULE lb2utm AS
 --        WHERE wp_tb.fid = cf.fid
 --        	     AND wp_tb.wid NOT IN (SELECT sid FROM cf WHERE cf.fid = wp_tb.fid)
 -- );
-
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 ------------------------------------------------------------------
@@ -760,3 +757,23 @@ plpy.execute ("INSERT INTO p_lb VALUES (" + str (ct+1) + ", 'on');")
 return None;
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+
+------------------------------------------------------------------
+------------------------------------------------------------------
+-- horizontal orchestration of lb, rt
+
+CREATE OR REPLACE RULE tick_lb AS
+       ON UPDATE TO p_lb
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO p_rt values (NEW.counts, 'on');
+
+CREATE OR REPLACE RULE tick_rt AS
+       ON UPDATE TO p_rt
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO clock values (NEW.counts);
+
+
+
