@@ -21,6 +21,7 @@ sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing_w.sql"
 sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
 sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo_optimized.sql"
 primitive = "/home/mininet/ravel/sql_scripts/primitive.sql"
+tenant = "/home/mininet/ravel/sql_scripts/tenant.sql"
 # without mininet operation, that is, no actual add_flow / del_flow,
 # just absolute value of postgres time
 
@@ -59,7 +60,9 @@ def procedure ():
                         load_mt_schema (dbname, username)
                         break
                     elif m3.strip () == 't':
-                        load_tenant_schema (dbname, username, 10)
+                        # load_tenant_schema (dbname, username, 10)
+                        load_schema (dbname, username, tenant)
+                        init_tenant (dbname, username, 6)
                         break
                     elif m3.strip () == 'e':
                         break
@@ -83,8 +86,8 @@ def batch ():
                     
 if __name__ == '__main__':
 
-    batch ()
-    # procedure ()
+    # batch ()
+    procedure ()
 
     # d = select_dbname ()
     # print d

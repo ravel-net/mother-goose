@@ -608,8 +608,24 @@ def load_mt_schema (dbname, username):
     conn.close()
 
 
+def init_tenant (dbname, username, size):
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+    cur.execute ("SELECT * FROM uhosts;")
+    cs = cur.fetchall ()
+    hosts = [int (s['u_hid']) for s in cs]
 
+    selected_hosts = [ hosts[i] for i in random.sample(xrange(len(hosts)), size) ]
+
+    for h in selected_hosts:
+        cur.execute ("insert into tenant_hosts values (" + str (h) + ");")
+
+    print '--------------------> init_tenant, interact with \'tenant_hosts\' and \'tenant_policy\''
+
+    conn.close()
+    return selected_hosts
 
 def load_tenant_schema (dbname, username, size):
     conn = psycopg2.connect(database= dbname, user= username)
