@@ -63,3 +63,25 @@ CREATE OR REPLACE RULE tacl2tenant_policy AS
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 --  lb on tenant_policy
+
+DROP TABLE IF EXISTS tlb_tb CASCADE;
+CREATE UNLOGGED TABLE tlb_tb (
+       sid	integer
+);
+
+CREATE OR REPLACE VIEW tlb AS(
+       SELECT sid, count (*) AS load 
+       FROM tlb_tb, tenant_policy
+       WHERE tlb_tb.sid = tenant_policy.host2
+       GROUP BY sid
+       );
+
+CREATE OR REPLACE RULE tlb2tenant_policy AS
+       ON UPDATE TO tlb
+       DO INSTEAD 
+          UPDATE tenant_policy
+          SET host2 =
+	      (SELECT sid FROM tlb
+	       WHERE load = (SELECT min (load) FROM tlb LIMIT (OLD.load - NEW.load)) LIMIT 1)
+              WHERE host1 IN
+       	       (SELECT host1 FROM tenant_policy WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
