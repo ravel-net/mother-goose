@@ -93,6 +93,19 @@ CREATE OR REPLACE RULE tlb2tenant_policy AS
 	      (SELECT sid FROM tlb
 	       WHERE load = (SELECT min (load) FROM tlb LIMIT (OLD.load - NEW.load))
 	       LIMIT 1)
-              WHERE host1 IN (SELECT host1 FROM tenant_policy WHERE host2 = NEW.sid
-		              LIMIT (OLD.load - NEW.load))
-	            AND host2 = NEW.sid ;
+              WHERE fid IN (SELECT fid FROM tenant_policy WHERE host2 = NEW.sid
+		              LIMIT (OLD.load - NEW.load));
+
+
+
+-- CREATE OR REPLACE RULE tlb2tenant_policy AS
+--        ON UPDATE TO tlb
+--        DO INSTEAD 
+--           UPDATE tenant_policy
+--           SET host2 =
+-- 	      (SELECT sid FROM tlb
+-- 	       WHERE load = (SELECT min (load) FROM tlb LIMIT (OLD.load - NEW.load))
+-- 	       LIMIT 1)
+--               WHERE host1 IN (SELECT host1 FROM tenant_policy WHERE host2 = NEW.sid
+-- 		              LIMIT (OLD.load - NEW.load))
+-- 	            AND host2 = NEW.sid ;
