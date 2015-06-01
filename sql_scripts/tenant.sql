@@ -59,7 +59,7 @@ CREATE UNLOGGED TABLE tacl_tb (
        inBlklist      integer
 );
 
-CREATE OR REPLACE VIEW tacl AS(
+CREATE OR REPLACE VIEW tacl AS (
        SELECT DISTINCT end1, end2, inBlklist, 1 as isViolated
        FROM tacl_tb, tenant_policy
        WHERE tacl_tb.end1 = tenant_policy.host1 and tacl_tb.end2 = tenant_policy.host2 and inBlklist = 1);
@@ -78,12 +78,19 @@ CREATE UNLOGGED TABLE tlb_tb (
        sid	integer
 );
 
-CREATE OR REPLACE VIEW tlb AS(
-       SELECT sid, count (*) AS load 
-       FROM tlb_tb, tenant_policy
-       WHERE tlb_tb.sid = tenant_policy.host2
-       GROUP BY sid
-       );
+-- CREATE OR REPLACE VIEW tlb2 AS(
+--        SELECT sid, count (*) AS load 
+--        FROM tlb_tb, tenant_policy
+--        WHERE tlb_tb.sid = tenant_policy.host2
+--        GROUP BY sid
+--        );
+
+CREATE OR REPLACE VIEW tlb AS (
+       SELECT sid,
+       	      (SELECT count(*) FROM tenant_policy
+	       WHERE host2 = sid) AS load
+       FROM tlb_tb
+);
 
 CREATE OR REPLACE RULE tlb2tenant_policy AS
        ON UPDATE TO tlb
