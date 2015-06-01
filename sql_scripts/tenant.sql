@@ -4,8 +4,9 @@ CREATE UNLOGGED TABLE tenant_hosts (
        PRIMARY key (hid)
 );
 
+DROP VIEW IF EXISTS tenant_policy CASCADE;
 CREATE OR REPLACE VIEW tenant_policy AS (
-       SELECT DISTINCT host1, host2 FROM rtm
+       SELECT DISTINCT fid, host1, host2 FROM rtm
        WHERE host1 IN (SELECT * FROM tenant_hosts)
        	     AND host2 IN (SELECT * FROM tenant_hosts)
 );
@@ -20,7 +21,7 @@ h2 = TD["new"]["host2"]
 hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
 hosts = [h['hid'] for h in hs]
 
-fid = int (plpy.execute ("select count(*) +1 as c from rtm")[0]['c']) 
+fid = int (plpy.execute ("select max(fid) +1 as c from rtm")[0]['c']) 
 
 if (h1 in hosts) & (h2 in hosts):
     plpy.execute ("INSERT INTO rtm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
@@ -37,7 +38,15 @@ CREATE TRIGGER tenant_policy_ins_trigger
 CREATE OR REPLACE RULE tenant_policy_del AS
        ON DELETE TO tenant_policy
        DO INSTEAD
-       DELETE FROM rtm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
+       DELETE FROM rtm WHERE fid = OLD.fid;
+
+CREATE OR REPLACE RULE tenant_policy_update AS
+       ON UPDATE TO tenant_policy
+       DO INSTEAD (
+       INSERT INTO tenant_policy VALUES (NEW.fid, NEW.host1, NEW.host2);
+       DELETE FROM tenant_policy WHERE fid = OLD.fid;	
+       );
+       
 
 ------------------------------------------------------------------
 ------------------------------------------------------------------
@@ -82,6 +91,8 @@ CREATE OR REPLACE RULE tlb2tenant_policy AS
           UPDATE tenant_policy
           SET host2 =
 	      (SELECT sid FROM tlb
-	       WHERE load = (SELECT min (load) FROM tlb LIMIT (OLD.load - NEW.load)) LIMIT 1)
-              WHERE host1 IN
-       	       (SELECT host1 FROM tenant_policy WHERE host2 = NEW.sid LIMIT (OLD.load - NEW.load));
+	       WHERE load = (SELECT min (load) FROM tlb LIMIT (OLD.load - NEW.load))
+	       LIMIT 1)
+              WHERE host1 IN (SELECT host1 FROM tenant_policy WHERE host2 = NEW.sid
+		              LIMIT (OLD.load - NEW.load))
+	            AND host2 = NEW.sid ;
