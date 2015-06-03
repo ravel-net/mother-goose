@@ -464,6 +464,14 @@ def batch_test (dbname, username, rounds, default):
         t2 = time.time ()
         f.write ('----lb: re-balance----' + str ((t2-t1)*1000) + '\n')
 
+        t3 = time.time ()
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+        t4 = time.time ()
+
+        f.write ('----lb+rt: re-balance----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+
     def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
 
         [h1, h2] = random.sample(uhosts, 2)
@@ -547,6 +555,9 @@ def batch_test (dbname, username, rounds, default):
 
         init_acl ()
         init_lb ()
+
+        for i in range (5):
+            op_lb ()
 
     # primitive 
     if default == 4:
