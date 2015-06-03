@@ -404,6 +404,10 @@ def batch_test (dbname, username, rounds, default):
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+    cur.execute ("SELECT u_hid FROM uhosts;")
+    cs = cur.fetchall ()
+    uhosts = [h['u_hid'] for h in cs]
+
     cur.execute ("SELECT * FROM hosts;")
     cs = cur.fetchall ()
     hosts = [h['hid'] for h in cs]
@@ -423,25 +427,60 @@ def batch_test (dbname, username, rounds, default):
     open(logfile, 'w').close()
     f = open(logfile, 'a')
 
-    def routing_ins (fid, cur=cur, hosts=hosts, f=f):
-        indices = random.sample(range(len(hosts)), 2)
-        [h1,h2] = [hosts[i] for i in sorted(indices)]
-        # cur.execute ("SELECT * from cf;")
-        # cs = cur.fetchall ()
-        # print 'routing_ins'
-        # print cs
+
+    def init_acl (cur=cur):
+        cur.execute ("select distinct host1, host2 from utm ;")
+        cs = cur.fetchall ()
+        ends = [[h['host1'], h['host2']] for h in cs]
+        
+        foo = [0, 1]
+        for i in range (len (ends)):
+            [e1, e2] = ends[i]
+            is_inblacklist = random.choice(foo)
+            cur.execute ("INSERT INTO acl_tb VALUES ("+ str (e1)+ ","+ str (e2) + "," + str (is_inblacklist) +");") 
+
+    def init_lb (cur=cur):
+        cur.execute ("select distinct host2 from utm ;")
+        cs = cur.fetchall ()
+        ends = [h['host2'] for h in cs]
+        
+        for i in range (len (ends)):
+            e = ends[i]
+            cur.execute ("INSERT INTO lb_tb VALUES ("+ str (e)+ ");")
+
+    def op_lb (cur=cur, f=f):
+        t1 = time.time ()
+        cur.execute ("select max(load) from lb ;")
+        t2 = time.time ()
+        f.write ('----lb: check load----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+        max_load = cur.fetchall ()[0]['max']
+
+        cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
+        s_id = cur.fetchall ()[0]['sid']
+        
+        t1 = time.time ()
+        cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
+        t2 = time.time ()
+        f.write ('----lb: re-balance----' + str ((t2-t1)*1000) + '\n')
+
+    def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
+
+        [h1, h2] = random.sample(uhosts, 2)
+        # indices = random.sample(range(len(hosts)), 2)
+        # [h1,h2] = [hosts[i] for i in sorted(indices)]
 
         t1 = time.time ()
-        cur.execute ("INSERT INTO tm values (%s,%s,%s,1);",([int (fid),int (h1),int (h2)]))
+        cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (fid),int (h1),int (h2)]))
         t2 = time.time ()
-        f.write ('----route_ins----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----route ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def routing_del (fid, cur=cur, hosts=hosts, f=f):
         t1 = time.time ()
         cur.execute ("DELETE FROM tm WHERE fid =" +str (fid)+ ";")
         t2 = time.time ()
-        f.write ('----route_del----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----route del----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def mt_updown (cur = cur, hosts = hosts, f=f):
@@ -451,7 +490,7 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("UPDATE mt SET isactive = 0 WHERE sid = %s;",([s]))
         t2 = time.time ()
-        f.write ('----maintenance_down----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----maintenance down----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         cur.execute ("UPDATE mt SET isactive = 1 WHERE sid = %s;",([s]))
@@ -501,18 +540,42 @@ def batch_test (dbname, username, rounds, default):
 
     logdest = os.getcwd () + '/data/' + logdestfile + '.log'
 
+
+    def primitive (rounds):
+        for i in range (rounds):
+            routing_ins (i+1)
+
+        init_acl ()
+        init_lb ()
+
+    # primitive 
+    if default == 4:
+
+        # indices = random.sample(range(len(hosts)), 2)
+        # print indices
+        # [h1,h2] = [hosts[i] for i in sorted(indices)]
+        primitive (rounds)
+
+        logdest += 'primitive'
+        f.close ()
+        os.system ("cp "+ logfile + ' ' + logdest)
+
+        print "--------------------> batch_test successful"
+        conn.close()
+
     while default == 1:
         n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n")
 
         if n == 'r':
-            for i in range (0,rounds):
-                routing_ins (i)
+            primitive (rounds)
+            # for i in range (0,rounds):
+            #     routing_ins (i)
 
-            for i in range (0,rounds):
-                link_updown ('routing')
+            # for i in range (0,rounds):
+            #     link_updown ('routing')
 
-            for i in range (0, rounds):
-                routing_del (i)
+            # for i in range (0, rounds):
+            #     routing_del (i)
 
             logdest += 'routing'
 
@@ -545,7 +608,7 @@ def batch_test (dbname, username, rounds, default):
             print "--------------------> batch_test successful"
             conn.close()
             break
-    
+
     if default == 2:
         for i in range (0,rounds):
             routing_ins (i)
@@ -560,7 +623,7 @@ def batch_test (dbname, username, rounds, default):
         f.close ()
         os.system ("cp "+ logfile + ' ' + logdest)
 
-        print "--------------------> batch_test successful"
+        print "--------------------> batch_test primitive successful"
         conn.close()
 
 
@@ -577,7 +640,6 @@ def batch_test (dbname, username, rounds, default):
 
         print "--------------------> batch_test successful"
         conn.close()
-
 
 def load_pox_module (dbname,username):
     cmd = "/home/mininet/pox/pox.py pox.openflow.discovery pox.samples.pretty_log pox.host_tracker db --dbname=" + str (dbname) + " --username=" + str (username)

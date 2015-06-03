@@ -82,8 +82,12 @@ def batch ():
         # routing with linkup, linkdown
         # batch_test (dbname, username, 1, 2)
         # tenant with linkup, linkdown
-        batch_test (dbname, username, 100, 3)
-                    
+        batch_test (dbname, username, 30, 4)
+
+def primitive_test ():
+    for dbname in ['fattree16']:
+        skip
+
 if __name__ == '__main__':
 
     # batch ()
