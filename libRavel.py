@@ -461,7 +461,8 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
         t2 = time.time ()
-        f.write ('----lb: re-balance----' + str ((t2-t1)*1000) + '\n')
+        # f.write ('----lb: re-balance (per rule)----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----lb: re-balance (absolute)----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         t3 = time.time ()
@@ -469,7 +470,8 @@ def batch_test (dbname, username, rounds, default):
         ct = cur.fetchall () [0]['max'] 
         cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
         t4 = time.time ()
-        f.write ('----lb+rt: re-balance----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
         f.flush ()
 
     def op_acl (cur=cur, f=f):
@@ -486,7 +488,7 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("update acl set isviolated = 0 where end1 = "+ str (e1) +" and end2 = "+str (e2)+";")
         t2 = time.time ()
-        f.write ('----acl: repair violation----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----acl: fix violation----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         t3 = time.time ()
@@ -494,7 +496,8 @@ def batch_test (dbname, username, rounds, default):
         ct = cur.fetchall () [0]['max'] 
         cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
         t4 = time.time ()
-        f.write ('----lb+acl: repair violation----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.write ('----acl+rt: fix violation (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.write ('----acl+rt: fix violation (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
         f.flush ()
         
     def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
@@ -578,18 +581,17 @@ def batch_test (dbname, username, rounds, default):
         for i in range (rounds):
             routing_ins (i+1)
 
-        init_acl ()
         init_lb ()
-
         for i in range (rounds):
             op_lb ()
 
+        init_acl ()
         cur.execute("select count(*) from acl;")
         ct = cur.fetchall () [0]['count']
         for i in range (ct):
             op_acl ()
 
-    # primitive 
+    # primitive
     if default == 4:
 
         # indices = random.sample(range(len(hosts)), 2)
@@ -600,6 +602,7 @@ def batch_test (dbname, username, rounds, default):
         logdest += 'primitive'
         f.close ()
         os.system ("cp "+ logfile + ' ' + logdest)
+        os.system ("sudo cp "+ logdest + ' ' + ' /media/sf_share/ravel_plot/')
 
         print "--------------------> batch_test successful"
         conn.close()

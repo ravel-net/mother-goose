@@ -77,21 +77,34 @@ def procedure ():
                 kill_pox_module ()
                 break
 
-def batch ():
-    for dbname in ['fattree16', 'fattree32', 'fattree64']:
-        # routing with linkup, linkdown
-        # batch_test (dbname, username, 1, 2)
-        # tenant with linkup, linkdown
+def batch (l):
+    def generate_db (k_size, dbname, username):
+        clean_db (dbname)
+        create_db (dbname)
+        add_pgrouting_plpy_plsh_extension (dbname, username)
+        load_schema (dbname, username, primitive)
+        init_fattree (k_size, dbname, username)
+
+    for dbname in l:
+        k_size = int (dbname[7:]) 
+        print "for " + dbname + ":"
+        generate_db (k_size, dbname, 'mininet')
+
+    for dbname in l:
+        print "for " + dbname + " batch_test:"
         batch_test (dbname, username, 30, 4)
 
-def primitive_test ():
-    for dbname in ['fattree16']:
-        skip
+    # for dbname in l:
+    #     clean_db (dbname)
+
 
 if __name__ == '__main__':
 
-    # batch ()
-    procedure ()
+    # procedure ()
+
+    l1 = ['fattree16', 'fattree32', 'fattree64']
+    l2 = ['fattree4', 'fattree8', 'fattree16']
+    batch (l2)
 
     # d = select_dbname ()
     # print d
