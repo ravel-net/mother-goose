@@ -1,115 +1,52 @@
-iiiiiiiiii----route ins----46.9620227814
-iiiiiiiiii----route ins----16.0748958588
-iiiiiiiiii----route ins----19.2949771881
-iiiiiiiiii----route ins----18.8119411469
-iiiiiiiiii----route ins----19.3181037903
-iiiiiiiiii----route ins----16.7469978333
-iiiiiiiiii----route ins----17.2870159149
-iiiiiiiiii----route ins----18.000125885
-iiiiiiiiii----route ins----16.8850421906
-iiiiiiiiii----route ins----18.6619758606
-iiiiiiiiii----route ins----16.1511898041
-iiiiiiiiii----route ins----16.8290138245
-iiiiiiiiii----route ins----17.7800655365
-iiiiiiiiii----route ins----17.2770023346
-iiiiiiiiii----route ins----18.3410644531
-iiiiiiiiii----route ins----18.1920528412
-iiiiiiiiii----route ins----17.8508758545
-iiiiiiiiii----route ins----17.5619125366
-iiiiiiiiii----route ins----16.5870189667
-iiiiiiiiii----route ins----16.8759822845
-iiiiii----route ins----12.1560096741
-iiiiiiiiii----route ins----17.2719955444
-iiiiiiiiii----route ins----19.9058055878
-iiiiiiiiii----route ins----17.5070762634
-iiiiii----route ins----14.4169330597
-iiiiiiiiii----route ins----18.5542106628
-iiiiiiiiii----route ins----17.6720619202
-iiiiiiiiii----route ins----16.9820785522
-iiiiiiiiii----route ins----19.5980072021
-ii----route ins----8.46791267395
-iiiiiiiiii----route ins----17.235994339
-iiiiiiiiii----route ins----17.66705513
-iiiiiiiiii----route ins----17.22407341
-iiiiiiiiii----route ins----17.1041488647
-iiiiiiiiii----route ins----18.2781219482
-iiiiiiiiii----route ins----17.2479152679
-iiiiiiiiii----route ins----18.926858902
-iiiiiiiiii----route ins----16.7551040649
-iiiiiiiiii----route ins----17.9049968719
-iiiiiiiiii----route ins----18.1560516357
-iiiiiiiiii----route ins----17.0648097992
-iiiiiiiiii----route ins----22.0150947571
-iiiiiiiiii----route ins----17.5321102142
-iiiiiiiiii----route ins----18.4860229492
-iiiiiiiiii----route ins----16.5650844574
-iiiiiiiiii----route ins----18.8200473785
-iiiiiiiiii----route ins----17.315864563
-iiiiiiiiii----route ins----14.8248672485
-iiiiiiiiii----route ins----28.1660556793
-iiiiiiiiii----route ins----17.7018642426
-iiiiiiiiii----route ins----19.3479061127
-iiiiiiiiii----route ins----16.6471004486
-iiiiiiiiii----route ins----17.8530216217
-iiiiiiiiii----route ins----16.480922699
-iiiiiiiiii----route ins----20.534992218
-iiiiiiiiii----route ins----17.9030895233
-iiiiiiiiii----route ins----17.2820091248
-iiiiiiiiii----route ins----14.3649578094
-iiiiiiiiii----route ins----16.9110298157
-iiiiiiiiii----route ins----18.4650421143
-iiiiiiiiii----route ins----15.0198936462
-iiiiiiiiii----route ins----16.6721343994
-iiiiiiiiii----route ins----18.0079936981
-iiiiiiiiii----route ins----15.8159732819
-iiiiiiiiii----route ins----16.7739391327
-iiiiiiiiii----route ins----18.3448791504
-iiiiiiiiii----route ins----18.002986908
-iiiiiiiiii----route ins----16.1690711975
-iiiiiiiiii----route ins----16.813993454
-iiiiiiiiii----route ins----18.1739330292
-iiiiiiiiii----route ins----17.795085907
-iiiiiiiiii----route ins----16.5610313416
-iiiiiiiiii----route ins----17.6720619202
-iiiiiiiiii----route ins----15.9509181976
-iiiiiiiiii----route ins----17.6858901978
-iiiiiiiiii----route ins----18.3579921722
-iiiiiiiiii----route ins----15.683889389
-iiiiiiiiii----route ins----17.235994339
-iiiiiiiiii----route ins----18.1968212128
-iiiiiiiiii----route ins----16.6630744934
-iiiiiiiiii----route ins----17.5800323486
-iiiiiiiiii----route ins----17.1520709991
-iiiiiiiiii----route ins----18.0850028992
-iiiiiiiiii----route ins----17.8010463715
-iiiiiiiiii----route ins----17.5778865814
-iiiiiiiiii----route ins----18.5079574585
-iiiiiiiiii----route ins----16.2320137024
-iiiiiiiiii----route ins----19.1838741302
-iiiiiiiiii----route ins----18.2938575745
-iiiiiiiiii----route ins----18.3079242706
-iiiiiiiiii----route ins----17.3270702362
-iiiiiiiiii----route ins----17.4551010132
-iiiiiiiiii----route ins----18.7230110168
-iiiiiiiiii----route ins----17.1639919281
-iiiiiiiiii----route ins----17.6239013672
-iiiiiiiiii----route ins----18.5899734497
-iiiiiiiiii----route ins----16.9129371643
-iiiiiiiiii----route ins----22.5811004639
-iiiiiiiiii----route ins----17.324924469
-iiiiiiiiii----route ins----16.1128044128
-----lb: check load----1.75285339355
-ddddddddddiiiiiiiiii----lb: re-balance----8.25095176697
-----lb+rt: re-balance----32.9358577728
-----lb: check load----0.403165817261
-ddddddddddiiiiiiiiii----lb: re-balance----7.21597671509
-----lb+rt: re-balance----34.7719192505
-----lb: check load----2.4938583374
-ddddddddddiiiiiiiiii----lb: re-balance----14.6341323853
-----lb+rt: re-balance----40.333032608
-----lb: check load----0.419855117798
-ddddddddddiiiiiiiiii----lb: re-balance----11.647939682
-----lb+rt: re-balance----37.6069545746
-----lb: check load----0.391960144043
-ddddddddddiiiiiiiiii----lb: re-balance----12.5849246979
-----lb+rt: re-balance----37.7459526062
+iiiiiiiiii----route ins----52.3359775543
+iiiiiiiiii----route ins----22.3531723022
+iiiiiiiiii----route ins----18.1789398193
+iiiiiiiiii----route ins----16.5030956268
+iiiiiiiiii----route ins----15.1319503784
+iiiiiiiiii----route ins----23.2930183411
+iiiiiiiiii----route ins----11.0521316528
+iiiiiiiiii----route ins----16.8628692627
+iiiiii----route ins----21.1799144745
+iiiiiiiiii----route ins----20.9319591522
+----lb: check max load----0.522136688232
+----lb: re-balance----8.19206237793
+ddddddddddiiiiiiiiii----lb+rt: re-balance----34.5659255981
+----lb: check max load----0.283002853394
+----lb: re-balance----5.21183013916
+ddddddddddiiiiiiiiii----lb+rt: re-balance----34.2047214508
+----lb: check max load----0.309944152832
+----lb: re-balance----12.834072113
+ddddddddddiiiiiiiiii----lb+rt: re-balance----49.0312576294
+----lb: check max load----0.293016433716
+----lb: re-balance----8.18705558777
+ddddddddddiiiiiiiiii----lb+rt: re-balance----65.8550262451
+----lb: check max load----0.248908996582
+----lb: re-balance----13.0429267883
+ddddddddddiiiiiiiiii----lb+rt: re-balance----54.2540550232
+----lb: check max load----2.30503082275
+----lb: re-balance----7.94887542725
+ddddddddddiiiiiiiiii----lb+rt: re-balance----38.6860370636
+----lb: check max load----4.10294532776
+----lb: re-balance----5.49411773682
+ddddddddddiiiiiiiiii----lb+rt: re-balance----34.451007843
+----lb: check max load----0.284194946289
+----lb: re-balance----3.70287895203
+ddddddddddiiiiiiiiii----lb+rt: re-balance----39.4368171692
+----lb: check max load----1.92308425903
+----lb: re-balance----7.58814811707
+ddddddddddiiiiiiiiii----lb+rt: re-balance----54.074048996
+----lb: check max load----5.35416603088
+----lb: re-balance----2.75301933289
+ddddddddddiiiiiiiiii----lb+rt: re-balance----33.1661701202
+----acl: check violation----0.303030014038
+----acl: repair violation----1.80602073669
+dddddddddd----lb+acl: repair violation----22.4139690399
+----acl: check violation----0.328063964844
+----acl: repair violation----1.39904022217
+dddddddddd----lb+acl: repair violation----24.7819423676
+----acl: check violation----0.220060348511
+----acl: repair violation----0.684022903442
+dddddddddd----lb+acl: repair violation----13.8020515442
+----acl: check violation----0.503063201904
+----acl: repair violation----0.924825668335
+dddddd----lb+acl: repair violation----7.06577301025

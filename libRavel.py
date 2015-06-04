@@ -452,26 +452,51 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("select max(load) from lb ;")
         t2 = time.time ()
-        f.write ('----lb: check load----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----lb: check max load----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
         max_load = cur.fetchall ()[0]['max']
 
         cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
         s_id = cur.fetchall ()[0]['sid']
-        
         t1 = time.time ()
         cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
         t2 = time.time ()
         f.write ('----lb: re-balance----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
 
         t3 = time.time ()
         cur.execute("select max (counts) from clock;")
         ct = cur.fetchall () [0]['max'] 
         cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
         t4 = time.time ()
-
         f.write ('----lb+rt: re-balance----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.flush ()
 
+    def op_acl (cur=cur, f=f):
+
+        t1 = time.time ()
+        cur.execute ("select end1, end2 from acl limit 1;")
+        t2 = time.time ()
+        f.write ('----acl: check violation----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+        t = cur.fetchall ()[0]
+        e1 = t['end1']
+        e2 = t['end2']
+
+        t1 = time.time ()
+        cur.execute ("update acl set isviolated = 0 where end1 = "+ str (e1) +" and end2 = "+str (e2)+";")
+        t2 = time.time ()
+        f.write ('----acl: repair violation----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        t3 = time.time ()
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+        t4 = time.time ()
+        f.write ('----lb+acl: repair violation----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.flush ()
+        
     def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
 
         [h1, h2] = random.sample(uhosts, 2)
@@ -556,8 +581,13 @@ def batch_test (dbname, username, rounds, default):
         init_acl ()
         init_lb ()
 
-        for i in range (5):
+        for i in range (rounds):
             op_lb ()
+
+        cur.execute("select count(*) from acl;")
+        ct = cur.fetchall () [0]['count']
+        for i in range (ct):
+            op_acl ()
 
     # primitive 
     if default == 4:
