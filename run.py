@@ -94,29 +94,18 @@ def batch (l):
         print "for " + dbname + " batch_test:"
         batch_test (dbname, username, 30, 4)
 
-    # for dbname in l:
-    #     clean_db (dbname)
-
-
 if __name__ == '__main__':
 
-    # procedure ()
+    while True:
+        m = raw_input ("batch, interactive, or exit? (b, i, e) \n")
 
-    l1 = ['fattree16', 'fattree32', 'fattree64']
-    l2 = ['fattree4', 'fattree8', 'fattree16']
-    batch (l2)
+        if m == 'i':
+            procedure ()
 
-    # d = select_dbname ()
-    # print d
-    # load_fattree (4)
+        elif m == 'b':
+            l1 = ['fattree16', 'fattree32', 'fattree64']
+            l2 = ['fattree4', 'fattree8', 'fattree16']
+            batch (l2)
 
-
-            # if n.strip () == 'r':
-            #     print "routing in postgres, no mininet actions"
-
-            # elif n.strip () == 't':
-            #     print "tenant operation in postgres, no mininet actions"
-            #     r = raw_input ("input rounds #:\n")
-            #     load_schema (dbname, username, sql_script3)
-            #     load_database (dbname, username)
-            #     batch_test (dbname, username, int (r), flag='tenant')
+        elif m == 'e':
+            break

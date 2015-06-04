@@ -509,14 +509,14 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (fid),int (h1),int (h2)]))
         t2 = time.time ()
-        f.write ('----route ins----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----rt: route ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def routing_del (fid, cur=cur, hosts=hosts, f=f):
         t1 = time.time ()
         cur.execute ("DELETE FROM tm WHERE fid =" +str (fid)+ ";")
         t2 = time.time ()
-        f.write ('----route del----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----rt: route del----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def mt_updown (cur = cur, hosts = hosts, f=f):
@@ -539,7 +539,7 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("UPDATE tp SET isactive = 0 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
         t2 = time.time ()
-        f.write ('----'+flag+'_linkdown----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----'+flag+': linkdown----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         # cur.execute ("SELECT * from cf;")
@@ -550,7 +550,7 @@ def batch_test (dbname, username, rounds, default):
         t1 = time.time ()
         cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
         t2 = time.time ()
-        f.write ('----'+flag+'_linkup----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----'+flag+': linkup----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
         # cur.execute ("SELECT * from cf;")
@@ -590,6 +590,9 @@ def batch_test (dbname, username, rounds, default):
         ct = cur.fetchall () [0]['count']
         for i in range (ct):
             op_acl ()
+
+        for i in range (rounds):
+            link_updown ('rt')
 
     # primitive
     if default == 4:
