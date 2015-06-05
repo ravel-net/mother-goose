@@ -119,11 +119,16 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
 
 def truncate_db (dbname):
     try:
-        conn = psycopg2.connect(database= "postgres", user= "mininet")
+        conn = psycopg2.connect(database= dbname, user= "mininet")
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
 
-        cur.execute ("truncate acl_tb, cf, clock, hosts, lb_tb, mt_tb, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, switches, t1, t2, t3, tacl_tb,tenant_hosts, tlb_tb, tm, tm_delta, tp, utm;")
+
+        cur.execute ("truncate cf, clock, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, tm, tm_delta, utm, acl_tb, lb_tb;")
+
+        cur.execute ("INSERT INTO clock values (0);")
+
+        cur.execute ("truncate t1, t2, t3, tacl_tb, tenant_hosts, tlb_tb;")
 
         print "--------------------> truncate_db successful"
 
@@ -591,7 +596,9 @@ def batch_test (dbname, username, rounds, default):
         
     def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
 
+        # print hosts
         [h1, h2] = random.sample(uhosts, 2)
+        # print [h1,h2]
 
         t1 = time.time ()
         cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (fid),int (h1),int (h2)]))
@@ -623,9 +630,8 @@ def batch_test (dbname, username, rounds, default):
         residual_load = switch_size * max_load - agg_load
         return residual_load
 
-    def routing_ins_acl_lb_tenant (h1s, h2s, fid, cur=cur, f=f):
-        h1 = random.sample(h1s, 1)[0]
-        h2 = random.sample(h2s, 1)[0]
+    def routing_ins_acl_lb_tenant (hosts, fid, cur=cur, f=f):
+        [h1, h2] = random.sample(hosts, 2)
 
         t1 = time.time ()
         cur.execute ("INSERT INTO tenant_policy VALUES ("+str (fid) +"," +str (h1) + "," + str (h2)+");")
@@ -698,6 +704,7 @@ def batch_test (dbname, username, rounds, default):
 
     def primitive (rounds):
         for i in range (rounds):
+            print i
             routing_ins (i+1)
 
         init_lb ()
@@ -774,6 +781,14 @@ def batch_test (dbname, username, rounds, default):
         ct = cur.fetchall () [0]['count']
         for i in range (ct):
             op_tacl ()
+
+        cur.execute ("select * from tenant_hosts ;")
+        cs = cur.fetchall ()
+        thosts = [h['hid'] for h in cs]
+        for i in range (10):
+            cur.execute ("select max (fid) from utm;")
+            fid = cur.fetchall ()[0]['max'] + 1
+            routing_ins_acl_lb_tenant (thosts, fid)
         
     # primitive
     logdest = os.getcwd () + '/data/' + logdestfile + '.log'
@@ -781,16 +796,22 @@ def batch_test (dbname, username, rounds, default):
         # primitive (rounds)
         # s = raw_input("primitive or tenant: (p or t)")
         s = 't'
+
         if s == 'p':
             primitive (rounds)
+            cur.execute ("truncate cf, clock, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, tm, tm_delta, utm, acl_tb, lb_tb;")
+            cur.execute ("INSERT INTO clock values (0);")
             logdest += 'primitive'
 
         elif s == 't':
             tenant (10)
+            cur.execute ("truncate cf, clock, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, tm, tm_delta, utm, acl_tb, lb_tb;")
+            cur.execute ("INSERT INTO clock values (0);")
+            cur.execute ("truncate t1, t2, t3, tacl_tb, tenant_hosts, tlb_tb;")
+
             logdest += 'tenant'
 
         f.close ()
-        
         os.system ("cp "+ logfile + ' ' + logdest)
         os.system ("sudo cp "+ logdest + ' ' + ' /media/sf_share/ravel_plot/')
 

@@ -78,10 +78,6 @@ def procedure ():
                 break
 
 def batch (l, rounds):
-
-    for dbname in l:
-        truncate_db (dbname)
-
     for dbname in l:
         print "for " + dbname + " batch_test:"
         batch_test (dbname, username, rounds, 4)
@@ -99,16 +95,6 @@ def gdb (l, rounds):
         print "for " + dbname + ":"
         generate_db (k_size, dbname, 'mininet')
 
-
-# def batch_tenant (l, size):
-
-#     def init_tenant (size, dbname, username):
-#         selected_hosts = load_tenant_schema (dbname, username, size)
-
-#     for dbname in l:
-#         init_tenant (size, dbname, 'mininet')
-#         print "init_tenant for " + dbname
-
 if __name__ == '__main__':
     l1 = ['fattree16', 'fattree32', 'fattree64']
     l2 = ['fattree4', 'fattree8', 'fattree16']
@@ -121,10 +107,10 @@ if __name__ == '__main__':
             procedure ()
 
         elif m == 'b':
-            batch (l2, 30)
+            batch (l1, 30)
 
         elif m == 'g':
-            gdb (l1,30)
+            gdb (l2,30)
 
         elif m == 'e':
             break
