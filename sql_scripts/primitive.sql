@@ -258,7 +258,7 @@ CREATE UNLOGGED TABLE spv_tb_del (
 CREATE OR REPLACE FUNCTION spv_constraint1_fun ()
 RETURNS TRIGGER
 AS $$
-plpy.notice ("hello")
+plpy.notice ("spv_constraint1_fun")
 if TD["new"]["status"] == 'on':
     tm = plpy.execute ("SELECT * FROM tm_delta;")
 

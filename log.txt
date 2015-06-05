@@ -1,271 +1,183 @@
-iiiiiiiiii----rt: route ins----38.9850139618
-iiiiiiiiii----rt: route ins----6.06894493103
-iiiiiiiiii----rt: route ins----5.97310066223
-iiiiii----rt: route ins----3.80516052246
-ii----rt: route ins----3.00002098083
-iiiiiiiiii----rt: route ins----6.31904602051
-iiiiiiiiii----rt: route ins----6.05416297913
-iiiiiiiiii----rt: route ins----5.24592399597
-iiiiiiiiii----rt: route ins----3.98898124695
-iiiiiiiiii----rt: route ins----6.01601600647
-iiiiiiiiii----rt: route ins----6.15906715393
-iiiiiiiiii----rt: route ins----6.87003135681
-iiiiiiiiii----rt: route ins----7.01999664307
-iiiiiiiiii----rt: route ins----6.80899620056
-iiiiiiiiii----rt: route ins----4.52709197998
-iiiiiiiiii----rt: route ins----6.45017623901
-ii----rt: route ins----2.92921066284
-iiiiii----rt: route ins----4.46796417236
-iiiiiiiiii----rt: route ins----4.59098815918
-iiiiiiiiii----rt: route ins----5.68580627441
-iiiiiiiiii----rt: route ins----6.92486763
-iiiiiiiiii----rt: route ins----6.09493255615
-iiiiiiiiii----rt: route ins----5.28693199158
-iiiiiiiiii----rt: route ins----5.28192520142
-iiiiiiiiii----rt: route ins----5.72490692139
-iiiiiiiiii----rt: route ins----6.67595863342
-iiiiii----rt: route ins----4.50015068054
-iiiiiiiiii----rt: route ins----6.23297691345
-iiiiiiiiii----rt: route ins----6.22987747192
-iiiiiiiiii----rt: route ins----6.23917579651
-----lb: check max load----1.38306617737
-----lb: re-balance (absolute)----5.47099113464
-dddddddddd----lb+rt: re-balance (per rule)----11.127948761
-----lb+rt: re-balance (absolute)----11.127948761
-----lb: check max load----0.226974487305
-----lb: re-balance (absolute)----3.52001190186
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.8748416901
-----lb+rt: re-balance (absolute)----12.8748416901
-----lb: check max load----0.337839126587
-----lb: re-balance (absolute)----4.41002845764
-ddiiiiii----lb+rt: re-balance (per rule)----9.42707061768
-----lb+rt: re-balance (absolute)----9.42707061768
-----lb: check max load----0.741004943848
-----lb: re-balance (absolute)----5.09691238403
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.8500461578
-----lb+rt: re-balance (absolute)----12.8500461578
-----lb: check max load----0.334024429321
-----lb: re-balance (absolute)----3.39102745056
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.1490955353
-----lb+rt: re-balance (absolute)----12.1490955353
-----lb: check max load----0.339984893799
-----lb: re-balance (absolute)----3.85999679565
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.760017395
-----lb+rt: re-balance (absolute)----14.760017395
-----lb: check max load----0.339031219482
-----lb: re-balance (absolute)----3.7260055542
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.7780437469
-----lb+rt: re-balance (absolute)----12.7780437469
-----lb: check max load----0.346899032593
-----lb: re-balance (absolute)----4.31895256042
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.218952179
-----lb+rt: re-balance (absolute)----12.218952179
-----lb: check max load----0.336170196533
-----lb: re-balance (absolute)----4.49395179749
-iiiiiiiiii----lb+rt: re-balance (per rule)----10.1158618927
-----lb+rt: re-balance (absolute)----10.1158618927
-----lb: check max load----0.470876693726
-----lb: re-balance (absolute)----4.60386276245
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.3038291931
-----lb+rt: re-balance (absolute)----12.3038291931
-----lb: check max load----0.377893447876
-----lb: re-balance (absolute)----3.59487533569
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----11.9059085846
-----lb+rt: re-balance (absolute)----11.9059085846
-----lb: check max load----0.341892242432
-----lb: re-balance (absolute)----4.73189353943
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.447927475
-----lb+rt: re-balance (absolute)----14.447927475
-----lb: check max load----0.336885452271
-----lb: re-balance (absolute)----3.98516654968
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----13.2331848145
-----lb+rt: re-balance (absolute)----13.2331848145
-----lb: check max load----0.270843505859
-----lb: re-balance (absolute)----6.06203079224
-dddddddddd----lb+rt: re-balance (per rule)----12.3708248138
-----lb+rt: re-balance (absolute)----12.3708248138
-----lb: check max load----0.416994094849
-----lb: re-balance (absolute)----4.55403327942
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----11.4049911499
-----lb+rt: re-balance (absolute)----11.4049911499
-----lb: check max load----0.540018081665
-----lb: re-balance (absolute)----5.24497032166
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.3360366821
-----lb+rt: re-balance (absolute)----15.3360366821
-----lb: check max load----0.410795211792
-----lb: re-balance (absolute)----5.04398345947
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.9869918823
-----lb+rt: re-balance (absolute)----14.9869918823
-----lb: check max load----0.396013259888
-----lb: re-balance (absolute)----5.95092773438
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.6168937683
-----lb+rt: re-balance (absolute)----15.6168937683
-----lb: check max load----0.247955322266
-----lb: re-balance (absolute)----4.71711158752
-iiiiiiiiii----lb+rt: re-balance (per rule)----11.1300945282
-----lb+rt: re-balance (absolute)----11.1300945282
-----lb: check max load----0.345945358276
-----lb: re-balance (absolute)----4.57119941711
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----13.3152008057
-----lb+rt: re-balance (absolute)----13.3152008057
-----lb: check max load----1.42312049866
-----lb: re-balance (absolute)----5.22494316101
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----13.0808353424
-----lb+rt: re-balance (absolute)----13.0808353424
-----lb: check max load----0.351905822754
-----lb: re-balance (absolute)----5.55682182312
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.89179039
-----lb+rt: re-balance (absolute)----15.89179039
-----lb: check max load----0.348091125488
-----lb: re-balance (absolute)----4.86397743225
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.7278308868
-----lb+rt: re-balance (absolute)----14.7278308868
-----lb: check max load----0.354051589966
-----lb: re-balance (absolute)----4.50491905212
-dddddddddd----lb+rt: re-balance (per rule)----9.45901870728
-----lb+rt: re-balance (absolute)----9.45901870728
-----lb: check max load----0.491857528687
-----lb: re-balance (absolute)----4.72617149353
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.1930580139
-----lb+rt: re-balance (absolute)----14.1930580139
-----lb: check max load----0.344038009644
-----lb: re-balance (absolute)----6.18290901184
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.1047706604
-----lb+rt: re-balance (absolute)----15.1047706604
-----lb: check max load----0.348806381226
-----lb: re-balance (absolute)----4.33206558228
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.7389431
-----lb+rt: re-balance (absolute)----12.7389431
-----lb: check max load----0.420093536377
-----lb: re-balance (absolute)----5.49697875977
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.8570537567
-----lb+rt: re-balance (absolute)----14.8570537567
-----lb: check max load----0.347137451172
-----lb: re-balance (absolute)----5.28120994568
-iiiiiiiiii----lb+rt: re-balance (per rule)----18.0721282959
-----lb+rt: re-balance (absolute)----18.0721282959
-----lb: check max load----0.387907028198
-----lb: re-balance (absolute)----8.30316543579
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.4490680695
-----lb+rt: re-balance (absolute)----18.4490680695
-----acl: check violation----0.311136245728
-----acl: fix violation----1.15513801575
-dddddddddd----acl+rt: fix violation (per rule)----6.52122497559
-----acl+rt: fix violation (absolute)----6.52122497559
-----acl: check violation----0.362157821655
-----acl: fix violation----0.862836837769
-dddddddddd----acl+rt: fix violation (per rule)----4.77480888367
-----acl+rt: fix violation (absolute)----4.77480888367
-----acl: check violation----0.231981277466
-----acl: fix violation----0.704050064087
-dddddddddd----acl+rt: fix violation (per rule)----3.58200073242
-----acl+rt: fix violation (absolute)----3.58200073242
-----acl: check violation----0.354051589966
-----acl: fix violation----1.04093551636
-dddddddddd----acl+rt: fix violation (per rule)----7.03597068787
-----acl+rt: fix violation (absolute)----7.03597068787
-----acl: check violation----0.444889068604
-----acl: fix violation----1.12199783325
-dddddddddd----acl+rt: fix violation (per rule)----6.2358379364
-----acl+rt: fix violation (absolute)----6.2358379364
-----acl: check violation----0.308990478516
-----acl: fix violation----1.2640953064
-dddddddddd----acl+rt: fix violation (per rule)----4.5371055603
-----acl+rt: fix violation (absolute)----4.5371055603
-----acl: check violation----0.29993057251
-----acl: fix violation----1.0769367218
-dddddddddd----acl+rt: fix violation (per rule)----5.72800636292
-----acl+rt: fix violation (absolute)----5.72800636292
-----acl: check violation----0.193119049072
-----acl: fix violation----1.31297111511
-dddddddddd----acl+rt: fix violation (per rule)----4.12201881409
-----acl+rt: fix violation (absolute)----4.12201881409
-----acl: check violation----0.178813934326
-----acl: fix violation----0.740051269531
-dddddddddd----acl+rt: fix violation (per rule)----6.15000724792
-----acl+rt: fix violation (absolute)----6.15000724792
-----acl: check violation----0.458955764771
-----acl: fix violation----0.718116760254
-dddddddddd----acl+rt: fix violation (per rule)----3.68499755859
-----acl+rt: fix violation (absolute)----3.68499755859
-----acl: check violation----0.293016433716
-----acl: fix violation----1.68013572693
-dddddddddd----acl+rt: fix violation (per rule)----7.84707069397
-----acl+rt: fix violation (absolute)----7.84707069397
-----acl: check violation----0.295162200928
-----acl: fix violation----1.07002258301
-dddddd----acl+rt: fix violation (per rule)----4.53305244446
-----acl+rt: fix violation (absolute)----4.53305244446
-----acl: check violation----0.211954116821
-----acl: fix violation----1.15203857422
-dddddddddd----acl+rt: fix violation (per rule)----6.65497779846
-----acl+rt: fix violation (absolute)----6.65497779846
-ddddddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiii----rt: linkdown----27.3220539093
-----rt: linkup----1.25503540039
-----rt: linkdown----1.98101997375
-----rt: linkup----1.37591362
-ddddddiiiiii----rt: linkdown----7.10892677307
-----rt: linkup----1.30105018616
-ddddddddddiiiiiiiiii----rt: linkdown----13.0879878998
-----rt: linkup----1.42478942871
-ddddddddddiiiiiiiiii----rt: linkdown----8.37683677673
-----rt: linkup----1.48987770081
-----rt: linkdown----2.02417373657
-----rt: linkup----1.23286247253
-ddddddddddddddddddddiiiiiiiiiiiiiiiiiiii----rt: linkdown----19.3839073181
-----rt: linkup----0.829935073853
-ddddddddddiiiiiiiiii----rt: linkdown----10.232925415
-----rt: linkup----1.69205665588
-ddddddiiiiii----rt: linkdown----8.18514823914
-----rt: linkup----1.45292282104
-----rt: linkdown----1.90091133118
-----rt: linkup----1.29294395447
-----rt: linkdown----2.28214263916
-----rt: linkup----0.773191452026
-ddddddddddddddddddddiiiiiiiiiiiiiiiiiiii----rt: linkdown----20.1420783997
-----rt: linkup----1.18494033813
-----rt: linkdown----1.73997879028
-----rt: linkup----1.27601623535
-----rt: linkdown----2.6388168335
-----rt: linkup----0.846862792969
-ddddddddddiiiiiiiiii----rt: linkdown----10.7221603394
-----rt: linkup----1.44195556641
-----rt: linkdown----3.89313697815
-----rt: linkup----1.28602981567
-ddddddddddddddddiiiiiiiiiiiiiiii----rt: linkdown----19.0808773041
-----rt: linkup----1.30891799927
-ddddddddddiiiiiiiiii----rt: linkdown----18.9728736877
-----rt: linkup----0.946998596191
-ddddddddddddddddddddddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii----rt: linkdown----36.6749763489
-----rt: linkup----1.94597244263
-----rt: linkdown----2.02107429504
-----rt: linkup----0.979900360107
-ddddddddddiiiiiiiiii----rt: linkdown----12.2818946838
-----rt: linkup----1.50513648987
-----rt: linkdown----5.37800788879
-----rt: linkup----1.73401832581
-ddddddddddiiiiiiiiii----rt: linkdown----7.6379776001
-----rt: linkup----0.98705291748
-----rt: linkdown----2.82406806946
-----rt: linkup----1.65200233459
-ddddddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiii----rt: linkdown----25.4487991333
-----rt: linkup----1.29389762878
-----rt: linkdown----9.86194610596
-----rt: linkup----0.881195068359
-----rt: linkdown----1.34086608887
-----rt: linkup----0.717163085938
-ddddddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiii----rt: linkdown----32.2859287262
-----rt: linkup----1.77502632141
-ddddddddddddddddddddiiiiiiiiiiiiiiiiiiii----rt: linkdown----23.1740474701
-----rt: linkup----0.88095664978
-----rt: linkdown----1.85799598694
-----rt: linkup----1.27983093262
-iiiiiiiiii----acl+lb+rt: new traffic----15.3028964996
-iiiiiiiiii----acl+lb+rt: new traffic----9.50598716736
-iiiiiiiiii----acl+lb+rt: new traffic----19.7978019714
-iiiiiiiiii----acl+lb+rt: new traffic----18.1319713593
-----acl+lb+rt: new traffic----16.9100761414
-iiiiiiiiii----acl+lb+rt: new traffic----21.0359096527
-iiiiii----acl+lb+rt: new traffic----19.5019245148
-iiiiiiiiii----acl+lb+rt: new traffic----19.3290710449
-ii----acl+lb+rt: new traffic----15.4221057892
+iiiiiiiiii----rt*tenant: route ins----47.0099449158
+iiiiiiiiii----rt*tenant: route ins----17.9860591888
+iiiiiiiiii----rt*tenant: route ins----19.9520587921
+iiiiiiiiii----rt*tenant: route ins----19.1140174866
+ii----rt*tenant: route ins----9.08899307251
+iiiiii----rt*tenant: route ins----10.1540088654
+iiiiiiiiii----rt*tenant: route ins----19.1380977631
+iiiiiiiiii----rt*tenant: route ins----19.5519924164
+iiiiiiiiii----rt*tenant: route ins----18.4409618378
+iiiiiiiiii----rt*tenant: route ins----21.7230319977
+iiiiiiiiii----rt*tenant: route ins----32.0448875427
+iiiiiiiiii----rt*tenant: route ins----20.0071334839
+iiiiiiiiii----rt*tenant: route ins----15.1660442352
+iiiiiiiiii----rt*tenant: route ins----17.8730487823
+iiiiiiiiii----rt*tenant: route ins----19.679069519
+iiiiii----rt*tenant: route ins----12.7449035645
+iiiiiiiiii----rt*tenant: route ins----17.3699855804
+iiiiii----rt*tenant: route ins----12.6540660858
+iiiiiiiiii----rt*tenant: route ins----17.8868770599
+iiiiiiiiii----rt*tenant: route ins----17.0061588287
+iiiiiiiiii----rt*tenant: route ins----17.9650783539
+iiiiiiiiii----rt*tenant: route ins----15.7709121704
+iiiiiiiiii----rt*tenant: route ins----19.0989971161
+iiiiiiiiii----rt*tenant: route ins----18.11003685
+iiiiiiiiii----rt*tenant: route ins----15.9599781036
+iiiiiiiiii----rt*tenant: route ins----20.201921463
+iiiiiiiiii----rt*tenant: route ins----17.7481174469
+iiiiiiiiii----rt*tenant: route ins----19.4969177246
+iiiiiiiiii----rt*tenant: route ins----18.4791088104
+iiiiiiiiii----rt*tenant: route ins----16.0870552063
+iiiiiiiiii----rt*tenant: route ins----17.7228450775
+iiiiiiiiii----rt*tenant: route ins----19.5119380951
+iiiiiiiiii----rt*tenant: route ins----17.40193367
+iiiiiiiiii----rt*tenant: route ins----18.7950134277
+iiiiiiiiii----rt*tenant: route ins----16.2918567657
+iiiiii----rt*tenant: route ins----13.1728649139
+iiiiiiiiii----rt*tenant: route ins----17.1849727631
+iiiiiiiiii----rt*tenant: route ins----16.4289474487
+iiiiiiiiii----rt*tenant: route ins----14.5308971405
+iiiiiiiiii----rt*tenant: route ins----18.5830593109
+iiiiiiiiii----rt*tenant: route ins----16.9699192047
+iiiiiiiiii----rt*tenant: route ins----13.6730670929
+iiiiiiiiii----rt*tenant: route ins----18.1159973145
+iiiiiiiiii----rt*tenant: route ins----17.410993576
+iiiiiiiiii----rt*tenant: route ins----14.0130519867
+----lb*tenant: check max load----0.698089599609
+----lb*tenant: re-balance----11.7709636688
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----37.5399589539
+----lb*tenant: check max load----0.694990158081
+----lb*tenant: re-balance----9.4690322876
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----34.2810153961
+----lb*tenant: check max load----0.72193145752
+----lb*tenant: re-balance----8.2540512085
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----34.7170829773
+----lb*tenant: check max load----0.68998336792
+----lb*tenant: re-balance----7.37190246582
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----36.0927581787
+----lb*tenant: check max load----0.450134277344
+----lb*tenant: re-balance----8.24499130249
+dddddddddd----(lb+rt)*tenant: re-balance----23.7939357758
+----lb*tenant: check max load----0.771045684814
+----lb*tenant: re-balance----9.73296165466
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----31.1801433563
+----lb*tenant: check max load----0.737905502319
+----lb*tenant: re-balance----10.3781223297
+dddddddddd----(lb+rt)*tenant: re-balance----26.6110897064
+----lb*tenant: check max load----0.918865203857
+----lb*tenant: re-balance----8.81004333496
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.8089466095
+----lb*tenant: check max load----0.823020935059
+----lb*tenant: re-balance----8.28981399536
+dddddddddd----(lb+rt)*tenant: re-balance----22.8288173676
+----lb*tenant: check max load----0.581026077271
+----lb*tenant: re-balance----9.66787338257
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.4157943726
+----lb*tenant: check max load----0.586032867432
+----lb*tenant: re-balance----8.52513313293
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.0061912537
+----lb*tenant: check max load----0.718116760254
+----lb*tenant: re-balance----8.91995429993
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----45.3147888184
+----lb*tenant: check max load----0.554084777832
+----lb*tenant: re-balance----7.70401954651
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----34.3489646912
+----lb*tenant: check max load----0.743865966797
+----lb*tenant: re-balance----6.93893432617
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----29.2460918427
+----lb*tenant: check max load----0.761032104492
+----lb*tenant: re-balance----9.15789604187
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.5199832916
+----lb*tenant: check max load----0.455141067505
+----lb*tenant: re-balance----7.98392295837
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.7889194489
+----lb*tenant: check max load----0.463008880615
+----lb*tenant: re-balance----7.49397277832
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----31.8131446838
+----lb*tenant: check max load----0.32901763916
+----lb*tenant: re-balance----7.87806510925
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----32.8619480133
+----lb*tenant: check max load----0.67400932312
+----lb*tenant: re-balance----8.47697257996
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----31.7409038544
+----lb*tenant: check max load----0.684022903442
+----lb*tenant: re-balance----7.06481933594
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----28.3606052399
+----lb*tenant: check max load----1.15084648132
+----lb*tenant: re-balance----7.85398483276
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----35.9010696411
+----lb*tenant: check max load----0.473976135254
+----lb*tenant: re-balance----10.8361244202
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----35.8691215515
+----lb*tenant: check max load----0.779151916504
+----lb*tenant: re-balance----9.57012176514
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----34.7681045532
+----lb*tenant: check max load----0.700950622559
+----lb*tenant: re-balance----9.32121276855
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----31.7053794861
+----lb*tenant: check max load----1.33800506592
+----lb*tenant: re-balance----8.16607475281
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----32.8259468079
+----lb*tenant: check max load----0.46706199646
+----lb*tenant: re-balance----7.72285461426
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----32.0746898651
+----lb*tenant: check max load----0.746011734009
+----lb*tenant: re-balance----7.94196128845
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----30.809879303
+----lb*tenant: check max load----0.470876693726
+----lb*tenant: re-balance----8.29100608826
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.5140228271
+----lb*tenant: check max load----0.707864761353
+----lb*tenant: re-balance----12.0799541473
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----35.9668731689
+----lb*tenant: check max load----0.500917434692
+----lb*tenant: re-balance----8.41903686523
+ddddddddddiiiiiiiiii----(lb+rt)*tenant: re-balance----33.9069366455
+----acl*tenant: check violation----0.582933425903
+----acl*tenant: fix violation----3.57007980347
+dddddddddd----acl+rt*tenant: fix violation----13.6671066284
+----acl*tenant: check violation----0.365018844604
+----acl*tenant: fix violation----2.44498252869
+dddddd----acl+rt*tenant: fix violation----10.4169845581
+----acl*tenant: check violation----0.571966171265
+----acl*tenant: fix violation----2.8440952301
+dddddddddd----acl+rt*tenant: fix violation----14.6541595459
+----acl*tenant: check violation----0.631093978882
+----acl*tenant: fix violation----3.04889678955
+dddddddddd----acl+rt*tenant: fix violation----16.4330005646
+----acl*tenant: check violation----0.669956207275
+----acl*tenant: fix violation----2.92611122131
+dddddddddd----acl+rt*tenant: fix violation----14.740228653
+----acl*tenant: check violation----0.500917434692
+----acl*tenant: fix violation----2.78306007385
+dddddddddd----acl+rt*tenant: fix violation----14.8651599884
+----acl*tenant: check violation----0.703811645508
+----acl*tenant: fix violation----2.86316871643
+dddddd----acl+rt*tenant: fix violation----12.9911899567
+----acl*tenant: check violation----0.613927841187
+----acl*tenant: fix violation----1.93405151367
+dddddddddd----acl+rt*tenant: fix violation----13.4100914001
+----acl*tenant: check violation----0.677108764648
+----acl*tenant: fix violation----2.86102294922
+dddddddddd----acl+rt*tenant: fix violation----13.9501094818
+----acl*tenant: check violation----0.571012496948
+----acl*tenant: fix violation----2.17700004578
+dddddd----acl+rt*tenant: fix violation----8.72302055359
+----acl*tenant: check violation----0.545978546143
+----acl*tenant: fix violation----2.88105010986
+dddddddddd----acl+rt*tenant: fix violation----15.3331756592
+----acl*tenant: check violation----1.62482261658
+----acl*tenant: fix violation----2.96115875244
+dddddddddd----acl+rt*tenant: fix violation----13.3080482483
+----acl*tenant: check violation----0.541210174561
+----acl*tenant: fix violation----3.68404388428
+dddddddddd----acl+rt*tenant: fix violation----17.9851055145
+----acl*tenant: check violation----0.643968582153
+----acl*tenant: fix violation----2.57301330566
+dddddddddd----acl+rt*tenant: fix violation----14.505147934
+----acl*tenant: check violation----0.58388710022
+----acl*tenant: fix violation----2.95495986938
+dddddddddd----acl+rt*tenant: fix violation----14.1379833221
+----acl*tenant: check violation----0.566959381104
+----acl*tenant: fix violation----3.50999832153
+dd----acl+rt*tenant: fix violation----6.67119026184

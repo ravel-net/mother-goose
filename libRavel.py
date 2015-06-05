@@ -117,6 +117,22 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
     fo.close ()
     print "--------------------> create_mininet_topo successful"
 
+def truncate_db (dbname):
+    try:
+        conn = psycopg2.connect(database= "postgres", user= "mininet")
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor()
+
+        cur.execute ("truncate acl_tb, cf, clock, hosts, lb_tb, mt_tb, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, switches, t1, t2, t3, tacl_tb,tenant_hosts, tlb_tb, tm, tm_delta, tp, utm;")
+
+        print "--------------------> truncate_db successful"
+
+    except psycopg2.DatabaseError, e:
+        print "clean_db error"
+        print 'Error %s' % e    
+
+    finally:
+        if conn: conn.close()
 
 def clean_db (dbname):
     try:
@@ -428,6 +444,26 @@ def batch_test (dbname, username, rounds, default):
     f = open(logfile, 'a')
 
 
+    def init_tacl (cur=cur):
+        cur.execute ("select distinct host1, host2 from tenant_policy ;")
+        cs = cur.fetchall ()
+        ends = [[h['host1'], h['host2']] for h in cs]
+        
+        foo = [0, 1]
+        for i in range (len (ends)):
+            [e1, e2] = ends[i]
+            is_inblacklist = random.choice(foo)
+            cur.execute ("INSERT INTO tacl_tb VALUES ("+ str (e1)+ ","+ str (e2) + "," + str (is_inblacklist) +");") 
+
+    def init_tlb (cur=cur):
+        cur.execute ("select distinct host2 from tenant_policy ;")
+        cs = cur.fetchall ()
+        ends = [h['host2'] for h in cs]
+        print ends
+        
+        for e in ends:
+            cur.execute ("INSERT INTO tlb_tb VALUES ("+ str (e)+ ");")
+
     def init_acl (cur=cur):
         cur.execute ("select distinct host1, host2 from utm ;")
         cs = cur.fetchall ()
@@ -447,6 +483,33 @@ def batch_test (dbname, username, rounds, default):
         for i in range (len (ends)):
             e = ends[i]
             cur.execute ("INSERT INTO lb_tb VALUES ("+ str (e)+ ");")
+
+    def op_tlb (cur=cur, f=f):
+        t1 = time.time ()
+        cur.execute ("select * from tlb order by load DESC limit 1;")
+        t2 = time.time ()
+        f.write ('----lb*tenant: check max load----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+        max_load = cur.fetchall ()[0]['load']
+
+        cur.execute ("select sid from tlb where load = "+str (max_load)+" limit 1;")
+        s_id = cur.fetchall ()[0]['sid']
+
+        t1 = time.time ()
+        cur.execute ("update tlb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
+        t2 = time.time ()
+        f.write ('----lb*tenant: re-balance----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        t3 = time.time ()
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+        t4 = time.time ()
+        f.write ('----(lb+rt)*tenant: re-balance----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        # f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.flush ()
+
 
     def op_lb (cur=cur, f=f):
         t1 = time.time ()
@@ -473,6 +536,32 @@ def batch_test (dbname, username, rounds, default):
         f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
         f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
         f.flush ()
+
+    def op_tacl (cur=cur, f=f):
+
+        t1 = time.time ()
+        cur.execute ("select end1, end2 from tacl limit 1;")
+        t2 = time.time ()
+        f.write ('----acl*tenant: check violation----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+        t = cur.fetchall ()[0]
+        e1 = t['end1']
+        e2 = t['end2']
+
+        t1 = time.time ()
+        cur.execute ("update tacl set isviolated = 0 where end1 = "+ str (e1) +" and end2 = "+str (e2)+";")
+        t2 = time.time ()
+        f.write ('----acl*tenant: fix violation----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        t3 = time.time ()
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+        t4 = time.time ()
+        f.write ('----acl+rt*tenant: fix violation----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.flush ()
+
 
     def op_acl (cur=cur, f=f):
 
@@ -534,6 +623,19 @@ def batch_test (dbname, username, rounds, default):
         residual_load = switch_size * max_load - agg_load
         return residual_load
 
+    def routing_ins_acl_lb_tenant (h1s, h2s, fid, cur=cur, f=f):
+        h1 = random.sample(h1s, 1)[0]
+        h2 = random.sample(h2s, 1)[0]
+
+        t1 = time.time ()
+        cur.execute ("INSERT INTO tenant_policy VALUES ("+str (fid) +"," +str (h1) + "," + str (h2)+");")
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO t1 VALUES (" + str (ct+1) + ", 'on');")
+        t2 = time.time ()
+        f.write ('----(acl+lb+rt)*tenant: route ins----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
 
     def routing_ins_acl_lb (h1s, h2s, fid, cur=cur, f=f):
         h1 = random.sample(h1s, 1)[0]
@@ -545,7 +647,7 @@ def batch_test (dbname, username, rounds, default):
         ct = cur.fetchall () [0]['max'] 
         cur.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
         t2 = time.time ()
-        f.write ('----acl+lb+rt: new traffic----' + str ((t2-t1)*1000) + '\n')
+        f.write ('----acl+lb+rt: route ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def routing_del (fid, cur=cur, hosts=hosts, f=f):
@@ -594,25 +696,6 @@ def batch_test (dbname, username, rounds, default):
         # print 'link_up'
         # print cs
 
-    def tenant_fullmesh_clean (cur = cur):
-        cur.execute ("truncate tm;")
-        cur.execute ("truncate utm;")
-        cur.execute ("truncate cf;")
-        cur.execute ("truncate tenant_hosts;")
-
-    def tenant_fullmesh (hosts, cur = cur, f=f):
-        l = len (hosts)
-        for i in range (l):
-            for j in range (i+1,l):
-                t1 = time.time ()
-                cur.execute ("INSERT INTO tenant_policy values (%s,%s);",([int (hosts[i]), int (hosts[j])]))
-                t2 = time.time ()
-                f.write ('----tenant_fullmesh_ins----' + str ((t2-t1)*1000) + '\n')
-                f.flush ()
-
-    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
-
-
     def primitive (rounds):
         for i in range (rounds):
             routing_ins (i+1)
@@ -642,18 +725,72 @@ def batch_test (dbname, username, rounds, default):
         for i in range (capacity):
             routing_ins_acl_lb (h1s, h2s, int (rounds + i + 1))
 
-    def tenant (rounds):
-        load_schema (dbname, username, '/home/mininet/ravel/sql_scripts/tenant.sql')
+    def tenant_fullmesh_clean (cur = cur):
+        cur.execute ("truncate tm;")
+        cur.execute ("truncate utm;")
+        cur.execute ("truncate cf;")
+        cur.execute ("truncate tenant_hosts;")
 
+    def tenant_fullmesh (hosts, cur = cur, f=f):
+        cur.execute ("select max(fid) from utm ;")
+        t = cur.fetchall ()
+        if t[0]['max'] == None:
+            fid = 1
+        else:
+            fid = int (t[0]['max'])  + 1
 
+        cur.execute ("select max (counts) from clock;")
+        ct = cur.fetchall ()[0]['max'] + 1
+
+        l = len (hosts)
+        for i in range (l):
+            for j in range (i+1,l):
+                print "tenant_fullmesh: [" + str (hosts[i]) + "," + str (hosts[j]) + "]"
+                t1 = time.time ()
+                cur.execute ("INSERT INTO tenant_policy values (%s,%s,%s);",([str (fid) ,int (hosts[i]), int (hosts[j])]))
+                cur.execute ("INSERT INTO p_spv values (%s,'on');",([ct]))
+                t2 = time.time ()
+                f.write ('----rt*tenant: route ins----' + str ((t2-t1)*1000) + '\n')
+                f.flush ()
+                ct += 1
+                fid += 1
+
+    def tenant (size):
+
+        def init_tenant (size):
+            selected_hosts = load_tenant_schema (dbname, username, size)
+            print selected_hosts
+            tenant_fullmesh (selected_hosts)
+            print "--------------------> init_tenant successful"
+
+        init_tenant (size)
+        init_tacl ()
+        init_tlb ()
+
+        for i in range (size*3):
+            op_tlb ()
+
+        cur.execute("select count(*) from tacl;")
+        ct = cur.fetchall () [0]['count']
+        for i in range (ct):
+            op_tacl ()
+        
     # primitive
+    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
     if default == 4:
+        # primitive (rounds)
+        # s = raw_input("primitive or tenant: (p or t)")
+        s = 't'
+        if s == 'p':
+            primitive (rounds)
+            logdest += 'primitive'
 
-        primitive (rounds)
-        tenant (rounds)
+        elif s == 't':
+            tenant (10)
+            logdest += 'tenant'
 
-        logdest += 'primitive'
         f.close ()
+        
         os.system ("cp "+ logfile + ' ' + logdest)
         os.system ("sudo cp "+ logdest + ' ' + ' /media/sf_share/ravel_plot/')
 
@@ -767,7 +904,7 @@ def load_mt_schema (dbname, username):
     conn.close()
 
 
-def init_tenant (dbname, username, size):
+def init_tenant2 (dbname, username, size):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -791,60 +928,13 @@ def load_tenant_schema (dbname, username, size):
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+    load_schema (dbname, username, '/home/mininet/ravel/sql_scripts/tenant.sql')
+
     cur.execute ("SELECT * FROM uhosts;")
     cs = cur.fetchall ()
     hosts = [int (s['u_hid']) for s in cs]
 
-    # cur.execute ("SELECT count(*) FROM switches;")
-    # cs = cur.fetchall ()
-    # ct = int (cs[0][0]) 
     selected_hosts = [ hosts[i] for i in random.sample(xrange(len(hosts)), size) ]
-    # print selected_hosts
-
-    cur.execute (""" 
-
-DROP TABLE IF EXISTS tenant_hosts CASCADE;
-CREATE UNLOGGED TABLE tenant_hosts (
-       hid	integer,
-       PRIMARY key (hid)
-);
-
-CREATE OR REPLACE VIEW tenant_policy AS (
-       SELECT DISTINCT host1, host2 FROM rtm
-       WHERE host1 IN (SELECT * FROM tenant_hosts)
-       	     AND host2 IN (SELECT * FROM tenant_hosts)
-);
-
-CREATE OR REPLACE FUNCTION tenant_policy_ins_fun() RETURNS TRIGGER AS
-$$
-plpy.notice ("tenant_policy_ins_fun")
-
-h1 = TD["new"]["host1"]
-h2 = TD["new"]["host2"]
-
-hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
-hosts = [h['hid'] for h in hs]
-
-fid = int (plpy.execute ("select count(*) +1 as c from rtm")[0]['c']) 
-
-if (h1 in hosts) & (h2 in hosts):
-    plpy.execute ("INSERT INTO rtm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
-
-return None;
-$$
-LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
-CREATE TRIGGER tenant_policy_ins_trigger
-     INSTEAD OF INSERT ON tenant_policy
-     FOR EACH ROW
-   EXECUTE PROCEDURE tenant_policy_ins_fun();
-
-CREATE OR REPLACE RULE tenant_policy_del AS
-       ON DELETE TO tenant_policy
-       DO INSTEAD
-       DELETE FROM rtm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
-
-""")
 
     for h in selected_hosts:
         cur.execute ("insert into tenant_hosts values (" + str (h) + ");")
@@ -875,3 +965,49 @@ def perform_test (dbname, username):
         elif n.strip () == 't':
             print 'play with dc tenant'
             load_tenant_schema (dbname, username)
+
+
+#     cur.execute (""" 
+
+# DROP TABLE IF EXISTS tenant_hosts CASCADE;
+# CREATE UNLOGGED TABLE tenant_hosts (
+#        hid	integer,
+#        PRIMARY key (hid)
+# );
+
+# CREATE OR REPLACE VIEW tenant_policy AS (
+#        SELECT DISTINCT host1, host2 FROM rtm
+#        WHERE host1 IN (SELECT * FROM tenant_hosts)
+#        	     AND host2 IN (SELECT * FROM tenant_hosts)
+# );
+
+# CREATE OR REPLACE FUNCTION tenant_policy_ins_fun() RETURNS TRIGGER AS
+# $$
+# plpy.notice ("tenant_policy_ins_fun")
+
+# h1 = TD["new"]["host1"]
+# h2 = TD["new"]["host2"]
+
+# hs = plpy.execute ("SELECT hid FROM tenant_hosts;")
+# hosts = [h['hid'] for h in hs]
+
+# fid = int (plpy.execute ("select count(*) +1 as c from rtm")[0]['c']) 
+
+# if (h1 in hosts) & (h2 in hosts):
+#     plpy.execute ("INSERT INTO rtm values (" + str (fid)  + "," +str (h1)+ "," + str (h2) + ");")
+
+# return None;
+# $$
+# LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+# CREATE TRIGGER tenant_policy_ins_trigger
+#      INSTEAD OF INSERT ON tenant_policy
+#      FOR EACH ROW
+#    EXECUTE PROCEDURE tenant_policy_ins_fun();
+
+# CREATE OR REPLACE RULE tenant_policy_del AS
+#        ON DELETE TO tenant_policy
+#        DO INSTEAD
+#        DELETE FROM rtm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
+
+# """)

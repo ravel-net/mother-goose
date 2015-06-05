@@ -78,6 +78,15 @@ def procedure ():
                 break
 
 def batch (l, rounds):
+
+    for dbname in l:
+        truncate_db (dbname)
+
+    for dbname in l:
+        print "for " + dbname + " batch_test:"
+        batch_test (dbname, username, rounds, 4)
+
+def gdb (l, rounds):
     def generate_db (k_size, dbname, username):
         clean_db (dbname)
         create_db (dbname)
@@ -90,23 +99,32 @@ def batch (l, rounds):
         print "for " + dbname + ":"
         generate_db (k_size, dbname, 'mininet')
 
-    for dbname in l:
-        print "for " + dbname + " batch_test:"
-        batch_test (dbname, username, rounds, 4)
+
+# def batch_tenant (l, size):
+
+#     def init_tenant (size, dbname, username):
+#         selected_hosts = load_tenant_schema (dbname, username, size)
+
+#     for dbname in l:
+#         init_tenant (size, dbname, 'mininet')
+#         print "init_tenant for " + dbname
 
 if __name__ == '__main__':
+    l1 = ['fattree16', 'fattree32', 'fattree64']
+    l2 = ['fattree4', 'fattree8', 'fattree16']
+    l3 = ['fattree4']
 
     while True:
-        m = raw_input ("batch, interactive, or exit? (b, i, e) \n")
+        m = raw_input ("batch, interactive, generate_db or exit? (b, i, g, e) \n")
 
         if m == 'i':
             procedure ()
 
         elif m == 'b':
-            l1 = ['fattree16', 'fattree32', 'fattree64']
-            l2 = ['fattree4', 'fattree8', 'fattree16']
-            l3 = ['fattree4']
-            batch (l3, 30)
+            batch (l2, 30)
+
+        elif m == 'g':
+            gdb (l1,30)
 
         elif m == 'e':
             break
