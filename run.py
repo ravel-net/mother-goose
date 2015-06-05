@@ -77,7 +77,7 @@ def procedure ():
                 kill_pox_module ()
                 break
 
-def batch (l):
+def batch (l, rounds):
     def generate_db (k_size, dbname, username):
         clean_db (dbname)
         create_db (dbname)
@@ -92,7 +92,7 @@ def batch (l):
 
     for dbname in l:
         print "for " + dbname + " batch_test:"
-        batch_test (dbname, username, 30, 4)
+        batch_test (dbname, username, rounds, 4)
 
 if __name__ == '__main__':
 
@@ -105,7 +105,8 @@ if __name__ == '__main__':
         elif m == 'b':
             l1 = ['fattree16', 'fattree32', 'fattree64']
             l2 = ['fattree4', 'fattree8', 'fattree16']
-            batch (l2)
+            l3 = ['fattree4']
+            batch (l3, 30)
 
         elif m == 'e':
             break

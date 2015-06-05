@@ -153,8 +153,75 @@ CREATE OR REPLACE RULE acl_constaint2 AS
 	    );
 
 ----------------------------------------------------------------------
--- tenants
+-- tenant orchestration
 ----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS t1 CASCADE;
+CREATE UNLOGGED TABLE t1 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS t2 CASCADE;
+CREATE UNLOGGED TABLE t2 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+DROP TABLE IF EXISTS t3 CASCADE;
+CREATE UNLOGGED TABLE t3 (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+CREATE OR REPLACE RULE tlb_constraint AS
+       ON INSERT TO t1
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           UPDATE tlb SET load = 1 WHERE load > 1;
+	   UPDATE t1 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE t12 AS
+       ON UPDATE TO t1
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO t2 values (NEW.counts, 'on');
+
+CREATE OR REPLACE RULE tacl_constraint AS
+       ON INSERT TO t2
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           UPDATE tacl SET isviolated = 0 WHERE isviolated = 1;
+	   UPDATE t2 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE t23 AS
+       ON UPDATE TO t2
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO t3 values (NEW.counts, 'on');
+
+CREATE TRIGGER trt_constraint_trigger
+     AFTER INSERT ON t3
+     FOR EACH ROW
+   EXECUTE PROCEDURE spv_constraint1_fun();
+
+CREATE OR REPLACE RULE rt_constraint AS
+       ON INSERT TO t3
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+	   UPDATE t3 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+CREATE OR REPLACE RULE t3c AS
+       ON UPDATE TO t3
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO clock values (NEW.counts);
 
 -- DROP TABLE IF EXISTS tenant_hosts CASCADE;
 -- CREATE UNLOGGED TABLE tenant_hosts (

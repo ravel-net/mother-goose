@@ -680,11 +680,18 @@ CREATE UNLOGGED TABLE lb_tb (
        -- nid 	integer
 );
 
+-- CREATE OR REPLACE VIEW lb2 AS(
+--        SELECT sid, count (*) AS load 
+--        FROM lb_tb, utm
+--        WHERE lb_tb.sid = utm.host2
+--        GROUP BY sid
+--        );
+
 CREATE OR REPLACE VIEW lb AS(
-       SELECT sid, count (*) AS load 
-       FROM lb_tb, utm
-       WHERE lb_tb.sid = utm.host2
-       GROUP BY sid
+       SELECT sid,
+       	      (SELECT count(*) FROM utm
+	       WHERE host2 = sid) AS load
+       FROM lb_tb
        );
 
 -- CREATE OR REPLACE RULE lb2utm AS
@@ -786,7 +793,7 @@ CREATE OR REPLACE RULE lb_constraint AS
        ON INSERT TO p1
        WHERE (NEW.status = 'on')
        DO ALSO (
-           UPDATE lb SET load = 3 WHERE load > 3;
+           UPDATE lb SET load = 1 WHERE load > 1;
 	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
 	  );
 

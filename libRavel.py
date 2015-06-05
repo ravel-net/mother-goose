@@ -391,7 +391,7 @@ def load_schema (dbname, username, sql_script):
         dbscript  = open (sql_script,'r').read()
         cur.execute(dbscript)
 
-        print "--------------------> load_schema successful"
+        print "--------------------> load_schema successful " + sql_script
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
     finally:
@@ -503,13 +503,49 @@ def batch_test (dbname, username, rounds, default):
     def routing_ins (fid, cur=cur, hosts=uhosts, f=f):
 
         [h1, h2] = random.sample(uhosts, 2)
-        # indices = random.sample(range(len(hosts)), 2)
-        # [h1,h2] = [hosts[i] for i in sorted(indices)]
 
         t1 = time.time ()
         cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (fid),int (h1),int (h2)]))
         t2 = time.time ()
         f.write ('----rt: route ins----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+    def init_acl_lb (cur=cur):
+        cur.execute ("select sum(load) from lb ;")
+        agg_load = cur.fetchall ()[0]['sum']
+
+        cur.execute ("select count(*) from lb ;")
+        switch_size = cur.fetchall ()[0]['count']
+
+        cur.execute ("select max(load) from lb;")
+        max_load = cur.fetchall ()[0]['max']
+        print "max_load is: " + str (max_load)
+
+        cur.execute (""" 
+        CREATE OR REPLACE RULE lb_constraint AS
+        ON INSERT TO p1
+        WHERE (NEW.status = 'on')
+        DO ALSO (
+            UPDATE lb SET load = """ +str (max_load+1)+ """ WHERE load > """ +str (max_load+1)+""";
+	    UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
+	   );        
+""")
+        
+        residual_load = switch_size * max_load - agg_load
+        return residual_load
+
+
+    def routing_ins_acl_lb (h1s, h2s, fid, cur=cur, f=f):
+        h1 = random.sample(h1s, 1)[0]
+        h2 = random.sample(h2s, 1)[0]
+
+        t1 = time.time ()
+        cur.execute ("INSERT INTO utm VALUES ("+str (fid) +"," +str (h1) + "," + str (h2)+");")
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max'] 
+        cur.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+        t2 = time.time ()
+        f.write ('----acl+lb+rt: new traffic----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
 
     def routing_del (fid, cur=cur, hosts=hosts, f=f):
@@ -594,13 +630,27 @@ def batch_test (dbname, username, rounds, default):
         for i in range (rounds):
             link_updown ('rt')
 
+        capacity = init_acl_lb ()
+        print "capacity is: "+ str (capacity)
+        cur.execute ("SELECT DISTINCT end1 FROM acl_tb;")
+        cs = cur.fetchall ()
+        h1s = [h['end1'] for h in cs]
+        cur.execute ("SELECT DISTINCT end2 FROM acl_tb;")
+        cs = cur.fetchall ()
+        h2s = [h['end2'] for h in cs]
+        # print h2s
+        for i in range (capacity):
+            routing_ins_acl_lb (h1s, h2s, int (rounds + i + 1))
+
+    def tenant (rounds):
+        load_schema (dbname, username, '/home/mininet/ravel/sql_scripts/tenant.sql')
+
+
     # primitive
     if default == 4:
 
-        # indices = random.sample(range(len(hosts)), 2)
-        # print indices
-        # [h1,h2] = [hosts[i] for i in sorted(indices)]
         primitive (rounds)
+        tenant (rounds)
 
         logdest += 'primitive'
         f.close ()
