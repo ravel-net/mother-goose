@@ -54,18 +54,16 @@ def procedure ():
                 batch_test (dbname, username, int (r), 1)
 
             elif m2.strip () == 'i':
-                while True:
-                    m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
-                    if m3.strip () == 'm':
-                        load_mt_schema (dbname, username)
-                        break
-                    elif m3.strip () == 't':
-                        # load_tenant_schema (dbname, username, 10)
-                        load_schema (dbname, username, tenant)
-                        init_tenant (dbname, username, 6)
-                        break
-                    elif m3.strip () == 'e':
-                        break
+                batch_test (dbname, username, 1, 1)
+                # while True:
+                #     m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
+                #     if m3.strip () == 'm':
+                #         load_mt_schema (dbname, username)
+                #         break
+                #     elif m3.strip () == 't':
+                #         break
+                #     elif m3.strip () == 'e':
+                #         break
 
         elif m == 'e':
             t = raw_input("clean database? ('y'/'n'): ")
@@ -98,7 +96,7 @@ def gdb (l, rounds):
 if __name__ == '__main__':
     l1 = ['fattree16', 'fattree32', 'fattree64']
     l2 = ['fattree4', 'fattree8', 'fattree16']
-    l3 = ['fattree4']
+    l3 = ['fattree16']
 
     while True:
         m = raw_input ("batch, interactive, generate_db or exit? (b, i, g, e) \n")
@@ -110,7 +108,7 @@ if __name__ == '__main__':
             batch (l1, 30)
 
         elif m == 'g':
-            gdb (l2,30)
+            gdb (l3,30)
 
         elif m == 'e':
             break

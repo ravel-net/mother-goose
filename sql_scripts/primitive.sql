@@ -109,8 +109,8 @@ CREATE UNLOGGED TABLE tm (
        fid      integer,
        src	integer,
        dst	integer,
-       vol	integer
-       -- PRIMARY KEY (fid)
+       vol	integer,
+       PRIMARY KEY (fid)
 );
 
 DROP TABLE IF EXISTS tm_delta CASCADE;
@@ -144,8 +144,8 @@ DROP TABLE IF EXISTS utm CASCADE;
 CREATE UNLOGGED TABLE utm (
        fid      integer,
        host1	integer,
-       host2	integer
-       -- PRIMARY KEY (fid)
+       host2	integer,
+       PRIMARY KEY (fid)
 );
 
 CREATE OR REPLACE RULE utm_in_rule AS 
@@ -197,7 +197,8 @@ DROP TABLE IF EXISTS rtm CASCADE;
 CREATE UNLOGGED TABLE rtm (
        fid      integer,
        host1	integer,
-       host2	integer
+       host2	integer,
+       PRIMARY key (fid)
 );
 
 CREATE OR REPLACE RULE rtm_ins AS
@@ -651,7 +652,8 @@ DROP TABLE IF EXISTS acl_tb CASCADE;
 CREATE UNLOGGED TABLE acl_tb (
        end1	      integer,
        end2 	      integer,
-       inBlklist      integer
+       inBlklist      integer,
+       PRIMARY key (end1, end2)		
 );
 
 CREATE OR REPLACE VIEW acl AS(
@@ -676,7 +678,8 @@ CREATE OR REPLACE RULE acl2utm AS
 
 DROP TABLE IF EXISTS lb_tb CASCADE;
 CREATE UNLOGGED TABLE lb_tb (
-       sid	integer
+       sid	integer,
+       PRIMARY key (sid)
        -- nid 	integer
 );
 
@@ -793,7 +796,7 @@ CREATE OR REPLACE RULE lb_constraint AS
        ON INSERT TO p1
        WHERE (NEW.status = 'on')
        DO ALSO (
-           UPDATE lb SET load = 1 WHERE load > 1;
+           UPDATE lb SET load = 2 WHERE load > 2;
 	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
 	  );
 
@@ -842,5 +845,38 @@ plpy.notice ("engage ravel protocolp1_fun starting with p1")
 ct = plpy.execute("""select max (counts) from clock""")[0]['max']
 plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
 return None;
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION ravelall() RETURNS void AS
+$$
+plpy.notice ("engage ravel protocol for talb, tacl, rt")
+
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p1 VALUES (" + str (ct+1) + ", 'on');")
+
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION ravel() RETURNS void AS
+$$
+plpy.notice ("engage ravel protocol for applications and rt")
+
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+
+$$
+LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION clean() RETURNS void AS
+$$
+plpy.notice ("clean db")
+
+plpy.notice ("DELETE FROM utm;")
+
+ct = plpy.execute("""select max (counts) from clock""")[0]['max']
+plpy.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;

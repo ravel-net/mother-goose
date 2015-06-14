@@ -819,7 +819,7 @@ def batch_test (dbname, username, rounds, default):
         conn.close()
 
     while default == 1:
-        n = raw_input("select test actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n")
+        n = raw_input("select actions: \n\t\ r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n\t ct (clean tenant)")
 
         if n == 'r':
             primitive (rounds)
@@ -836,14 +836,24 @@ def batch_test (dbname, username, rounds, default):
 
         elif n == 't':
 
-            s = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
-            selected_hosts = load_tenant_schema (dbname, username, int (s))
-            tenant_fullmesh (selected_hosts)
+            def init_tenant (size):
+                selected_hosts = load_tenant_schema (dbname, username, size)
+                print selected_hosts
+                tenant_fullmesh (selected_hosts)
+                print "--------------------> init_tenant successful"
+
+            size = raw_input("select tenant size (1 - " + str (len (hosts) -1) + "): ")
+            init_tenant (int (size))
+            init_tacl ()
+            init_tlb ()
+
+            # logdest += 'tenant' + str (s)
+            # selected_hosts = load_tenant_schema (dbname, username, int (s))
+            # tenant_fullmesh (selected_hosts)
             # for i in range (0,rounds):
             #     link_updown ('tenant_fullmesh')
+        elif n == 'ct':
             tenant_fullmesh_clean ()
-
-            logdest += 'tenant' + str (s)
 
         elif n == 'm':
             selected_hosts = load_tenant_schema (dbname, username, 10)
