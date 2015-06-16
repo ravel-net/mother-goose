@@ -1,3 +1,76 @@
+def add_cf2flows (dbname, username):
+    conn = psycopg2.connect(database= dbname, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor()
+
+    add_flow = """
+CREATE OR REPLACE FUNCTION add_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("hello, add_flow_fun")
+f = TD["new"]["pid"]
+s = TD["new"]["sid"]
+n = TD["new"]["nid"]
+
+u = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (n))
+outport = str(u[0]['port'])
+plpy.notice (str (u))
+v = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (f))
+inport = str (v[0]['port'])
+plpy.notice (str (v))
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
+
+import os
+import sys
+
+x1 = os.system (cmd1)
+plpy.notice (cmd1)
+
+x2 = os.system (cmd2)
+plpy.notice (cmd2)
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;"""
+
+    del_flow = """
+CREATE OR REPLACE FUNCTION del_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("invoke del_flow_fun")
+
+f = TD["old"]["pid"]
+s = TD["old"]["sid"]
+n = TD["old"]["nid"]
+
+u = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (n))
+outport = str(u[0]['port'])
+
+v = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (f))
+inport = str (v[0]['port'])
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+
+import os
+import sys
+import time
+
+x1 = os.system (cmd1)
+plpy.notice (str (x1))
+x1 = os.system (cmd2)
+plpy.notice (str (x1))
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+"""
+    cur.execute (add_flow)
+    cur.execute (del_flow)
+    print "--------------------> add cf2flow entries functions successful"
+    
+
 def select_dbname ():
     global monitor_mininet
     global switch_size
@@ -791,7 +864,8 @@ def batch_test (dbname, username, rounds, default):
             routing_ins_acl_lb_tenant (thosts, fid)
         
     # primitive
-    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
+    # logdest = os.getcwd () + '/data/' + logdestfile + '.log'
+
     if default == 4:
         # primitive (rounds)
         # s = raw_input("primitive or tenant: (p or t)")
@@ -817,6 +891,22 @@ def batch_test (dbname, username, rounds, default):
 
         print "--------------------> batch_test successful"
         conn.close()
+
+
+    while default == 5:
+        n = raw_input("play or exit (p, e)")
+        if n == 'p':
+            pass
+        elif n == 'e':
+            t = raw_input("clean database? ('y'/'n'): ")
+            if t.strip () == 'y':
+                kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                kill_pox_module ()
+                break
+
 
     while default == 1:
         n = raw_input("select actions: \n\t\ r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n\t ct (clean tenant)")

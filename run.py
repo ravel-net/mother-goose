@@ -25,15 +25,23 @@ tenant = "/home/mininet/ravel/sql_scripts/tenant.sql"
 # without mininet operation, that is, no actual add_flow / del_flow,
 # just absolute value of postgres time
 
-def procedure_interactive ():
+# def procedure_interactive ():
+#     dbname = select_dbname ()
+#     create_db (dbname)
+#     add_pgrouting_plpy_plsh_extension (dbname, username)
+#     load_schema (dbname, username, sql_script1)
+#     # load_schema (dbname, username, sql_script2)
+#     load_database (dbname, username)
+#     perform_test (dbname, username)
 
+def mininet_interactive ():
     dbname = select_dbname ()
     create_db (dbname)
     add_pgrouting_plpy_plsh_extension (dbname, username)
-    load_schema (dbname, username, sql_script1)
-    # load_schema (dbname, username, sql_script2)
-    load_database (dbname, username)
-    perform_test (dbname, username)
+    load_schema (dbname, username, primitive)
+    add_cf2flows (dbname, username)
+    init_database (dbname, username)
+    batch_test (dbname, username, 1, 5)
 
 def procedure ():
 
@@ -42,19 +50,21 @@ def procedure ():
     add_pgrouting_plpy_plsh_extension (dbname, username)
 
     while True:
-        m = raw_input ("test or exit? (t/e) \n")
-        if m == 't' :
-            if database_exists == 0:
-                load_schema (dbname, username, primitive)
-                init_database (dbname, username)
+        if database_exists == 0:
+            load_schema (dbname, username, primitive)
+            init_database (dbname, username)
 
-            m2 = raw_input ("interactive or batch? (i/b) \n")
-            if m2.strip () == 'b':
-                r = raw_input ("input rounds #:\n")
-                batch_test (dbname, username, int (r), 1)
+        m = raw_input ("batch, interactive, or exit? (b/i/e) \n")
+        # if m == 't' :
+            # m2 = raw_input ("interactive or batch? (i/b) \n")
+        if m.strip () == 'b':
+            r = raw_input ("input rounds #:\n")
+            batch_test (dbname, username, int (r), 1)
+            break
 
-            elif m2.strip () == 'i':
-                batch_test (dbname, username, 1, 1)
+        elif m.strip () == 'i':
+            batch_test (dbname, username, 1, 1)
+            break
                 # while True:
                 #     m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
                 #     if m3.strip () == 'm':
@@ -99,7 +109,7 @@ if __name__ == '__main__':
     l3 = ['fattree16']
 
     while True:
-        m = raw_input ("batch, interactive, generate_db or exit? (b, i, g, e) \n")
+        m = raw_input ("batch, interactive, generate_db, mininet, or exit? (b, i, g, m, e) \n")
 
         if m == 'i':
             procedure ()
@@ -109,6 +119,9 @@ if __name__ == '__main__':
 
         elif m == 'g':
             gdb (l3,30)
+        
+        elif m == 'm':
+            mininet_interactive ()
 
         elif m == 'e':
             break

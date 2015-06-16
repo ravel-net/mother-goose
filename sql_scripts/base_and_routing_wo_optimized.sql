@@ -374,6 +374,36 @@ $$ LANGUAGE SQL;
 -- add_flow triggers
 ------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION add_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("hello, add_flow_fun")
+f = TD["new"]["pid"]
+s = TD["new"]["sid"]
+n = TD["new"]["nid"]
+
+u = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (n))
+outport = str(u[0]['port'])
+plpy.notice (str (u))
+v = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (f))
+inport = str (v[0]['port'])
+plpy.notice (str (v))
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
+
+import os
+import sys
+
+x1 = os.system (cmd1)
+plpy.notice (cmd1)
+
+x2 = os.system (cmd2)
+plpy.notice (cmd2)
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
 -- CREATE OR REPLACE FUNCTION add_flow_fun ()
 -- RETURNS TRIGGER
 -- AS $$
@@ -389,55 +419,17 @@ $$ LANGUAGE SQL;
 -- cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
 -- cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
 
--- import os
--- import sys
--- import time
-
 -- fo = open ('/home/mininet/ravel/log.txt', 'a')
 -- def logfunc(msg,f=fo):
---     f.write(msg+'\n')
+--     f.write(msg)
 
--- t1 = time.time ()
--- x1 = os.system (cmd1)
--- t2 = time.time ()
--- logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
-
--- t1 = time.time ()
--- x2 = os.system (cmd2)
--- t2 = time.time ()
--- logfunc ('add-flow s' + str (s) + '(ms): ' + str ((t2-t1)*1000))
+-- logfunc ('i')
+-- logfunc ('i')
 
 -- fo.flush ()
 
 -- return None;
 -- $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION add_flow_fun ()
-RETURNS TRIGGER
-AS $$
-f = TD["new"]["pid"]
-s = TD["new"]["sid"]
-n = TD["new"]["nid"]
-
-u = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (n))
-outport = str(u[0]['port'])
-v = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (f))
-inport = str (v[0]['port'])
-
-cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
-cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
-
-fo = open ('/home/mininet/ravel/log.txt', 'a')
-def logfunc(msg,f=fo):
-    f.write(msg)
-
-logfunc ('i')
-logfunc ('i')
-
-fo.flush ()
-
-return None;
-$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 CREATE TRIGGER add_flow_trigger
      AFTER INSERT ON cf
@@ -448,9 +440,47 @@ CREATE TRIGGER add_flow_trigger
 -- del_flow triggers
 ------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION del_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("invoke del_flow_fun")
+
+f = TD["old"]["pid"]
+s = TD["old"]["sid"]
+n = TD["old"]["nid"]
+
+u = plpy.execute("""\
+         select port
+         from get_port (""" +str (s)+""")  
+         where nid = """ +str (n))
+outport = str(u[0]['port'])
+
+v = plpy.execute("""\
+         select port
+         from get_port (""" +str (s)+""")
+         where nid = """ +str (f))
+inport = str (v[0]['port'])
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+
+import os
+import sys
+import time
+
+x1 = os.system (cmd1)
+plpy.notice (str (x1))
+x1 = os.system (cmd2)
+plpy.notice (str (x1))
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
 -- CREATE OR REPLACE FUNCTION del_flow_fun ()
 -- RETURNS TRIGGER
 -- AS $$
+-- plpy.notice ("invoke del_flow_fun")
+
 -- f = TD["old"]["pid"]
 -- s = TD["old"]["sid"]
 -- n = TD["old"]["nid"]
@@ -493,40 +523,40 @@ CREATE TRIGGER add_flow_trigger
 -- return None;
 -- $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION del_flow_fun ()
-RETURNS TRIGGER
-AS $$
-f = TD["old"]["pid"]
-s = TD["old"]["sid"]
-n = TD["old"]["nid"]
+-- CREATE OR REPLACE FUNCTION del_flow_fun ()
+-- RETURNS TRIGGER
+-- AS $$
+-- f = TD["old"]["pid"]
+-- s = TD["old"]["sid"]
+-- n = TD["old"]["nid"]
 
-u = plpy.execute("""\
-         select port
-         from get_port (""" +str (s)+""")  
-         where nid = """ +str (n))
-outport = str(u[0]['port'])
+-- u = plpy.execute("""\
+--          select port
+--          from get_port (""" +str (s)+""")  
+--          where nid = """ +str (n))
+-- outport = str(u[0]['port'])
 
-v = plpy.execute("""\
-         select port
-         from get_port (""" +str (s)+""")
-         where nid = """ +str (f))
-inport = str (v[0]['port'])
+-- v = plpy.execute("""\
+--          select port
+--          from get_port (""" +str (s)+""")
+--          where nid = """ +str (f))
+-- inport = str (v[0]['port'])
 
-cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
-cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+-- cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+-- cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
 
-fo = open ('/home/mininet/ravel/log.txt', 'a')
-def logfunc(msg,f=fo):
-    f.write(msg)
+-- fo = open ('/home/mininet/ravel/log.txt', 'a')
+-- def logfunc(msg,f=fo):
+--     f.write(msg)
 
-logfunc ('d')
+-- logfunc ('d')
 
-logfunc ('d')
+-- logfunc ('d')
 
-fo.flush ()
+-- fo.flush ()
 
-return None;
-$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+-- return None;
+-- $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 
 CREATE TRIGGER del_flow_trigger
