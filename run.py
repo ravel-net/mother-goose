@@ -1,5 +1,5 @@
-import sys
 import time
+import sys
 import random
 import os
 import psycopg2
