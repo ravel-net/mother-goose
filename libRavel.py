@@ -494,6 +494,11 @@ def load_schema (dbname, username, sql_script):
 def batch_test (dbname, username, rounds, default):
     global logdest
 
+    # if dbname[0:7] == 'fattree':
+    logdestfile = dbname + '_' + str (rounds)
+    logdest = os.getcwd () + '/data/' + logdestfile + '.log'
+
+
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -514,8 +519,6 @@ def batch_test (dbname, username, rounds, default):
     cs = cur.fetchall ()
     links = [[h['sid'], h['nid']] for h in cs]
 
-    if dbname[0:7] == 'fattree':
-        logdestfile = dbname + '_' + str (rounds)
     logfile = os.getcwd ()+'/log.txt'
 
     open(logfile, 'w').close()
@@ -909,7 +912,7 @@ def batch_test (dbname, username, rounds, default):
 
 
     while default == 1:
-        n = raw_input("select actions: \n\t\ r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n\t ct (clean tenant)")
+        n = raw_input("select actions: \n\t r (routing) \n\t t (tenant) \n\t e (exit)\n\t m (maintenance)\n\t ct (clean tenant)")
 
         if n == 'r':
             primitive (rounds)
@@ -937,7 +940,8 @@ def batch_test (dbname, username, rounds, default):
             init_tacl ()
             init_tlb ()
 
-            # logdest += 'tenant' + str (s)
+            logdest += 'tenant' + str (s)
+
             # selected_hosts = load_tenant_schema (dbname, username, int (s))
             # tenant_fullmesh (selected_hosts)
             # for i in range (0,rounds):
