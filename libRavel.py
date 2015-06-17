@@ -558,6 +558,7 @@ def batch_test (dbname, username, rounds, default):
 
     def init_lb (cur=cur):
         cur.execute ("select distinct host2 from utm ;")
+        print "init_lb"
         cs = cur.fetchall ()
         ends = [h['host2'] for h in cs]
         
@@ -940,7 +941,7 @@ def batch_test (dbname, username, rounds, default):
             init_tacl ()
             init_tlb ()
 
-            logdest += 'tenant' + str (s)
+            logdest += 'tenant' + str (size)
 
             # selected_hosts = load_tenant_schema (dbname, username, int (s))
             # tenant_fullmesh (selected_hosts)
@@ -963,8 +964,15 @@ def batch_test (dbname, username, rounds, default):
             f.close ()
             # logdest = os.getcwd () + '/data/log_' + str (datetime.datetime.now ()) .replace(" ", "-").replace (":","-").replace (".","-")
             os.system ("cp "+ logfile + ' ' + logdest)
+            # print "--------------------> batch_test successful"
+            t = raw_input("clean database? ('y'/'n'): ")
+            if t.strip () == 'y':
+                # kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                break
 
-            print "--------------------> batch_test successful"
             conn.close()
             break
 
