@@ -38,7 +38,7 @@ def profile_pg_routing (d, rounds):
     logdest = d + '_profile_pgrouting.log'
     f.close ()
     os.system ("cp "+ logfile + ' ' + logdest)
-    os.system ("sudo cp "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
+    os.system ("sudo mv "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
     if conn: conn.close()
 
 
