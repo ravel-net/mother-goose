@@ -106,6 +106,8 @@ CREATE UNLOGGED TABLE tlb_tb (
 --        GROUP BY sid
 --        );
 
+-- SELECT 
+
 CREATE OR REPLACE VIEW tlb AS (
        SELECT sid,
        	      (SELECT count(*) FROM tenant_policy

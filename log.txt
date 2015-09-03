@@ -1,10 +1,180 @@
-iiiiiiiiii----rt*tenant: route ins----53.1949996948
-iiiiiiiiii----rt*tenant: route ins----17.8799629211
-iiiiii----rt*tenant: route ins----13.622045517
-iiiiiiiiii----rt*tenant: route ins----21.4040279388
-iiiiiiiiii----rt*tenant: route ins----31.7571163177
-iiiiiiiiii----rt*tenant: route ins----39.281129837
-iiiiiiiiii----rt*tenant: route ins----59.662103653
-iiiiiiiiii----rt*tenant: route ins----42.1009063721
-iiiiiiiiii----rt*tenant: route ins----56.5769672394
-ddddddddddddddddddddddddddddddddddddddddddddddddddiiiiiiiiii
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 5.74898719788
+iiiiiiiiii----insert_into_cf_(ms): 14.9841308594
+spv_constraint1_fun ends ------
+----rt_route_ins----49.5941638947
+----pg_routing_of_h1->h2----3.73196601868
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.21388244629
+iiiiii----insert_into_cf_(ms): 7.05814361572
+spv_constraint1_fun ends ------
+----rt_route_ins----13.7500762939
+----pg_routing_of_h1->h2----2.85696983337
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.85792350769
+iiiiiiiiii----insert_into_cf_(ms): 9.22918319702
+spv_constraint1_fun ends ------
+----rt_route_ins----15.8860683441
+----pg_routing_of_h1->h2----2.78496742249
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.83908843994
+iiiiiiiiii----insert_into_cf_(ms): 11.589050293
+spv_constraint1_fun ends ------
+----rt_route_ins----18.0361270905
+----pg_routing_of_h1->h2----2.87318229675
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.4019947052
+iiiiiiiiii----insert_into_cf_(ms): 8.4490776062
+spv_constraint1_fun ends ------
+----rt_route_ins----15.2540206909
+----pg_routing_of_h1->h2----2.41804122925
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.91006469727
+iiiiiiiiii----insert_into_cf_(ms): 9.8888874054
+spv_constraint1_fun ends ------
+----rt_route_ins----17.501115799
+----pg_routing_of_h1->h2----2.77900695801
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.10492515564
+iiiiiiiiii----insert_into_cf_(ms): 9.49501991272
+spv_constraint1_fun ends ------
+----rt_route_ins----16.1230564117
+----pg_routing_of_h1->h2----4.07290458679
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.89106369019
+iiiiiiiiii----insert_into_cf_(ms): 10.4539394379
+spv_constraint1_fun ends ------
+----rt_route_ins----17.8360939026
+----pg_routing_of_h1->h2----2.38800048828
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.61116027832
+iiiiii----insert_into_cf_(ms): 5.70702552795
+spv_constraint1_fun ends ------
+----rt_route_ins----10.9610557556
+----pg_routing_of_h1->h2----2.58207321167
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.98094749451
+iiiiii----insert_into_cf_(ms): 6.32786750793
+spv_constraint1_fun ends ------
+----rt_route_ins----14.111995697
+----pg_routing_of_h1->h2----2.63595581055
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.58891487122
+iiiiiiiiii----insert_into_cf_(ms): 11.2969875336
+spv_constraint1_fun ends ------
+----rt_route_ins----18.3980464935
+----pg_routing_of_h1->h2----2.54511833191
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.68697738647
+iiiiiiiiii----insert_into_cf_(ms): 10.9369754791
+spv_constraint1_fun ends ------
+----rt_route_ins----18.1889533997
+----pg_routing_of_h1->h2----2.76708602905
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.33213806152
+iiiiiiiiii----insert_into_cf_(ms): 10.1358890533
+spv_constraint1_fun ends ------
+----rt_route_ins----16.8881416321
+----pg_routing_of_h1->h2----1.72305107117
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.97808647156
+iiiiiiiiii----insert_into_cf_(ms): 11.302947998
+spv_constraint1_fun ends ------
+----rt_route_ins----17.7910327911
+----pg_routing_of_h1->h2----2.62594223022
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.27189064026
+iiiiii----insert_into_cf_(ms): 7.41195678711
+spv_constraint1_fun ends ------
+----rt_route_ins----13.4680271149
+----pg_routing_of_h1->h2----2.32601165771
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.29787826538
+iiiiii----insert_into_cf_(ms): 6.66499137878
+spv_constraint1_fun ends ------
+----rt_route_ins----11.5699768066
+----pg_routing_of_h1->h2----3.28588485718
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.07416915894
+iiiiiiiiii----insert_into_cf_(ms): 10.6289386749
+spv_constraint1_fun ends ------
+----rt_route_ins----17.3261165619
+----pg_routing_of_h1->h2----2.67696380615
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.99787521362
+iiiiiiiiii----insert_into_cf_(ms): 10.0078582764
+spv_constraint1_fun ends ------
+----rt_route_ins----16.6440010071
+----pg_routing_of_h1->h2----2.87389755249
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.20100784302
+iiiiiiiiii----insert_into_cf_(ms): 10.0409984589
+spv_constraint1_fun ends ------
+----rt_route_ins----17.0850753784
+----pg_routing_of_h1->h2----4.40907478333
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.92389297485
+iiiiiiiiii----insert_into_cf_(ms): 9.89413261414
+spv_constraint1_fun ends ------
+----rt_route_ins----18.0699825287
+----pg_routing_of_h1->h2----2.54011154175
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.95686721802
+iiiiiiiiii----insert_into_cf_(ms): 11.0690593719
+spv_constraint1_fun ends ------
+----rt_route_ins----17.7898406982
+----pg_routing_of_h1->h2----2.81596183777
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.68595123291
+iiiiiiiiii----insert_into_cf_(ms): 10.498046875
+spv_constraint1_fun ends ------
+----rt_route_ins----18.0912017822
+----pg_routing_of_h1->h2----2.7391910553
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.10778617859
+iiiiiiiiii----insert_into_cf_(ms): 8.54897499084
+spv_constraint1_fun ends ------
+----rt_route_ins----16.4909362793
+----pg_routing_of_h1->h2----2.86197662354
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.02791595459
+iiiiiiiiii----insert_into_cf_(ms): 9.19818878174
+spv_constraint1_fun ends ------
+----rt_route_ins----16.0291194916
+----pg_routing_of_h1->h2----3.20386886597
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.77590751648
+iiiiiiiiii----insert_into_cf_(ms): 11.7168426514
+spv_constraint1_fun ends ------
+----rt_route_ins----18.4738636017
+----pg_routing_of_h1->h2----4.81104850769
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.07297706604
+iiiiiiiiii----insert_into_cf_(ms): 11.5959644318
+spv_constraint1_fun ends ------
+----rt_route_ins----18.1379318237
+----pg_routing_of_h1->h2----2.69103050232
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.97689437866
+iiiiiiiiii----insert_into_cf_(ms): 9.34314727783
+spv_constraint1_fun ends ------
+----rt_route_ins----16.3259506226
+----pg_routing_of_h1->h2----2.65288352966
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.16190719604
+iiiiiiiiii----insert_into_cf_(ms): 9.44399833679
+spv_constraint1_fun ends ------
+----rt_route_ins----16.3540840149
+----pg_routing_of_h1->h2----3.01218032837
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 2.96592712402
+iiiiiiiiii----insert_into_cf_(ms): 11.2338066101
+spv_constraint1_fun ends ------
+----rt_route_ins----17.8101062775
+----pg_routing_of_h1->h2----3.72719764709
+spv_constraint1_fun begins ------
+----pgr_dijkstra_(ms): 3.03196907043
+iiiiiiiiii----insert_into_cf_(ms): 11.8398666382
+spv_constraint1_fun ends ------
+----rt_route_ins----18.8200473785
+----pg_routing_of_h1->h2----2.68888473511

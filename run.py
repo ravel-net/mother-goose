@@ -17,6 +17,7 @@ monitor_mininet = 0
 k_size = 0 # number of pods of the fat tree
 
 username = 'mininet'
+sql_profile = "/home/mininet/ravel/sql_scripts/primitive_profile.sql"
 sql_script1 = "/home/mininet/ravel/sql_scripts/base_and_routing_w.sql"
 sql_script2 = "/home/mininet/ravel/sql_scripts/obs_app.sql"
 sql_script3 = "/home/mininet/ravel/sql_scripts/base_and_routing_wo_optimized.sql"
@@ -90,12 +91,12 @@ def batch (l, rounds):
         print "for " + dbname + " batch_test:"
         batch_test (dbname, username, rounds, 4)
 
-def gdb (l, rounds):
+def gdb (l, sql):
     def generate_db (k_size, dbname, username):
         clean_db (dbname)
         create_db (dbname)
         add_pgrouting_plpy_plsh_extension (dbname, username)
-        load_schema (dbname, username, primitive)
+        load_schema (dbname, username, sql)
         init_fattree (k_size, dbname, username)
 
     for dbname in l:
@@ -109,7 +110,10 @@ if __name__ == '__main__':
     l3 = ['fattree16']
 
     while True:
-        m = raw_input ("batch, interactive, generate_db, mininet, or exit? (b, i, g, m, e) \n")
+        m = raw_input ("profiling, batch, interactive, generate_db, mininet, or exit? (p, b, i, g, m, e) \n")
+
+        if m == 'p':
+            profile (l2[2:], username, 30)
 
         if m == 'i':
             procedure ()
@@ -118,7 +122,7 @@ if __name__ == '__main__':
             batch (l1, 30)
 
         elif m == 'g':
-            gdb (l3,30)
+            gdb (l3, primitive)
         
         elif m == 'm':
             mininet_interactive ()

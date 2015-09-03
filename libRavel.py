@@ -1,3 +1,54 @@
+def profile_pg_routing (d, rounds):
+    conn = psycopg2.connect(database= d, user= username)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    logfile = os.getcwd ()+'/log.txt'
+    open(logfile, 'w').close()
+    f = open(logfile, 'a')
+
+    cur.execute ("SELECT * FROM uhosts;")
+    cs = cur.fetchall ()
+    hids = [h['hid'] for h in cs]
+
+    cur.execute ("SELECT count(*) FROM switches;")
+    switch_size = int (cur.fetchall ()[0]['count']) 
+
+    for r in range (0, rounds):
+        [h1, h2] = random.sample(hids, 2)
+        # print [h1,h2]
+        uh1 = h1 - switch_size + 1
+        uh2 = h2 - switch_size + 1
+        # print [uh1,uh2]
+
+        t1 = time.time ()
+        cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (r+1),int (uh1),int (uh2)]))
+        t2 = time.time ()
+        f.write ('----rt_route_ins----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        t1 = time.time ()
+        cur.execute ("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (h1) + "," + str (h2)  + ",FALSE, FALSE))""")
+        t2 = time.time ()
+        outstr = '----pg_routing_of_h1->h2----' + str ((t2-t1)*1000) + '\n'
+        f.write (outstr)
+        f.flush ()
+
+
+    logdest = d + '_profile_pgrouting.log'
+    f.close ()
+    os.system ("cp "+ logfile + ' ' + logdest)
+    os.system ("sudo cp "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
+    if conn: conn.close()
+
+
+def profile (dbnamelist, username, rounds):
+
+    gdb (dbnamelist, sql_profile)
+
+    for d in dbnamelist:
+        profile_pg_routing (d, rounds)
+
 def add_cf2flows (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
@@ -69,7 +120,8 @@ $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
     cur.execute (add_flow)
     cur.execute (del_flow)
     print "--------------------> add cf2flow entries functions successful"
-    
+
+    if conn: conn.close()
 
 def select_dbname ():
     global monitor_mininet
@@ -218,8 +270,12 @@ def clean_db (dbname):
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
 
-        cur.execute ("drop database " + dbname)
-        print "--------------------> clean_db successful"
+        cur.execute ("SELECT datname FROM pg_database WHERE datistemplate = false;")
+        c = cur.fetchall ()
+        dblist = [c[i][0] for i in range (len (c))]
+        if dbname in dblist:
+            cur.execute ("drop database " + dbname)
+        print "--------------------> clean_db successful for: " + dbname
 
     except psycopg2.DatabaseError, e:
         print "clean_db error"
