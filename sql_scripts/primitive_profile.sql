@@ -290,19 +290,26 @@ if TD["new"]["status"] == 'on':
 	    fo.flush ()
 
             l = len (pv)
+	    fo.write('----insert_compute_port----')
+	    fo.flush ()
 
-	    t1 = time.time ()
-	    logfunc ('----compute_port_(forward)----' + str (l))
+	    r1 = time.time ()
             for i in range (l):
                 if i + 2 < l:
                     plpy.execute ("INSERT INTO cf (fid,pid,sid,nid) VALUES (" + str (f) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
-	    t2 = time.time ()
-	    logfunc ('----insert_into_cf_(ms)----' + str ((t2-t1)*1000))
+	    r2 = time.time ()
+	    logfunc ('\n----insert_into_cf_(ms)----' + str ((r2-r1)*1000))
 	    fo.flush ()
-
+					
         elif t["isadd"] == 0:
+	    r1 = time.time ()				
             f = t["fid"]
+	    fo.write('----del_compute_port----')
+	    fo.flush ()
             plpy.execute ("DELETE FROM cf WHERE fid =" +str (f) +";")
+	    r2 = time.time ()
+	    logfunc ('\n----delete_from_cf_(ms)----' + str ((r2-r1)*1000))
+	    fo.flush ()
 
     plpy.execute ("DELETE FROM tm_delta;")
 
@@ -326,7 +333,6 @@ CREATE TRIGGER spv_constraint1
 
 CREATE OR REPLACE FUNCTION tp2spv_fun () RETURNS TRIGGER
 AS $$
-
 isactive = TD["new"]["isactive"]
 sid = TD["new"]["sid"]
 nid = TD["new"]["nid"]
@@ -587,30 +593,34 @@ f = TD["old"]["pid"]
 s = TD["old"]["sid"]
 n = TD["old"]["nid"]
 
-u = plpy.execute("""\
-         select port
-         from get_port (""" +str (s)+""")  
-         where nid = """ +str (n))
-outport = str(u[0]['port'])
-
-v = plpy.execute("""\
-         select port
-         from get_port (""" +str (s)+""")
-         where nid = """ +str (f))
-inport = str (v[0]['port'])
-
-cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
-cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
-
+import os
+import sys
+import time
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg)
 
-logfunc ('d')
+t1 = time.time ()
+u = plpy.execute("""\
+         select port
+         from ports where sid = """ +str (s)+"""   
+         and nid = """ +str (n))
+outport = str(u[0]['port'])
+t2 = time.time ()
+logfunc (str ((t2-t1)*1000) + ' ')
 
-logfunc ('d')
-
+t1 = time.time ()
+v = plpy.execute("""\
+         select port
+         from ports where sid = """ +str (s)+"""
+         and nid = """ +str (f))
+inport = str (v[0]['port'])
+t2 = time.time ()
+logfunc (str ((t2-t1)*1000) + ' ')
 fo.flush ()
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
 
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;

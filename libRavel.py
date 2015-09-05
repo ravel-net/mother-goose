@@ -40,6 +40,16 @@ def profile_pg_routing (d, rounds):
         t2 = time.time ()
         f.write ('----rt_route_ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
+
+    for r in range (0, rounds):
+        f.write ("round " + str (r) + '\n')
+        f.flush ()
+        t1 = time.time ()
+        cur.execute ("DELETE FROM rtm WHERE fid =" + str (r+1)+";")
+        t2 = time.time ()
+        f.write ('----rt_route_del----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
     f.close ()
 
     logdest = d + '_profile_pgrouting.log'
