@@ -26,15 +26,6 @@ tenant = "/home/mininet/ravel/sql_scripts/tenant.sql"
 # without mininet operation, that is, no actual add_flow / del_flow,
 # just absolute value of postgres time
 
-# def procedure_interactive ():
-#     dbname = select_dbname ()
-#     create_db (dbname)
-#     add_pgrouting_plpy_plsh_extension (dbname, username)
-#     load_schema (dbname, username, sql_script1)
-#     # load_schema (dbname, username, sql_script2)
-#     load_database (dbname, username)
-#     perform_test (dbname, username)
-
 def mininet_interactive ():
     dbname = select_dbname ()
     create_db (dbname)
@@ -86,23 +77,20 @@ def procedure ():
                 kill_pox_module ()
                 break
 
-def batch (l, rounds):
-    for dbname in l:
-        print "for " + dbname + " batch_test:"
+def batch (dbnamelist, username, rounds):
+    def fattree_size (dbname, username, rounds):
         batch_test (dbname, username, rounds, 4)
 
-def gdb (l, sql):
-    def generate_db (k_size, dbname, username):
-        clean_db (dbname)
-        create_db (dbname)
-        add_pgrouting_plpy_plsh_extension (dbname, username)
-        load_schema (dbname, username, sql)
-        init_fattree (k_size, dbname, username)
+    gdb (dbnamelist, primitive)
 
     for dbname in l:
-        k_size = int (dbname[7:]) 
-        print "for " + dbname + ":"
-        generate_db (k_size, dbname, 'mininet')
+        fattree_size (dbname, username, rounds)
+
+def profile (dbnamelist, username, rounds):
+    gdb (dbnamelist, sql_profile)
+
+    for d in dbnamelist:
+        profile_pg_routing (d, rounds)
 
 if __name__ == '__main__':
     l1 = ['fattree16', 'fattree32', 'fattree64']
@@ -113,7 +101,7 @@ if __name__ == '__main__':
         m = raw_input ("profiling, batch, interactive, generate_db, mininet, or exit? (p, b, i, g, m, e) \n")
 
         if m == 'p':
-            profile (l2[2:], username, 30)
+            profile (l1[:1], username, 30)
 
         if m == 'i':
             procedure ()

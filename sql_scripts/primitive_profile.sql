@@ -256,6 +256,12 @@ CREATE UNLOGGED TABLE spv_tb_del (
        nid 	integer
 );
 
+
+-- logfunc ('spv_constraint1_fun begins ------')
+-- fo.flush ()
+
+-- logfunc ('spv_constraint1_fun ends ------') 
+
 CREATE OR REPLACE FUNCTION spv_constraint1_fun ()
 RETURNS TRIGGER
 AS $$
@@ -267,9 +273,6 @@ import time
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg+'\n')
-
-logfunc ('spv_constraint1_fun begins ------')
-fo.flush ()
 
 if TD["new"]["status"] == 'on':
     tm = plpy.execute ("SELECT * FROM tm_delta;")
@@ -283,17 +286,18 @@ if TD["new"]["status"] == 'on':
 	    t1 = time.time ()
             pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
 	    t2 = time.time ()
-	    logfunc ('----pgr_dijkstra_(ms): ' + str ((t2-t1)*1000))
+	    logfunc ('----pgr_dijkstra_(ms)----' + str ((t2-t1)*1000))
 	    fo.flush ()
 
             l = len (pv)
 
 	    t1 = time.time ()
+	    logfunc ('----compute_port_(forward)----' + str (l))
             for i in range (l):
                 if i + 2 < l:
                     plpy.execute ("INSERT INTO cf (fid,pid,sid,nid) VALUES (" + str (f) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
 	    t2 = time.time ()
-	    logfunc ('----insert_into_cf_(ms): ' + str ((t2-t1)*1000))
+	    logfunc ('----insert_into_cf_(ms)----' + str ((t2-t1)*1000))
 	    fo.flush ()
 
         elif t["isadd"] == 0:
@@ -301,8 +305,6 @@ if TD["new"]["status"] == 'on':
             plpy.execute ("DELETE FROM cf WHERE fid =" +str (f) +";")
 
     plpy.execute ("DELETE FROM tm_delta;")
-
-logfunc ('spv_constraint1_fun ends ------')
 
 fo.close ()
 return None;
@@ -427,7 +429,6 @@ CREATE OR REPLACE VIEW spv_del AS (
 CREATE OR REPLACE FUNCTION get_port(s integer)
 RETURNS TABLE (sid integer, nid integer, port bigint) AS 
 $$
-
 WITH TMP AS (
 SELECT tp.sid, tp.nid, row_number () OVER () as port FROM tp
 WHERE tp.sid = s OR tp.nid = s
@@ -441,6 +442,10 @@ FROM TMP
 WHERE TMP.nid = s);
 $$ LANGUAGE SQL;
 
+-- DROP TABLE IF EXISTS ports CASCADE;
+-- CREATE UNLOGGED TABLE ports AS
+--        SELECT switches.sid, t.nid, t.port
+--        FROM switches, get_port(switches.sid) t ;
 
 ------------------------------------------------------------
 -- add_flow triggers
@@ -491,25 +496,35 @@ f = TD["new"]["pid"]
 s = TD["new"]["sid"]
 n = TD["new"]["nid"]
 
-u = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (n))
-outport = str(u[0]['port'])
-v = plpy.execute("""select port from get_port (""" +str (s)+""") where nid = """ +str (f))
-inport = str (v[0]['port'])
-
-cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
-cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
-
+import os
+import sys
+import time
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg)
 
-logfunc ('i')
-logfunc ('i')
+t1 = time.time ()
+u = plpy.execute("""select port from ports where sid = """ + str (s) + """ and nid = """ +str (n))
+outport = str (u[0]['port'])
+t2 = time.time ()
+logfunc (str ((t2-t1)*1000) + ' ')
+fo.flush ()
 
+t1 = time.time ()
+v = plpy.execute("""select port from ports where sid = """ + str (s) + """ and nid = """ +str (f))
+inport = str (v[0]['port'])
+t2 = time.time ()
+logfunc (str ((t2-t1)*1000) + ' ')
 fo.flush ()
 
 return None;
 $$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+-- logfunc ('\ni')
+-- logfunc ('i')
+
+-- cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
+-- cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
 
 CREATE TRIGGER add_flow_trigger
      AFTER INSERT ON cf

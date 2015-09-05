@@ -1,180 +1,404 @@
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 5.74898719788
-iiiiiiiiii----insert_into_cf_(ms): 14.9841308594
-spv_constraint1_fun ends ------
-----rt_route_ins----49.5941638947
-----pg_routing_of_h1->h2----3.73196601868
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.21388244629
-iiiiii----insert_into_cf_(ms): 7.05814361572
-spv_constraint1_fun ends ------
-----rt_route_ins----13.7500762939
-----pg_routing_of_h1->h2----2.85696983337
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.85792350769
-iiiiiiiiii----insert_into_cf_(ms): 9.22918319702
-spv_constraint1_fun ends ------
-----rt_route_ins----15.8860683441
-----pg_routing_of_h1->h2----2.78496742249
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.83908843994
-iiiiiiiiii----insert_into_cf_(ms): 11.589050293
-spv_constraint1_fun ends ------
-----rt_route_ins----18.0361270905
-----pg_routing_of_h1->h2----2.87318229675
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.4019947052
-iiiiiiiiii----insert_into_cf_(ms): 8.4490776062
-spv_constraint1_fun ends ------
-----rt_route_ins----15.2540206909
-----pg_routing_of_h1->h2----2.41804122925
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.91006469727
-iiiiiiiiii----insert_into_cf_(ms): 9.8888874054
-spv_constraint1_fun ends ------
-----rt_route_ins----17.501115799
-----pg_routing_of_h1->h2----2.77900695801
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.10492515564
-iiiiiiiiii----insert_into_cf_(ms): 9.49501991272
-spv_constraint1_fun ends ------
-----rt_route_ins----16.1230564117
-----pg_routing_of_h1->h2----4.07290458679
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.89106369019
-iiiiiiiiii----insert_into_cf_(ms): 10.4539394379
-spv_constraint1_fun ends ------
-----rt_route_ins----17.8360939026
-----pg_routing_of_h1->h2----2.38800048828
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.61116027832
-iiiiii----insert_into_cf_(ms): 5.70702552795
-spv_constraint1_fun ends ------
-----rt_route_ins----10.9610557556
-----pg_routing_of_h1->h2----2.58207321167
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.98094749451
-iiiiii----insert_into_cf_(ms): 6.32786750793
-spv_constraint1_fun ends ------
-----rt_route_ins----14.111995697
-----pg_routing_of_h1->h2----2.63595581055
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.58891487122
-iiiiiiiiii----insert_into_cf_(ms): 11.2969875336
-spv_constraint1_fun ends ------
-----rt_route_ins----18.3980464935
-----pg_routing_of_h1->h2----2.54511833191
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.68697738647
-iiiiiiiiii----insert_into_cf_(ms): 10.9369754791
-spv_constraint1_fun ends ------
-----rt_route_ins----18.1889533997
-----pg_routing_of_h1->h2----2.76708602905
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.33213806152
-iiiiiiiiii----insert_into_cf_(ms): 10.1358890533
-spv_constraint1_fun ends ------
-----rt_route_ins----16.8881416321
-----pg_routing_of_h1->h2----1.72305107117
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.97808647156
-iiiiiiiiii----insert_into_cf_(ms): 11.302947998
-spv_constraint1_fun ends ------
-----rt_route_ins----17.7910327911
-----pg_routing_of_h1->h2----2.62594223022
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.27189064026
-iiiiii----insert_into_cf_(ms): 7.41195678711
-spv_constraint1_fun ends ------
-----rt_route_ins----13.4680271149
-----pg_routing_of_h1->h2----2.32601165771
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.29787826538
-iiiiii----insert_into_cf_(ms): 6.66499137878
-spv_constraint1_fun ends ------
-----rt_route_ins----11.5699768066
-----pg_routing_of_h1->h2----3.28588485718
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.07416915894
-iiiiiiiiii----insert_into_cf_(ms): 10.6289386749
-spv_constraint1_fun ends ------
-----rt_route_ins----17.3261165619
-----pg_routing_of_h1->h2----2.67696380615
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.99787521362
-iiiiiiiiii----insert_into_cf_(ms): 10.0078582764
-spv_constraint1_fun ends ------
-----rt_route_ins----16.6440010071
-----pg_routing_of_h1->h2----2.87389755249
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.20100784302
-iiiiiiiiii----insert_into_cf_(ms): 10.0409984589
-spv_constraint1_fun ends ------
-----rt_route_ins----17.0850753784
-----pg_routing_of_h1->h2----4.40907478333
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.92389297485
-iiiiiiiiii----insert_into_cf_(ms): 9.89413261414
-spv_constraint1_fun ends ------
-----rt_route_ins----18.0699825287
-----pg_routing_of_h1->h2----2.54011154175
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.95686721802
-iiiiiiiiii----insert_into_cf_(ms): 11.0690593719
-spv_constraint1_fun ends ------
-----rt_route_ins----17.7898406982
-----pg_routing_of_h1->h2----2.81596183777
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.68595123291
-iiiiiiiiii----insert_into_cf_(ms): 10.498046875
-spv_constraint1_fun ends ------
-----rt_route_ins----18.0912017822
-----pg_routing_of_h1->h2----2.7391910553
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.10778617859
-iiiiiiiiii----insert_into_cf_(ms): 8.54897499084
-spv_constraint1_fun ends ------
-----rt_route_ins----16.4909362793
-----pg_routing_of_h1->h2----2.86197662354
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.02791595459
-iiiiiiiiii----insert_into_cf_(ms): 9.19818878174
-spv_constraint1_fun ends ------
-----rt_route_ins----16.0291194916
-----pg_routing_of_h1->h2----3.20386886597
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.77590751648
-iiiiiiiiii----insert_into_cf_(ms): 11.7168426514
-spv_constraint1_fun ends ------
-----rt_route_ins----18.4738636017
-----pg_routing_of_h1->h2----4.81104850769
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.07297706604
-iiiiiiiiii----insert_into_cf_(ms): 11.5959644318
-spv_constraint1_fun ends ------
-----rt_route_ins----18.1379318237
-----pg_routing_of_h1->h2----2.69103050232
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.97689437866
-iiiiiiiiii----insert_into_cf_(ms): 9.34314727783
-spv_constraint1_fun ends ------
-----rt_route_ins----16.3259506226
-----pg_routing_of_h1->h2----2.65288352966
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.16190719604
-iiiiiiiiii----insert_into_cf_(ms): 9.44399833679
-spv_constraint1_fun ends ------
-----rt_route_ins----16.3540840149
-----pg_routing_of_h1->h2----3.01218032837
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 2.96592712402
-iiiiiiiiii----insert_into_cf_(ms): 11.2338066101
-spv_constraint1_fun ends ------
-----rt_route_ins----17.8101062775
-----pg_routing_of_h1->h2----3.72719764709
-spv_constraint1_fun begins ------
-----pgr_dijkstra_(ms): 3.03196907043
-iiiiiiiiii----insert_into_cf_(ms): 11.8398666382
-spv_constraint1_fun ends ------
-----rt_route_ins----18.8200473785
-----pg_routing_of_h1->h2----2.68888473511
+round 0
+----pgr_dijkstra_(ms)----5.51819801331
+----compute_port_(forward)----0.239133834839
+----compute_port_(backward)----0.144004821777
+----compute_port_(forward)----0.131845474243
+----compute_port_(backward)----0.102043151855
+----compute_port_(forward)----0.214099884033
+----compute_port_(backward)----0.115871429443
+----compute_port_(forward)----0.117063522339
+----compute_port_(backward)----0.0948905944824
+----compute_port_(forward)----0.111818313599
+----compute_port_(backward)----0.102043151855
+----insert_into_cf_(ms)----3.12995910645
+----rt_route_ins----42.1149730682
+round 1
+----pgr_dijkstra_(ms)----2.17509269714
+----compute_port_(forward)----0.148057937622
+----compute_port_(backward)----0.0779628753662
+----compute_port_(forward)----0.0820159912109
+----compute_port_(backward)----0.109910964966
+----compute_port_(forward)----0.0829696655273
+----compute_port_(backward)----0.079870223999
+----compute_port_(forward)----0.196933746338
+----compute_port_(backward)----0.0889301300049
+----compute_port_(forward)----0.102043151855
+----compute_port_(backward)----0.0600814819336
+----insert_into_cf_(ms)----2.032995224
+----rt_route_ins----8.89492034912
+round 2
+----pgr_dijkstra_(ms)----2.70295143127
+----compute_port_(forward)----0.149011611938
+----compute_port_(backward)----0.105142593384
+----compute_port_(forward)----0.112056732178
+----compute_port_(backward)----0.0970363616943
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0960826873779
+----compute_port_(forward)----0.103950500488
+----compute_port_(backward)----0.0932216644287
+----compute_port_(forward)----0.102996826172
+----compute_port_(backward)----0.0920295715332
+----insert_into_cf_(ms)----2.15291976929
+----rt_route_ins----9.88078117371
+round 3
+----pgr_dijkstra_(ms)----3.14903259277
+----compute_port_(forward)----0.117063522339
+----compute_port_(backward)----0.0710487365723
+----compute_port_(forward)----0.0820159912109
+----compute_port_(backward)----0.175952911377
+----compute_port_(forward)----0.119924545288
+----compute_port_(backward)----0.0991821289062
+----compute_port_(forward)----0.115871429443
+----compute_port_(backward)----0.0979900360107
+----compute_port_(forward)----0.120878219604
+----compute_port_(backward)----0.148057937622
+----insert_into_cf_(ms)----2.27499008179
+----rt_route_ins----9.7918510437
+round 4
+----pgr_dijkstra_(ms)----3.33905220032
+----compute_port_(forward)----0.276803970337
+----compute_port_(backward)----0.111818313599
+----compute_port_(forward)----0.20694732666
+----compute_port_(backward)----0.121831893921
+----compute_port_(forward)----0.113964080811
+----compute_port_(backward)----0.10085105896
+----compute_port_(forward)----0.11682510376
+----compute_port_(backward)----0.0998973846436
+----compute_port_(forward)----0.115871429443
+----compute_port_(backward)----0.0989437103271
+----insert_into_cf_(ms)----2.43282318115
+----rt_route_ins----9.34910774231
+round 5
+----pgr_dijkstra_(ms)----2.49695777893
+----compute_port_(forward)----0.135898590088
+----compute_port_(backward)----0.102996826172
+----compute_port_(forward)----0.118017196655
+----compute_port_(backward)----0.12993812561
+----compute_port_(forward)----0.106811523438
+----compute_port_(backward)----0.0951290130615
+----insert_into_cf_(ms)----1.42788887024
+----rt_route_ins----7.01689720154
+round 6
+----pgr_dijkstra_(ms)----2.59208679199
+----compute_port_(forward)----0.0970363616943
+----compute_port_(backward)----0.0669956207275
+----compute_port_(forward)----0.0779628753662
+----compute_port_(backward)----0.0679492950439
+----compute_port_(forward)----0.0691413879395
+----compute_port_(backward)----0.0600814819336
+----compute_port_(forward)----0.0700950622559
+----compute_port_(backward)----0.0579357147217
+----compute_port_(forward)----0.0689029693604
+----compute_port_(backward)----0.0600814819336
+----insert_into_cf_(ms)----1.40690803528
+----rt_route_ins----8.46791267395
+round 7
+----pgr_dijkstra_(ms)----3.00598144531
+----compute_port_(forward)----0.12993812561
+----compute_port_(backward)----0.0998973846436
+----compute_port_(forward)----0.432968139648
+----compute_port_(backward)----0.0698566436768
+----compute_port_(forward)----0.164985656738
+----compute_port_(backward)----0.0638961791992
+----compute_port_(forward)----0.0689029693604
+----compute_port_(backward)----0.0619888305664
+----compute_port_(forward)----0.0689029693604
+----compute_port_(backward)----0.06103515625
+----insert_into_cf_(ms)----1.9199848175
+----rt_route_ins----7.60293006897
+round 8
+----pgr_dijkstra_(ms)----2.8178691864
+----compute_port_(forward)----0.138998031616
+----compute_port_(backward)----0.104904174805
+----compute_port_(forward)----0.113010406494
+----compute_port_(backward)----0.0989437103271
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.148057937622
+----compute_port_(forward)----0.114917755127
+----compute_port_(backward)----0.0941753387451
+----compute_port_(forward)----0.196933746338
+----compute_port_(backward)----0.0970363616943
+----insert_into_cf_(ms)----2.28714942932
+----rt_route_ins----7.45511054993
+round 9
+----pgr_dijkstra_(ms)----2.94589996338
+----compute_port_(forward)----0.229120254517
+----compute_port_(backward)----0.1220703125
+----compute_port_(forward)----0.113964080811
+----compute_port_(backward)----0.100135803223
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0958442687988
+----compute_port_(forward)----0.119924545288
+----compute_port_(backward)----0.132083892822
+----compute_port_(forward)----0.110864639282
+----compute_port_(backward)----0.0960826873779
+----insert_into_cf_(ms)----2.42710113525
+----rt_route_ins----9.63282585144
+round 10
+----pgr_dijkstra_(ms)----2.82502174377
+----compute_port_(forward)----0.14591217041
+----compute_port_(backward)----0.108003616333
+----compute_port_(forward)----0.119209289551
+----compute_port_(backward)----0.101089477539
+----compute_port_(forward)----0.150918960571
+----compute_port_(backward)----0.103950500488
+----compute_port_(forward)----0.146865844727
+----compute_port_(backward)----0.093936920166
+----compute_port_(forward)----0.105142593384
+----compute_port_(backward)----0.0948905944824
+----insert_into_cf_(ms)----2.34293937683
+----rt_route_ins----9.74321365356
+round 11
+----pgr_dijkstra_(ms)----1.91593170166
+----compute_port_(forward)----0.0889301300049
+----compute_port_(backward)----0.0669956207275
+----compute_port_(forward)----0.0729560852051
+----compute_port_(backward)----0.115871429443
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0951290130615
+----compute_port_(forward)----0.1060962677
+----compute_port_(backward)----0.246047973633
+----compute_port_(forward)----0.109910964966
+----compute_port_(backward)----0.239849090576
+----insert_into_cf_(ms)----2.20799446106
+----rt_route_ins----7.20906257629
+round 12
+----pgr_dijkstra_(ms)----3.14211845398
+----compute_port_(forward)----0.140905380249
+----compute_port_(backward)----0.147819519043
+----compute_port_(forward)----0.121831893921
+----compute_port_(backward)----0.101089477539
+----compute_port_(forward)----0.110864639282
+----compute_port_(backward)----0.0970363616943
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.0929832458496
+----compute_port_(forward)----1.02400779724
+----compute_port_(backward)----0.103950500488
+----insert_into_cf_(ms)----3.1521320343
+----rt_route_ins----10.0557804108
+round 13
+----pgr_dijkstra_(ms)----2.45499610901
+----compute_port_(forward)----0.169038772583
+----compute_port_(backward)----0.0720024108887
+----compute_port_(forward)----0.0729560852051
+----compute_port_(backward)----0.0650882720947
+----compute_port_(forward)----0.0700950622559
+----compute_port_(backward)----0.0619888305664
+----compute_port_(forward)----0.0689029693604
+----compute_port_(backward)----0.0679492950439
+----compute_port_(forward)----0.0960826873779
+----compute_port_(backward)----0.0629425048828
+----insert_into_cf_(ms)----1.55305862427
+----rt_route_ins----7.71498680115
+round 14
+----pgr_dijkstra_(ms)----2.8281211853
+----compute_port_(forward)----0.0989437103271
+----compute_port_(backward)----0.0689029693604
+----compute_port_(forward)----0.075101852417
+----compute_port_(backward)----0.0660419464111
+----compute_port_(forward)----0.0720024108887
+----compute_port_(backward)----0.0638961791992
+----compute_port_(forward)----0.133991241455
+----compute_port_(backward)----0.101089477539
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.0970363616943
+----insert_into_cf_(ms)----1.72090530396
+----rt_route_ins----9.20009613037
+round 15
+----pgr_dijkstra_(ms)----3.46302986145
+----compute_port_(forward)----0.209093093872
+----compute_port_(backward)----0.108957290649
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.0948905944824
+----compute_port_(forward)----0.105857849121
+----compute_port_(backward)----0.0958442687988
+----compute_port_(forward)----0.170946121216
+----compute_port_(backward)----0.0729560852051
+----compute_port_(forward)----0.0720024108887
+----compute_port_(backward)----0.0619888305664
+----insert_into_cf_(ms)----2.06804275513
+----rt_route_ins----9.23109054565
+round 16
+----pgr_dijkstra_(ms)----3.34501266479
+----compute_port_(forward)----0.169038772583
+----compute_port_(backward)----0.110149383545
+----compute_port_(forward)----0.0810623168945
+----compute_port_(backward)----0.0648498535156
+----compute_port_(forward)----0.0720024108887
+----compute_port_(backward)----0.0638961791992
+----insert_into_cf_(ms)----2.78306007385
+----rt_route_ins----10.2410316467
+round 17
+----pgr_dijkstra_(ms)----2.57420539856
+----compute_port_(forward)----0.133037567139
+----compute_port_(backward)----0.104904174805
+----compute_port_(forward)----0.288009643555
+----compute_port_(backward)----0.116109848022
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.0960826873779
+----compute_port_(forward)----0.394105911255
+----compute_port_(backward)----0.257968902588
+----compute_port_(forward)----0.272989273071
+----compute_port_(backward)----0.0979900360107
+----insert_into_cf_(ms)----3.46803665161
+----rt_route_ins----8.465051651
+round 18
+----pgr_dijkstra_(ms)----3.91101837158
+----compute_port_(forward)----0.121116638184
+----compute_port_(backward)----0.0720024108887
+----compute_port_(forward)----0.114917755127
+----compute_port_(backward)----0.0998973846436
+----compute_port_(forward)----0.152826309204
+----compute_port_(backward)----0.0989437103271
+----compute_port_(forward)----0.144958496094
+----compute_port_(backward)----0.0929832458496
+----compute_port_(forward)----0.102043151855
+----compute_port_(backward)----0.0929832458496
+----insert_into_cf_(ms)----2.27499008179
+----rt_route_ins----9.80281829834
+round 19
+----pgr_dijkstra_(ms)----2.26807594299
+----compute_port_(forward)----0.131130218506
+----compute_port_(backward)----0.0801086425781
+----compute_port_(forward)----0.0782012939453
+----compute_port_(backward)----0.0650882720947
+----compute_port_(forward)----0.0698566436768
+----compute_port_(backward)----0.0629425048828
+----insert_into_cf_(ms)----1.03497505188
+----rt_route_ins----6.95896148682
+round 20
+----pgr_dijkstra_(ms)----3.55315208435
+----compute_port_(forward)----0.133037567139
+----compute_port_(backward)----0.102996826172
+----compute_port_(forward)----0.110864639282
+----compute_port_(backward)----0.110864639282
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0958442687988
+----compute_port_(forward)----0.104904174805
+----compute_port_(backward)----0.0929832458496
+----compute_port_(forward)----0.104188919067
+----compute_port_(backward)----0.159025192261
+----insert_into_cf_(ms)----2.32911109924
+----rt_route_ins----8.59403610229
+round 21
+----pgr_dijkstra_(ms)----3.12495231628
+----compute_port_(forward)----0.192165374756
+----compute_port_(backward)----0.110149383545
+----compute_port_(forward)----0.164985656738
+----compute_port_(backward)----0.102996826172
+----compute_port_(forward)----0.134944915771
+----compute_port_(backward)----0.112056732178
+----compute_port_(forward)----0.145196914673
+----compute_port_(backward)----0.0941753387451
+----compute_port_(forward)----0.104904174805
+----compute_port_(backward)----0.0951290130615
+----insert_into_cf_(ms)----2.36701965332
+----rt_route_ins----9.03511047363
+round 22
+----pgr_dijkstra_(ms)----2.60305404663
+----compute_port_(forward)----0.236034393311
+----compute_port_(backward)----0.128984451294
+----compute_port_(forward)----0.118970870972
+----compute_port_(backward)----0.104904174805
+----compute_port_(forward)----0.113010406494
+----compute_port_(backward)----0.144958496094
+----compute_port_(forward)----0.111818313599
+----compute_port_(backward)----0.0970363616943
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0979900360107
+----insert_into_cf_(ms)----2.46715545654
+----rt_route_ins----8.79788398743
+round 23
+----pgr_dijkstra_(ms)----3.014087677
+----compute_port_(forward)----0.141859054565
+----compute_port_(backward)----0.112056732178
+----compute_port_(forward)----0.118017196655
+----compute_port_(backward)----0.144958496094
+----compute_port_(forward)----0.111103057861
+----compute_port_(backward)----0.0979900360107
+----compute_port_(forward)----0.109195709229
+----compute_port_(backward)----0.0960826873779
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0970363616943
+----insert_into_cf_(ms)----2.34889984131
+----rt_route_ins----9.9470615387
+round 24
+----pgr_dijkstra_(ms)----3.32689285278
+----compute_port_(forward)----0.1540184021
+----compute_port_(backward)----0.123977661133
+----compute_port_(forward)----0.117063522339
+----compute_port_(backward)----0.249862670898
+----compute_port_(forward)----0.112056732178
+----compute_port_(backward)----0.138998031616
+----insert_into_cf_(ms)----1.62196159363
+----rt_route_ins----8.61406326294
+round 25
+----pgr_dijkstra_(ms)----2.81596183777
+----compute_port_(forward)----0.0910758972168
+----compute_port_(backward)----0.0948905944824
+----compute_port_(forward)----0.075101852417
+----compute_port_(backward)----0.0660419464111
+----compute_port_(forward)----0.0720024108887
+----compute_port_(backward)----0.0629425048828
+----compute_port_(forward)----0.0700950622559
+----compute_port_(backward)----0.0619888305664
+----compute_port_(forward)----0.0679492950439
+----compute_port_(backward)----0.0619888305664
+----insert_into_cf_(ms)----1.43194198608
+----rt_route_ins----8.6829662323
+round 26
+----pgr_dijkstra_(ms)----3.03411483765
+----compute_port_(forward)----0.133991241455
+----compute_port_(backward)----0.104904174805
+----compute_port_(forward)----0.113010406494
+----compute_port_(backward)----0.100135803223
+----compute_port_(forward)----0.107049942017
+----compute_port_(backward)----0.0958442687988
+----compute_port_(forward)----0.1060962677
+----compute_port_(backward)----0.152111053467
+----compute_port_(forward)----0.111818313599
+----compute_port_(backward)----0.0960826873779
+----insert_into_cf_(ms)----2.37202644348
+----rt_route_ins----8.88013839722
+round 27
+----pgr_dijkstra_(ms)----1.97815895081
+----compute_port_(forward)----0.120162963867
+----compute_port_(backward)----0.0720024108887
+----compute_port_(forward)----0.0748634338379
+----compute_port_(backward)----0.0650882720947
+----compute_port_(forward)----0.0700950622559
+----compute_port_(backward)----0.0629425048828
+----compute_port_(forward)----0.0679492950439
+----compute_port_(backward)----0.0600814819336
+----compute_port_(forward)----0.0679492950439
+----compute_port_(backward)----0.0600814819336
+----insert_into_cf_(ms)----1.51515007019
+----rt_route_ins----6.86192512512
+round 28
+----pgr_dijkstra_(ms)----3.31282615662
+----compute_port_(forward)----0.139951705933
+----compute_port_(backward)----0.108003616333
+----compute_port_(forward)----0.114917755127
+----compute_port_(backward)----0.144958496094
+----compute_port_(forward)----0.108957290649
+----compute_port_(backward)----0.0970363616943
+----compute_port_(forward)----0.153064727783
+----compute_port_(backward)----0.0960826873779
+----compute_port_(forward)----0.103950500488
+----compute_port_(backward)----0.0941753387451
+----insert_into_cf_(ms)----2.28190422058
+----rt_route_ins----9.8729133606
+round 29
+----pgr_dijkstra_(ms)----2.80094146729
+----compute_port_(forward)----0.131130218506
+----compute_port_(backward)----0.1060962677
+----compute_port_(forward)----0.113964080811
+----compute_port_(backward)----0.100135803223
+----compute_port_(forward)----0.109195709229
+----compute_port_(backward)----0.0970363616943
+----compute_port_(forward)----0.108003616333
+----compute_port_(backward)----0.0951290130615
+----compute_port_(forward)----0.200986862183
+----compute_port_(backward)----0.0989437103271
+----insert_into_cf_(ms)----2.31885910034
+----rt_route_ins----8.94808769226

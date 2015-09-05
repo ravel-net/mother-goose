@@ -1,3 +1,17 @@
+def gdb (l, sql):
+    def generate_db (k_size, dbname, username):
+        # clean_db (dbname)
+        create_db (dbname, username)
+        if database_exists == 0:
+            add_pgrouting_plpy_plsh_extension (dbname, username)
+            load_schema (dbname, username, sql)
+            init_fattree (k_size, dbname, username)
+
+    for dbname in l:
+        k_size = int (dbname[7:]) 
+        print "for " + dbname + ":"
+        generate_db (k_size, dbname, 'mininet')
+
 def profile_pg_routing (d, rounds):
     conn = psycopg2.connect(database= d, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
@@ -16,38 +30,22 @@ def profile_pg_routing (d, rounds):
 
     for r in range (0, rounds):
         [h1, h2] = random.sample(hids, 2)
-        # print [h1,h2]
         uh1 = h1 - switch_size + 1
         uh2 = h2 - switch_size + 1
-        # print [uh1,uh2]
 
+        f.write ("round " + str (r) + '\n')
+        f.flush ()
         t1 = time.time ()
         cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (r+1),int (uh1),int (uh2)]))
         t2 = time.time ()
         f.write ('----rt_route_ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
-
-        t1 = time.time ()
-        cur.execute ("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (h1) + "," + str (h2)  + ",FALSE, FALSE))""")
-        t2 = time.time ()
-        outstr = '----pg_routing_of_h1->h2----' + str ((t2-t1)*1000) + '\n'
-        f.write (outstr)
-        f.flush ()
-
+    f.close ()
 
     logdest = d + '_profile_pgrouting.log'
-    f.close ()
     os.system ("cp "+ logfile + ' ' + logdest)
     os.system ("sudo mv "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
     if conn: conn.close()
-
-
-def profile (dbnamelist, username, rounds):
-
-    gdb (dbnamelist, sql_profile)
-
-    for d in dbnamelist:
-        profile_pg_routing (d, rounds)
 
 def add_cf2flows (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
@@ -245,21 +243,20 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
 def truncate_db (dbname):
     try:
         conn = psycopg2.connect(database= dbname, user= "mininet")
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         cur = conn.cursor()
-
 
         cur.execute ("truncate cf, clock, p1, p2, p3, p_spv, pox_hosts, pox_switches, pox_tp, rtm, rtm_clock, spatial_ref_sys, spv_tb_del, spv_tb_ins, tm, tm_delta, utm, acl_tb, lb_tb;")
 
         cur.execute ("INSERT INTO clock values (0);")
 
-        cur.execute ("truncate t1, t2, t3, tacl_tb, tenant_hosts, tlb_tb;")
+        # cur.execute ("truncate t1, t2, t3, tacl_tb, tenant_hosts, tlb_tb;")
 
         print "--------------------> truncate_db successful"
 
     except psycopg2.DatabaseError, e:
         print "clean_db error"
-        print 'Error %s' % e    
+        print 'Error %s' % e
 
     finally:
         if conn: conn.close()
@@ -275,6 +272,7 @@ def clean_db (dbname):
         dblist = [c[i][0] for i in range (len (c))]
         if dbname in dblist:
             cur.execute ("drop database " + dbname)
+
         print "--------------------> clean_db successful for: " + dbname
 
     except psycopg2.DatabaseError, e:
@@ -284,7 +282,7 @@ def clean_db (dbname):
     finally:
         if conn: conn.close()
 
-def create_db (dbname):
+def create_db (dbname, username):
     global database_exists
 
     try:
@@ -299,7 +297,8 @@ def create_db (dbname):
             cur.execute ("CREATE DATABASE " + dbname + ";")
             database_exists = 0
         else:
-            print "database " + dbname + " exists, skip"
+            truncate_db (dbname)
+            print "database " + dbname + " exists, truncate database"
             database_exists = 1
 
         print "--------------------> create_db successful"
@@ -315,7 +314,7 @@ def add_pgrouting_plpy_plsh_extension (dbname, username):
 
     try:
         conn = psycopg2.connect(database= dbname, user= username)
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         cur = conn.cursor()
 
         cur.execute ("SELECT 1 FROM pg_catalog.pg_namespace n JOIN pg_catalog.pg_proc p ON pronamespace = n.oid WHERE proname = 'pgr_dijkstra';")
@@ -420,6 +419,14 @@ def init_fattree (k, dbname, username):
             cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',0,1);' )
         else:
             cur.execute ('insert into tp (sid, nid, ishost, isactive) values (' + str (e[0]) + ',' + str (e[1]) + ',1,1);' )
+
+    cur.execute (""" 
+DROP TABLE IF EXISTS ports CASCADE;
+CREATE UNLOGGED TABLE ports AS
+       SELECT switches.sid, t.nid, t.port
+       FROM switches, get_port(switches.sid) t ;
+CREATE INDEX ON ports(sid, nid);
+""")
 
     conn.close ()
     print "--------------------> init_fattree successful"
@@ -553,7 +560,6 @@ def batch_test (dbname, username, rounds, default):
     # if dbname[0:7] == 'fattree':
     logdestfile = dbname + '_' + str (rounds)
     logdest = os.getcwd () + '/data/' + logdestfile + '.log'
-
 
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
@@ -1200,3 +1206,11 @@ def perform_test (dbname, username):
 #        DELETE FROM rtm WHERE host1 = OLD.host1 AND host2 = OLD.host2;
 
 # """)
+
+
+        # t1 = time.time ()
+        # cur.execute ("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (h1) + "," + str (h2)  + ",FALSE, FALSE))""")
+        # t2 = time.time ()
+        # outstr = '----pg_routing_of_h1->h2----' + str ((t2-t1)*1000) + '\n'
+        # f.write (outstr)
+        # f.flush ()
