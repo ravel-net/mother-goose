@@ -1,3 +1,9 @@
+def add_profile_schema (cur):
+    pass
+
+def remove_profile_schema (cur):
+    pass
+
 def gdb (l, sql):
     def generate_db (k_size, dbname, username):
         # clean_db (dbname)
