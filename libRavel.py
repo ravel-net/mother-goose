@@ -1,5 +1,3 @@
-# def logfunc(msg,f=fo):
-#     f.write(msg+'\n')
 def add_profile_schema (cur, sql_file):
     dbscript  = open (sql_file,'r').read()
     cur.execute(dbscript)
@@ -67,14 +65,14 @@ def profile_pg_routing (d, rounds):
     os.system ("sudo mv "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
     if conn: conn.close()
 
-def batch (dbnamelist, username, rounds):
-    def fattree_size (dbname, username, rounds):
-        batch_test (dbname, username, rounds, 4)
+# def batch (dbnamelist, username, rounds):
+#     def fattree_size (dbname, username, rounds):
+#         batch_test (dbname, username, rounds, 4)
 
-    gdb (dbnamelist, primitive)
+#     gdb (dbnamelist, primitive)
 
-    for dbname in l:
-        fattree_size (dbname, username, rounds)
+#     for dbname in l:
+#         fattree_size (dbname, username, rounds)
 
 def profile (dbnamelist, username, rounds):
     gdb (dbnamelist, sql_profile)
