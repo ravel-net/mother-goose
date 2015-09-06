@@ -175,7 +175,7 @@ class batch_fattree (batch):
 
         t3 = time.time ()
         cur.execute("select max (counts) from clock;")
-        ct = cur.fetchall () [0]['max'] 
+        ct = cur.fetchall () [0]['max']
         cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
         t4 = time.time ()
         f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
