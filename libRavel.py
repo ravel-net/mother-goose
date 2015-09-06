@@ -57,6 +57,22 @@ def profile_pg_routing (d, rounds):
     os.system ("sudo mv "+ logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
     if conn: conn.close()
 
+def batch (dbnamelist, username, rounds):
+    def fattree_size (dbname, username, rounds):
+        batch_test (dbname, username, rounds, 4)
+
+    gdb (dbnamelist, primitive)
+
+    for dbname in l:
+        fattree_size (dbname, username, rounds)
+
+def profile (dbnamelist, username, rounds):
+    gdb (dbnamelist, sql_profile)
+
+    for d in dbnamelist:
+        profile_pg_routing (d, rounds)
+
+
 def add_cf2flows (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
@@ -1224,3 +1240,54 @@ def perform_test (dbname, username):
         # outstr = '----pg_routing_of_h1->h2----' + str ((t2-t1)*1000) + '\n'
         # f.write (outstr)
         # f.flush ()
+
+def mininet_interactive ():
+    dbname = select_dbname ()
+    create_db (dbname)
+    add_pgrouting_plpy_plsh_extension (dbname, username)
+    load_schema (dbname, username, primitive)
+    add_cf2flows (dbname, username)
+    init_database (dbname, username)
+    batch_test (dbname, username, 1, 5)
+
+def procedure ():
+
+    dbname = select_dbname ()
+    create_db (dbname)
+    add_pgrouting_plpy_plsh_extension (dbname, username)
+
+    while True:
+        if database_exists == 0:
+            load_schema (dbname, username, primitive)
+            init_database (dbname, username)
+
+        m = raw_input ("batch, interactive, or exit? (b/i/e) \n")
+        # if m == 't' :
+            # m2 = raw_input ("interactive or batch? (i/b) \n")
+        if m.strip () == 'b':
+            r = raw_input ("input rounds #:\n")
+            batch_test (dbname, username, int (r), 1)
+            break
+
+        elif m.strip () == 'i':
+            batch_test (dbname, username, 1, 1)
+            break
+                # while True:
+                #     m3 = raw_input("maintenance (m), or exit(e), or tenant(t) ")
+                #     if m3.strip () == 'm':
+                #         load_mt_schema (dbname, username)
+                #         break
+                #     elif m3.strip () == 't':
+                #         break
+                #     elif m3.strip () == 'e':
+                #         break
+
+        elif m == 'e':
+            t = raw_input("clean database? ('y'/'n'): ")
+            if t.strip () == 'y':
+                kill_pox_module ()
+                clean_db (dbname)
+                break
+            elif t.strip () == 'n':
+                kill_pox_module ()
+                break
