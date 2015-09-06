@@ -95,8 +95,9 @@ class NSDI:
 class NSDI_profile (NSDI):
 
     def __init__(self,dbname, rounds, logdest):
-        gdb ([dbname], sql_profile)
+        gdb ([dbname], "/home/mininet/ravel/sql_scripts/primitive.sql")
         NSDI.__init__(self,dbname, rounds, logdest)
+        add_profile_schema (self.cur, '/home/mininet/ravel/sql_scripts/add_profile.sql')
 
     def close (self):
         os.system ("cp "+ NSDI.logfile + ' ' + self.logdest)
@@ -106,8 +107,9 @@ class NSDI_profile (NSDI):
 class NSDI_fattree (NSDI):
 
     def __init__(self,dbname, rounds, logdest):
-        gdb ([dbname], sql_profile)
+        gdb ([dbname], "/home/mininet/ravel/sql_scripts/primitive.sql")
         NSDI.__init__(self,dbname, rounds, logdest)
+        remove_profile_schema (self.cur, '/home/mininet/ravel/sql_scripts/remove_profile.sql')
 
     def close (self):
         os.system ("cp "+ NSDI.logfile + ' ' + self.logdest)

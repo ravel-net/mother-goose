@@ -39,13 +39,13 @@ if __name__ == '__main__':
         if m == 'c':
             t = NSDI_profile (l3[0], 3, l3[0]+'.log')
             t.rtm_ins ()
-            t.rtm_ins ()
             t.rtm_del ()
             t.re_route ()
             t.close ()
 
             t2 = NSDI_fattree (l3[0], 3, l3[0]+'.log')
             t2.rtm_ins ()
+            t2.rtm_del ()
             t2.close ()
 
             # t2 = ravel (l3[0], primitive, 30, 'profile_rm')

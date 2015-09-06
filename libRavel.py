@@ -1,8 +1,12 @@
-def add_profile_schema (cur):
-    pass
+# def logfunc(msg,f=fo):
+#     f.write(msg+'\n')
+def add_profile_schema (cur, sql_file):
+    dbscript  = open (sql_file,'r').read()
+    cur.execute(dbscript)
 
-def remove_profile_schema (cur):
-    pass
+def remove_profile_schema (cur, sql_file):
+    dbscript  = open (sql_file,'r').read()
+    cur.execute(dbscript)
 
 def gdb (l, sql):
     def generate_db (k_size, dbname, username):
