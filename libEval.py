@@ -1,4 +1,4 @@
-class ravel:
+class NSDI:
     import os
     logfile = os.getcwd ()+'/log.txt'
     username = 'mininet'
@@ -6,14 +6,12 @@ class ravel:
     def __init__(self, dbname, rounds, logdest):
         self.rounds = rounds
 
-        self.sqlfile = sql_profile
-        gdb ([dbname], self.sqlfile)
-        self.conn = psycopg2.connect(database= dbname, user= ravel.username)
+        self.conn = psycopg2.connect(database= dbname, user= NSDI.username)
         self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-        open(ravel.logfile, 'w').close()
-        self.f = open(ravel.logfile, 'a')
+        open(NSDI.logfile, 'w').close()
+        self.f = open(NSDI.logfile, 'a')
         self.logdest = logdest
 
         self.cur.execute ("SELECT * FROM uhosts;")
@@ -43,14 +41,12 @@ class ravel:
         self.f.write ("re_route----------------------------------------------\n")
         for r in range (0, self.rounds):
             link = random.sample(self.links, 1)[0]
-            print link
-
+            # print link
             t1 = time.time ()
             self.cur.execute ("UPDATE tp SET isactive = 0 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
             t2 = time.time ()
             self.f.write ('----re_route: linkdown----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
-
             self.cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
 
     def rtm_ins (self):
@@ -67,7 +63,6 @@ class ravel:
 
             self.f.write ("round " + str (r-1) + '\n')
             self.f.flush ()
-
             t1 = time.time ()
             self.cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (r),int (h1),int (h2)]))
             t2 = time.time ()
@@ -89,13 +84,32 @@ class ravel:
             self.f.write ('----rt: route del----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
 
-    def close (self):
 
-        os.system ("cp "+ ravel.logfile + ' ' + self.logdest)
-        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
-    
-        if self.conn: 
-            self.conn.close()
+    def close (self):
+        # os.system ("cp "+ NSDI.logfile + ' ' + self.logdest)
+        # os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
+        if self.conn: self.conn.close()
         self.f.close ()
 
 
+class NSDI_profile (NSDI):
+
+    def __init__(self,dbname, rounds, logdest):
+        gdb ([dbname], sql_profile)
+        NSDI.__init__(self,dbname, rounds, logdest)
+
+    def close (self):
+        os.system ("cp "+ NSDI.logfile + ' ' + self.logdest)
+        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
+        NSDI.close (self)
+    
+class NSDI_fattree (NSDI):
+
+    def __init__(self,dbname, rounds, logdest):
+        gdb ([dbname], sql_profile)
+        NSDI.__init__(self,dbname, rounds, logdest)
+
+    def close (self):
+        os.system ("cp "+ NSDI.logfile + ' ' + self.logdest)
+        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/fattree/')
+        NSDI.close (self)

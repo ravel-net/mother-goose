@@ -37,12 +37,16 @@ if __name__ == '__main__':
         m = raw_input ("class, profiling, batch, interactive, generate_db, mininet, or exit? (c, p, b, i, g, m, e) \n")
 
         if m == 'c':
-            t = ravel (l3[0], 3, l3[0]+'_profile.log')
+            t = NSDI_profile (l3[0], 3, l3[0]+'.log')
             t.rtm_ins ()
             t.rtm_ins ()
             t.rtm_del ()
             t.re_route ()
             t.close ()
+
+            t2 = NSDI_fattree (l3[0], 3, l3[0]+'.log')
+            t2.rtm_ins ()
+            t2.close ()
 
             # t2 = ravel (l3[0], primitive, 30, 'profile_rm')
             # t.rtm_del ()
