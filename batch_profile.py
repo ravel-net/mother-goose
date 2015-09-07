@@ -12,7 +12,9 @@ class Batch_profile (Batch):
         add_profile_schema (self.cur)
 
     def primitive (self):
+
         Batch.rtm_ins (self, self.rounds)
+
         Batch.rtm_del (self)
 
     def close (self):

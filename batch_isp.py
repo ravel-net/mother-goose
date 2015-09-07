@@ -11,11 +11,9 @@ class Batch_isp (Batch):
         if database_exists == 0:
             add_pgrouting_plpy_plsh_extension (dbname, 'mininet')
             load_schema (dbname, 'mininet', "/home/mininet/ravel/sql_scripts/primitive.sql")
-        Batch_isp.init_ISP_topo (self, isp)
+            Batch_isp.init_ISP_topo (self, dbname, isp)
 
         Batch.__init__(self,dbname, rounds, logdest)
-        print Batch.links[1:4]
-
 
     def primitive (self):
         Batch.rtm_ins (self, self.rounds)
@@ -23,10 +21,10 @@ class Batch_isp (Batch):
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
-        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/')
+        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/isp/')
         Batch.close (self)
 
-    def init_ISP_topo (self,isp):
+    def init_ISP_topo (self, dbname, isp):
 
         def init_topology (cursor):
             ISP_edges_file = os.getcwd () + '/ISP_topo/'+str (isp) +'_edges.txt'
@@ -59,7 +57,11 @@ class Batch_isp (Batch):
                     print "Unable to insert into hosts table: %s" % str(e)
             print "Initialize topology table with edges in " + ISP_edges_file
 
-
-        init_topology (self)
+        conn = psycopg2.connect(database= dbname, user= 'mininet')
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor()
+        init_topology (cur)
+        if conn: conn.close()
         print "--------------------> load_ISP_topo_fewer_hosts successful"
+
 

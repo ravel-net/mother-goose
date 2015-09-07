@@ -33,9 +33,6 @@ if __name__ == '__main__':
     while True:
         m = raw_input ("batch, interactive, generate_db, mininet, or exit? (b, i, g, m, e) \n")
 
-        if m == 'p':
-            profile (l1[:1], username, 30)
-
         if m == 'i':
             procedure ()
 
@@ -44,6 +41,7 @@ if __name__ == '__main__':
             # t.rtm_ins (4)
             # t.rtm_del ()
             # t.re_route ()
+            # print t.links
             # t.close ()
 
             # t2 = Batch_fattree (l3[0], 4, l3[0]+'.log')
@@ -55,6 +53,7 @@ if __name__ == '__main__':
             # t3.close ()
 
             t4 = Batch_isp ('isp', 4, 'isp.log', 4755)
+            print t4.links
             t4.close ()
 
         elif m == 'g':
@@ -62,6 +61,9 @@ if __name__ == '__main__':
         
         elif m == 'm':
             mininet_interactive ()
+
+        # if m == 'p':
+        #     profile (l1[:1], username, 30)
 
         elif m == 'e':
             break
