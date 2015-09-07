@@ -53,6 +53,7 @@ if __name__ == '__main__':
 
             t4 = Batch_isp ('isp4755', 4)
             # print t4.links
+            print t4.isp
             t4.close ()
 
         elif m == 'g':
