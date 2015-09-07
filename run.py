@@ -1,17 +1,14 @@
-import time
-import sys
-import random
-import os
-import psycopg2
-import psycopg2.extras
-import subprocess
-import datetime
-from igraph import *
-
 execfile("libRavel.py")
-execfile("libEval.py")
+execfile("batch.py")
+execfile("batch_profile.py")
+execfile("batch_fattree.py")
+execfile("batch_isp.py")
+
 import libRavel
-import libEval
+import batch
+import batch_profile
+import batch_fattree
+import batch_isp
 
 switch_size = 0
 fanout_size = 0
@@ -34,19 +31,7 @@ if __name__ == '__main__':
     l3 = ['fattree16']
 
     while True:
-        m = raw_input ("class, profiling, batch, interactive, generate_db, mininet, or exit? (c, p, b, i, g, m, e) \n")
-
-        if m == 'c':
-            # t = batch_profile (l3[0], 4, l3[0]+'.log')
-            # t.rtm_ins ()
-            # t.rtm_del ()
-            # t.re_route ()
-            # t.close ()
-
-            t2 = batch_fattree (l3[0], 4, l3[0]+'.log')
-            # t2.rtm_ins ()
-            t2.primitive ()
-            t2.close ()
+        m = raw_input ("batch, interactive, generate_db, mininet, or exit? (b, i, g, m, e) \n")
 
         if m == 'p':
             profile (l1[:1], username, 30)
@@ -55,8 +40,22 @@ if __name__ == '__main__':
             procedure ()
 
         elif m == 'b':
-            # batch (l1, 30)
-            pass
+            # t = Batch_profile (l3[0], 4, l3[0]+'.log')
+            # t.rtm_ins (4)
+            # t.rtm_del ()
+            # t.re_route ()
+            # t.close ()
+
+            # t2 = Batch_fattree (l3[0], 4, l3[0]+'.log')
+            # t2.primitive ()
+            # t2.close ()
+
+            # t3 = Batch_fattree (l3[0], 4, l3[0]+'.log')
+            # t3.tenant ()
+            # t3.close ()
+
+            t4 = Batch_isp ('isp', 4, 'isp.log', 4755)
+            t4.close ()
 
         elif m == 'g':
             gdb (l3, primitive)

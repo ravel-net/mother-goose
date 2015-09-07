@@ -1,9 +1,23 @@
-def add_profile_schema (cur, sql_file):
-    dbscript  = open (sql_file,'r').read()
+import time
+import sys
+import random
+import os
+import psycopg2
+import psycopg2.extras
+import subprocess
+import datetime
+from igraph import *
+
+def add_tenant_schema (cur):
+    dbscript  = open ('/home/mininet/ravel/sql_scripts/tenant.sql','r').read()
     cur.execute(dbscript)
 
-def remove_profile_schema (cur, sql_file):
-    dbscript  = open (sql_file,'r').read()
+def add_profile_schema (cur):
+    dbscript  = open ('/home/mininet/ravel/sql_scripts/add_profile.sql','r').read()
+    cur.execute(dbscript)
+
+def remove_profile_schema (cur):
+    dbscript  = open ('/home/mininet/ravel/sql_scripts/remove_profile.sql','r').read()
     cur.execute(dbscript)
 
 def gdb (l, sql):

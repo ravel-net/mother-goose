@@ -81,18 +81,20 @@ DROP TABLE IF EXISTS switches CASCADE;
 CREATE UNLOGGED TABLE switches (
        sid	integer
 );
+CREATE INDEX ON switches (sid);
 
 DROP TABLE IF EXISTS hosts CASCADE;
 CREATE UNLOGGED TABLE hosts (
        hid	integer
 );
+CREATE INDEX ON hosts (hid);
 
 CREATE OR REPLACE VIEW uhosts AS (
        SELECT hid, 
        	      row_number () OVER () as u_hid
        FROM hosts
 );
-
+-- CREATE INDEX ON uhosts (hid);
 
 DROP TABLE IF EXISTS cf CASCADE;
 CREATE UNLOGGED TABLE cf (
@@ -112,6 +114,7 @@ CREATE UNLOGGED TABLE tm (
        vol	integer,
        PRIMARY KEY (fid)
 );
+CREATE INDEX ON tm (fid,src);
 
 DROP TABLE IF EXISTS tm_delta CASCADE;
 CREATE UNLOGGED TABLE tm_delta (
@@ -121,6 +124,7 @@ CREATE UNLOGGED TABLE tm_delta (
        vol	integer,
        isadd	integer
 );
+CREATE INDEX ON tm (fid,src);
 
 CREATE OR REPLACE RULE tm_ins AS
        ON INSERT TO tm
@@ -147,6 +151,7 @@ CREATE UNLOGGED TABLE utm (
        host2	integer,
        PRIMARY KEY (fid)
 );
+CREATE INDEX ON utm(fid,host1);
 
 CREATE OR REPLACE RULE utm_in_rule AS 
        ON INSERT TO utm
@@ -200,6 +205,7 @@ CREATE UNLOGGED TABLE rtm (
        host2	integer,
        PRIMARY key (fid)
 );
+CREATE INDEX ON rtm(fid,host1);
 
 CREATE OR REPLACE RULE rtm_ins AS
        ON INSERT TO rtm
@@ -655,6 +661,7 @@ CREATE UNLOGGED TABLE acl_tb (
        inBlklist      integer,
        PRIMARY key (end1, end2)		
 );
+CREATE INDEX ON acl_tb (end1,end2);
 
 CREATE OR REPLACE VIEW acl AS(
        SELECT DISTINCT end1, end2, inBlklist, 1 as isViolated
@@ -682,6 +689,7 @@ CREATE UNLOGGED TABLE lb_tb (
        PRIMARY key (sid)
        -- nid 	integer
 );
+CREATE INDEX ON lb_tb (sid);
 
 -- CREATE OR REPLACE VIEW lb2 AS(
 --        SELECT sid, count (*) AS load 
