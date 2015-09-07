@@ -52,8 +52,8 @@ if __name__ == '__main__':
             # t3.tenant ()
             # t3.close ()
 
-            t4 = Batch_isp ('isp', 4, 'isp.log', 4755)
-            print t4.links
+            t4 = Batch_isp ('isp4755', 4)
+            # print t4.links
             t4.close ()
 
         elif m == 'g':

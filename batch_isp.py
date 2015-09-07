@@ -4,8 +4,9 @@ from batch import Batch
 
 class Batch_isp (Batch):
 
-    def __init__(self, dbname, rounds, logdest, isp):
+    def __init__(self, dbname, rounds):
 
+        isp = dbname[3:]
         print "for database isp" + str (isp) + "--------------------"
         create_db (dbname, Batch.username)
         if database_exists == 0:
@@ -13,7 +14,7 @@ class Batch_isp (Batch):
             load_schema (dbname, Batch.username, "/home/mininet/ravel/sql_scripts/primitive.sql")
             Batch_isp.init_ISP_topo (self, dbname, isp)
 
-        Batch.__init__(self,dbname, rounds, logdest)
+        Batch.__init__(self,dbname, rounds)
 
     def primitive (self):
         Batch.rtm_ins (self, self.rounds)

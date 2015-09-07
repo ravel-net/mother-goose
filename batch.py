@@ -6,8 +6,9 @@ class Batch:
     logfile = os.getcwd ()+'/log.txt'
     username = 'mininet'
 
-    def __init__(self, dbname, rounds, logdest):
+    def __init__(self, dbname, rounds):
         self.rounds = rounds
+
 
         self.conn = psycopg2.connect(database= dbname, user= Batch.username)
         self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
@@ -17,9 +18,10 @@ class Batch:
 
         open(Batch.logfile, 'w').close()
         self.f = open(Batch.logfile, 'a')
-        self.logdest = logdest
+        self.logdest = dbname + '.log'
 
         self.cur.execute ("SELECT * FROM uhosts;")
+
         cs = self.cur.fetchall ()
         self.hids = [h['hid'] for h in cs]
 
