@@ -16,9 +16,6 @@ class Batch_isp (Batch):
 
         Batch.__init__(self,dbname, rounds)
 
-    def primitive (self):
-        Batch.rtm_ins (self, self.rounds)
-        Batch.rtm_del (self)
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)

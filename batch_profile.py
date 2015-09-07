@@ -4,10 +4,10 @@ from batch import Batch
 
 class Batch_profile (Batch):
 
-    def __init__(self,dbname, rounds, logdest):
+    def __init__(self,dbname, rounds):
         gdb ([dbname], "/home/mininet/ravel/sql_scripts/primitive.sql")
 
-        Batch.__init__(self,dbname, rounds, logdest)
+        Batch.__init__(self,dbname, rounds)
 
         add_profile_schema (self.cur)
 

@@ -4,9 +4,9 @@ from batch import Batch
 
 class Batch_fattree (Batch):
 
-    def __init__(self,dbname, rounds, logdest):
+    def __init__(self,dbname, rounds):
         gdb ([dbname], "/home/mininet/ravel/sql_scripts/primitive.sql")
-        Batch.__init__(self,dbname, rounds, logdest)
+        Batch.__init__(self,dbname, rounds)
         remove_profile_schema (self.cur)
 
     def close (self):
