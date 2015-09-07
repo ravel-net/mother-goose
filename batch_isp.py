@@ -7,10 +7,10 @@ class Batch_isp (Batch):
     def __init__(self, dbname, rounds, logdest, isp):
 
         print "for database isp" + str (isp) + "--------------------"
-        create_db (dbname, 'mininet')
+        create_db (dbname, Batch.username)
         if database_exists == 0:
-            add_pgrouting_plpy_plsh_extension (dbname, 'mininet')
-            load_schema (dbname, 'mininet', "/home/mininet/ravel/sql_scripts/primitive.sql")
+            add_pgrouting_plpy_plsh_extension (dbname, Batch.username)
+            load_schema (dbname, Batch.username, "/home/mininet/ravel/sql_scripts/primitive.sql")
             Batch_isp.init_ISP_topo (self, dbname, isp)
 
         Batch.__init__(self,dbname, rounds, logdest)
@@ -35,7 +35,7 @@ class Batch_isp (Batch):
             for edge in f:
                 ed = edge[:-1].split()
                 try:
-                    cursor.execute("""INSERT INTO tp(sid, nid, isactive) VALUES (%s, %s,1);""", (int(ed[0]), int(ed[1])))
+                    cursor.execute("""INSERT INTO tp(sid, nid, ishost,isactive) VALUES (%s, %s,0,1);""", (int(ed[0]), int(ed[1])))
                 except psycopg2.DatabaseError, e:
                     print "Unable to insert into topology table: %s" % str(e)
 
@@ -52,12 +52,12 @@ class Batch_isp (Batch):
                 nd = node[:-1]
                 try:
                     cursor.execute ("""INSERT INTO hosts VALUES (%s);""", ([int (nd)+1000]))
-                    cursor.execute ("""INSERT INTO tp(sid, nid, isactive) VALUES (%s, %s,1);""",(int(nd)+1000,int(nd)))
+                    cursor.execute ("""INSERT INTO tp(sid, nid, ishost, isactive) VALUES (%s, %s,1,1);""",(int(nd)+1000,int(nd)))
                 except psycopg2.DatabaseError, e:
                     print "Unable to insert into hosts table: %s" % str(e)
             print "Initialize topology table with edges in " + ISP_edges_file
 
-        conn = psycopg2.connect(database= dbname, user= 'mininet')
+        conn = psycopg2.connect(database= dbname, user= Batch.username)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
         cur = conn.cursor()
         init_topology (cur)
