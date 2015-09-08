@@ -1,1 +1,242 @@
-iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#primitive: op_lb ----------------------------------------------
+----lb: check max load----0.883817672729
+----lb: re-balance (absolute)----16.8840885162
+ddddiiiiiiiiii----lb+rt: re-balance (per rule)----26.7989635468
+----lb+rt: re-balance (absolute)----26.7989635468
+----lb: check max load----0.916004180908
+----lb: re-balance (absolute)----16.1349773407
+ddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----25.9540081024
+----lb+rt: re-balance (absolute)----25.9540081024
+----lb: check max load----0.658988952637
+----lb: re-balance (absolute)----14.4431591034
+ddddddddddddddddiiiiiiiiiiii----lb+rt: re-balance (per rule)----30.45129776
+----lb+rt: re-balance (absolute)----30.45129776
+----lb: check max load----0.740051269531
+----lb: re-balance (absolute)----12.3429298401
+ddddddiiiiiiii----lb+rt: re-balance (per rule)----21.4767456055
+----lb+rt: re-balance (absolute)----21.4767456055
+#primitive: op_acl ----------------------------------------------
+----acl: check violation----0.56004524231
+----acl: fix violation----1.76310539246
+dddddd----acl+rt: fix violation (per rule)----5.92112541199
+----acl+rt: fix violation (absolute)----5.92112541199
+----acl: check violation----0.464916229248
+----acl: fix violation----2.20394134521
+dddddddddddd----acl+rt: fix violation (per rule)----9.00793075562
+----acl+rt: fix violation (absolute)----9.00793075562
+----acl: check violation----0.469207763672
+----acl: fix violation----1.93691253662
+dddddddddd----acl+rt: fix violation (per rule)----8.15486907959
+----acl+rt: fix violation (absolute)----8.15486907959
+----acl: check violation----0.473022460938
+----acl: fix violation----1.98602676392
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.0190849304
+----acl+rt: fix violation (absolute)----13.0190849304
+----acl: check violation----0.320911407471
+----acl: fix violation----1.32012367249
+dddddddd----acl+rt: fix violation (per rule)----6.13117218018
+----acl+rt: fix violation (absolute)----6.13117218018
+----acl: check violation----0.491142272949
+----acl: fix violation----1.69205665588
+dddddddddddd----acl+rt: fix violation (per rule)----6.72101974487
+----acl+rt: fix violation (absolute)----6.72101974487
+----acl: check violation----0.464916229248
+----acl: fix violation----1.81984901428
+dddddddddd----acl+rt: fix violation (per rule)----7.32183456421
+----acl+rt: fix violation (absolute)----7.32183456421
+----acl: check violation----0.301122665405
+----acl: fix violation----1.38902664185
+dddddddddd----acl+rt: fix violation (per rule)----7.38096237183
+----acl+rt: fix violation (absolute)----7.38096237183
+----acl: check violation----0.459909439087
+----acl: fix violation----1.84106826782
+dddddddddddddddd----acl+rt: fix violation (per rule)----12.2249126434
+----acl+rt: fix violation (absolute)----12.2249126434
+----acl: check violation----0.481843948364
+----acl: fix violation----1.79100036621
+dddddddddddddd----acl+rt: fix violation (per rule)----9.22799110413
+----acl+rt: fix violation (absolute)----9.22799110413
+----acl: check violation----0.292062759399
+----acl: fix violation----1.79195404053
+dddddddddddddddd----acl+rt: fix violation (per rule)----11.1689567566
+----acl+rt: fix violation (absolute)----11.1689567566
+----acl: check violation----0.471830368042
+----acl: fix violation----1.8618106842
+dddddd----acl+rt: fix violation (per rule)----7.53259658813
+----acl+rt: fix violation (absolute)----7.53259658813
+----acl: check violation----0.519037246704
+----acl: fix violation----1.99699401855
+dddddddd----acl+rt: fix violation (per rule)----7.37500190735
+----acl+rt: fix violation (absolute)----7.37500190735
+----acl: check violation----0.308990478516
+----acl: fix violation----1.27601623535
+dddddddddddddddd----acl+rt: fix violation (per rule)----9.29713249207
+----acl+rt: fix violation (absolute)----9.29713249207
+----acl: check violation----0.313997268677
+----acl: fix violation----1.15704536438
+dddddddd----acl+rt: fix violation (per rule)----5.9928894043
+----acl+rt: fix violation (absolute)----5.9928894043
+----acl: check violation----0.488996505737
+----acl: fix violation----2.08210945129
+dddddddddd----acl+rt: fix violation (per rule)----9.03630256653
+----acl+rt: fix violation (absolute)----9.03630256653
+----acl: check violation----0.478982925415
+----acl: fix violation----1.95407867432
+dddddddddd----acl+rt: fix violation (per rule)----7.35211372375
+----acl+rt: fix violation (absolute)----7.35211372375
+----acl: check violation----0.53882598877
+----acl: fix violation----1.90711021423
+dddddddddd----acl+rt: fix violation (per rule)----7.76505470276
+----acl+rt: fix violation (absolute)----7.76505470276
+----acl: check violation----0.457048416138
+----acl: fix violation----1.89089775085
+dddddddd----acl+rt: fix violation (per rule)----7.18188285828
+----acl+rt: fix violation (absolute)----7.18188285828
+----acl: check violation----0.322103500366
+----acl: fix violation----1.12581253052
+dddddddddd----acl+rt: fix violation (per rule)----6.33478164673
+----acl+rt: fix violation (absolute)----6.33478164673
+----acl: check violation----0.496864318848
+----acl: fix violation----1.92999839783
+dddddddddd----acl+rt: fix violation (per rule)----8.13889503479
+----acl+rt: fix violation (absolute)----8.13889503479
+----acl: check violation----0.535011291504
+----acl: fix violation----1.90615653992
+dddddddddd----acl+rt: fix violation (per rule)----8.0451965332
+----acl+rt: fix violation (absolute)----8.0451965332
+----acl: check violation----0.458002090454
+----acl: fix violation----1.92785263062
+dddddddddd----acl+rt: fix violation (per rule)----8.60691070557
+----acl+rt: fix violation (absolute)----8.60691070557
+----acl: check violation----0.472784042358
+----acl: fix violation----2.02393531799
+dddddddddddddddd----acl+rt: fix violation (per rule)----8.73589515686
+----acl+rt: fix violation (absolute)----8.73589515686
+----acl: check violation----0.550985336304
+----acl: fix violation----1.85298919678
+dddddddddd----acl+rt: fix violation (per rule)----7.4679851532
+----acl+rt: fix violation (absolute)----7.4679851532
+----acl: check violation----0.602006912231
+----acl: fix violation----1.82008743286
+dddddddddddddddd----acl+rt: fix violation (per rule)----11.3091468811
+----acl+rt: fix violation (absolute)----11.3091468811
+----acl: check violation----0.587940216064
+----acl: fix violation----1.87087059021
+dddddddd----acl+rt: fix violation (per rule)----7.15184211731
+----acl+rt: fix violation (absolute)----7.15184211731
+----acl: check violation----0.455141067505
+----acl: fix violation----1.89208984375
+dddddddd----acl+rt: fix violation (per rule)----7.09223747253
+----acl+rt: fix violation (absolute)----7.09223747253
+----acl: check violation----0.442981719971
+----acl: fix violation----1.86610221863
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.2550983429
+----acl+rt: fix violation (absolute)----10.2550983429
+----acl: check violation----0.296115875244
+----acl: fix violation----1.26814842224
+dddddddd----acl+rt: fix violation (per rule)----7.30109214783
+----acl+rt: fix violation (absolute)----7.30109214783
+----acl: check violation----0.453948974609
+----acl: fix violation----1.77097320557
+dddddddd----acl+rt: fix violation (per rule)----4.96411323547
+----acl+rt: fix violation (absolute)----4.96411323547
+----acl: check violation----0.361204147339
+----acl: fix violation----1.90210342407
+dddddddddd----acl+rt: fix violation (per rule)----8.64005088806
+----acl+rt: fix violation (absolute)----8.64005088806
+----acl: check violation----0.468969345093
+----acl: fix violation----1.75786018372
+dddddddddd----acl+rt: fix violation (per rule)----7.87401199341
+----acl+rt: fix violation (absolute)----7.87401199341
+----acl: check violation----0.438928604126
+----acl: fix violation----1.86491012573
+dddddddddddddddd----acl+rt: fix violation (per rule)----11.2819671631
+----acl+rt: fix violation (absolute)----11.2819671631
+----acl: check violation----0.447034835815
+----acl: fix violation----1.84106826782
+dddddddddd----acl+rt: fix violation (per rule)----7.24792480469
+----acl+rt: fix violation (absolute)----7.24792480469
+----acl: check violation----0.366926193237
+----acl: fix violation----2.41303443909
+dddddddddddddddd----acl+rt: fix violation (per rule)----8.12005996704
+----acl+rt: fix violation (absolute)----8.12005996704
+----acl: check violation----0.380039215088
+----acl: fix violation----1.16300582886
+dddddddd----acl+rt: fix violation (per rule)----4.78792190552
+----acl+rt: fix violation (absolute)----4.78792190552
+----acl: check violation----0.464916229248
+----acl: fix violation----2.05707550049
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.9679698944
+----acl+rt: fix violation (absolute)----10.9679698944
+----acl: check violation----0.529050827026
+----acl: fix violation----1.96409225464
+dddddddd----acl+rt: fix violation (per rule)----8.02707672119
+----acl+rt: fix violation (absolute)----8.02707672119
+----acl: check violation----0.437021255493
+----acl: fix violation----2.07591056824
+dddddddd----acl+rt: fix violation (per rule)----8.03709030151
+----acl+rt: fix violation (absolute)----8.03709030151
+----acl: check violation----0.429153442383
+----acl: fix violation----2.03418731689
+dddddddddd----acl+rt: fix violation (per rule)----8.40425491333
+----acl+rt: fix violation (absolute)----8.40425491333
+----acl: check violation----0.348806381226
+----acl: fix violation----1.13916397095
+dddddddd----acl+rt: fix violation (per rule)----6.2620639801
+----acl+rt: fix violation (absolute)----6.2620639801
+----acl: check violation----0.540971755981
+----acl: fix violation----1.39808654785
+dddd----acl+rt: fix violation (per rule)----3.88622283936
+----acl+rt: fix violation (absolute)----3.88622283936
+----acl: check violation----0.594854354858
+----acl: fix violation----1.79505348206
+dddddd----acl+rt: fix violation (per rule)----6.14404678345
+----acl+rt: fix violation (absolute)----6.14404678345
+----acl: check violation----0.42986869812
+----acl: fix violation----3.04007530212
+dddddddddd----acl+rt: fix violation (per rule)----7.77792930603
+----acl+rt: fix violation (absolute)----7.77792930603
+----acl: check violation----0.432014465332
+----acl: fix violation----2.06398963928
+dddddd----acl+rt: fix violation (per rule)----6.13594055176
+----acl+rt: fix violation (absolute)----6.13594055176
+----acl: check violation----0.510931015015
+----acl: fix violation----1.90997123718
+dddddddddd----acl+rt: fix violation (per rule)----8.08882713318
+----acl+rt: fix violation (absolute)----8.08882713318
+#primitive: routing_ins_acl_lb ----------------------------------------------
+----acl+lb+rt: route ins----14.5080089569
+----acl+lb+rt: route ins----8.544921875
+iiiiiiiiii----acl+lb+rt: route ins----19.8600292206
+iiiiiiii----acl+lb+rt: route ins----15.1081085205
+iiiiiiiiii----acl+lb+rt: route ins----16.6838169098
+iiiiiiii----acl+lb+rt: route ins----17.7240371704
+iiiiiiiiii----acl+lb+rt: route ins----17.2979831696
+----acl+lb+rt: route ins----11.6908550262
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----22.3939418793
+----acl+lb+rt: route ins----11.2960338593
+iiiiiiii----acl+lb+rt: route ins----16.8030261993
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----19.9251174927
+iiiiiiiiii----acl+lb+rt: route ins----17.3358917236
+iiiiiiiiiiddddddddddiiiiiiiiiiiiiiii----acl+lb+rt: route ins----39.6599769592
+iiiiiiiiii----acl+lb+rt: route ins----17.9200172424
+iiiiiiiiiiii----acl+lb+rt: route ins----15.6531333923
+iiiiiiii----acl+lb+rt: route ins----16.3021087646
+iiiiiiii----acl+lb+rt: route ins----16.4940357208
+----acl+lb+rt: route ins----8.84699821472
+iiiiii----acl+lb+rt: route ins----13.0898952484
+iiiiiiiiii----acl+lb+rt: route ins----15.6080722809
+----acl+lb+rt: route ins----12.0780467987
+iiiiiiiiii----acl+lb+rt: route ins----16.6120529175
+iiiiiiiiii----acl+lb+rt: route ins----15.9089565277
+iiiiiiiiii----acl+lb+rt: route ins----16.5441036224
+iiiiiiiiiiiiddddddddiiiiiiii----acl+lb+rt: route ins----39.1569137573
+iiiiiiiiii----acl+lb+rt: route ins----17.9698467255
+----acl+lb+rt: route ins----10.4150772095
+iiiiiiiiiiiiddddddddddiiiiiiiiii----acl+lb+rt: route ins----37.6398563385
+----acl+lb+rt: route ins----13.612985611
+iiii----acl+lb+rt: route ins----9.57107543945
+iiiiiiiiii----acl+lb+rt: route ins----16.242980957
+iiiiiiii----acl+lb+rt: route ins----15.8278942108
+iiiiiiiiiiddddddddddiiiiiiiiiiiiiiii----acl+lb+rt: route ins----39.4599437714
+iiiiiiiiii----acl+lb+rt: route ins----18.2058811188

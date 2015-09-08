@@ -55,6 +55,7 @@ if __name__ == '__main__':
             # print len (t4.test.keys ())
             # print t4.test.keys ()[0:10]
             # print t4.test.values ()[0:10]
+            t4.primitive ()
             t4.close ()
 
         elif m == 'm':

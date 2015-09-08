@@ -34,6 +34,11 @@ class Batch_isp (Batch):
         os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/isp/')
         Batch.close (self)
 
+    def primitive (self):
+        Batch.init_acl (self)
+        Batch.init_lb (self)
+        Batch.op_primitive (self)
+
     def init_ISP_topo (self, dbname):
 
         def init_topology (cursor):
