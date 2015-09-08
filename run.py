@@ -31,7 +31,7 @@ if __name__ == '__main__':
     l3 = ['fattree16']
 
     while True:
-        m = raw_input ("batch, interactive, generate_db, mininet, or exit? (b, i, g, m, e) \n")
+        m = raw_input ("batch, interactive, mininet, or exit? (b, i, m, e) \n")
 
         if m == 'i':
             procedure ()
@@ -52,12 +52,11 @@ if __name__ == '__main__':
             # t3.close ()
 
             t4 = Batch_isp ('isp4755_100', 4)
-            print t4.isp
+            # print len (t4.test.keys ())
+            # print t4.test.keys ()[0:10]
+            # print t4.test.values ()[0:10]
             t4.close ()
 
-        elif m == 'g':
-            gdb (l3, primitive)
-        
         elif m == 'm':
             mininet_interactive ()
 

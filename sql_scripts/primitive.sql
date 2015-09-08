@@ -888,3 +888,16 @@ plpy.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
 
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+
+
+-- DROP TABLE IF EXISTS borders CASCADE;
+-- CREATE UNLOGGED TABLE borders (
+--        sid  	text,
+--        peerip	text,
+--        primary key (sid)
+-- );
+-- CREATE INDEX ON borders (sid);
+
+-- SELECT u_hid, sid
+-- FROM uhosts, borders WHERE
+-- hid = 1000 + sid;

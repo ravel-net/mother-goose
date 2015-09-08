@@ -27,6 +27,7 @@ class Batch_isp (Batch):
         self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
         os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
 
+        Batch_isp.init_rib (self)
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
@@ -55,7 +56,6 @@ class Batch_isp (Batch):
                 except psycopg2.DatabaseError, e:
                     print "Unable to insert into switches table: %s" % str(e)
 
-            f = ['60\n','34\n','112\n','141\n','193\n','238\n','28\n','89\n','91\n','253\n','472\n']
             for node in f:
                 nd = node[:-1]
                 try:
@@ -72,9 +72,7 @@ class Batch_isp (Batch):
         if conn: conn.close()
         print "--------------------> load_ISP_topo_fewer_hosts successful"
 
-
     def init_rib (self):
-
         cursor = self.cur
         ISP_edges_file = self.ISP_edges_file
         ISP_nodes_file = self.ISP_nodes_file
@@ -90,68 +88,44 @@ class Batch_isp (Batch):
             for pn in pf:
                 ISP_node = random.choice (ispf)
                 ispf.remove (ISP_node)
-                node_map[pn[:-1]] = ISP_node[:-1]
+                node_map[pn[:-1]] = int (ISP_node[:-1]) 
             return node_map
 
-        global ISP_graph
-
+        # map (randomly picked) ISP nodes (switch nodes in tp table)
+        # to peer IPs in rib feeds
         nm = peerIP_ISP_map (rib_peerIPs_file, ISP_nodes_file)
         ISP_borders = nm.values ()
 
+        cursor.execute ("""
+DROP TABLE IF EXISTS borders CASCADE;
+CREATE UNLOGGED TABLE borders (
+       sid     integer,
+       peerip  text
+);
+""")
+        # set up borders table, randomly pick 21 switches, and assign
+        # each switch a unique peer IP
         for key in nm.keys():
-            try: 
-                cursor.execute ("""INSERT INTO borders (switch_id, peerip) VALUES (%s,  %s)""", (nm[key], key))
-            except psycopg2.DatabaseError, e:
-                print "Unable to insert into borders "
-                print 'Warning %s' % e
+            cursor.execute ("""INSERT INTO borders (sid, peerip) VALUES (%s,  %s)""", (nm[key], key))
 
-        prefixes_id_map = {}
-        def set_prefixes_id_map ():
-            pre = open (rib_prefixes_file, "r").readlines ()
-            cid = 0
-            for p in pre:
-                cid = cid + 1
-                prefixes_id_map[p[:-1]] = cid
+        cursor.execute (""" 
+SELECT *
+FROM uhosts, borders WHERE
+hid = 1000 + sid;
+""")
+        cs = self.cur.fetchall ()
+        sid2u_hid = {h['sid']: int (h['u_hid']) for h in cs}
+        print len (sid2u_hid)
 
-        set_prefixes_id_map ()
+        ribs = open (rib_edges_file, "r").readlines ()
 
-        time_lapse = 0
+        Batch.update_max_fid (self)
+        fid = self.max_fid + 1
+        
+        for r in ribs:
+            switch_id = int (nm [r.split ()[0]]) 
+            random_border = int(random.choice (ISP_borders))
 
-        # ribs = open (rib_edges_file, "r").readlines ()
-        # for r in ribs:
-        #     switch_id = int (nm [r.split ()[0]]) 
-        #     prefix = r.split ()[1]
-        #     random_border = int(random.choice (ISP_borders))
-
-        #     for n in [random_border]:
-        #         if n != switch_id:
-        #             path_list = ISP_graph.get_shortest_paths (switch_id, n)[0]
-        #             path_edges = path_to_edge (path_list)
-
-        #             start_t = time.time ()
-
-        #             try: 
-        #                 cursor.execute ("""SELECT flow_id from flow_constraints WHERE flow_id = %s""", ([prefixes_id_map[prefix]]))
-        #                 c = cursor.fetchall ()
-
-        #                 if c == []:
-        #                     try: 
-        #                         cursor.execute ("""INSERT INTO flow_constraints (flow_id, flow_name) VALUES (%s,  %s)""", (prefixes_id_map[prefix], prefix))
-        #                     except psycopg2.DatabaseError, e:
-        #                         logging.warning (e)
-
-        #                 for ed in path_edges:                            
-        #                     cursor.execute ("""INSERT INTO configuration (flow_id, switch_id, next_id) VALUES (%s,%s,%s)""", (prefixes_id_map[prefix], ed[0], ed[1]))
-
-        #             except psycopg2.DatabaseError, e:
-        #                 pass
-
-        #             end_t = time.time ()
-        #             time_lapse = time_lapse + end_t - start_t
-
-        # cursor.execute ("""SELECT count (*) FROM configuration""")
-        # c = cursor.fetchall ()
-
-        # logging.info ("Load configuration " + str (tf (time_lapse)) + " " + str (tfm (time_lapse)))
-        # logging.info ("Load configuration (" + str (c[0][0]) + " rows) average " + tf (time_lapse / int(c[0][0])))
-        # print "Load configuration table with edges\n"
+            if random_border != switch_id:
+                cursor.execute ("INSERT INTO rtm VALUES (%s,%s,%s);", (fid, sid2u_hid[switch_id], sid2u_hid[random_border]))
+                fid += 1
