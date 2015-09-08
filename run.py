@@ -37,22 +37,21 @@ if __name__ == '__main__':
             procedure ()
 
         elif m == 'b':
-            t = Batch_profile (l3[0], 4)
-            t.rtm_ins (4)
-            t.rtm_del ()
-            t.re_route ()
-            t.close ()
+            # t = Batch_profile (l3[0], 4)
+            # t.rtm_ins (4)
+            # t.rtm_del ()
+            # t.re_route ()
+            # t.close ()
 
             # t2 = Batch_fattree (l3[0], 4)
             # t2.primitive ()
             # t2.close ()
 
-            t3 = Batch_fattree (l3[0], 4)
-            t3.tenant ()
-            t3.close ()
+            # t3 = Batch_fattree (l3[0], 4)
+            # t3.tenant ()
+            # t3.close ()
 
-            t4 = Batch_isp ('isp4755', 4)
-            # print t4.links
+            t4 = Batch_isp ('isp4755_100', 4)
             print t4.isp
             t4.close ()
 

@@ -6,22 +6,26 @@ class Batch_isp (Batch):
 
     def __init__(self, dbname, rounds):
 
+        isp = dbname[3:7]
+        self.isp = isp
         self.ISP_edges_file = os.getcwd () + '/ISP_topo/'+str (isp) +'_edges.txt'
         self.ISP_nodes_file = os.getcwd () + '/ISP_topo/'+str (isp)+'_nodes.txt'
         self.rib_prefixes_file = os.getcwd() + '/rib_feeds/' + "rib20011204_prefixes.txt"
         self.rib_peerIPs_file = os.getcwd() + '/rib_feeds/' + "rib20011204_nodes.txt"
 
-        isp = dbname[3:]
-        self.isp = isp
-        print "for database isp" + str (isp) + "--------------------"
-
+        print "for database " + dbname + "--------------------"
         create_db (dbname, Batch.username)
         if database_exists == 0:
             add_pgrouting_plpy_plsh_extension (dbname, Batch.username)
             load_schema (dbname, Batch.username, "/home/mininet/ravel/sql_scripts/primitive.sql")
-            Batch_isp.init_ISP_topo (self, dbname, isp)
+            Batch_isp.init_ISP_topo (self, dbname)
 
         Batch.__init__(self,dbname, rounds)
+
+        feeds = dbname[8:]
+        rib_feeds_all = os.getcwd() + '/rib_feeds/rib20011204_edges.txt'
+        self.rib_edges = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+        os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges)
 
 
     def close (self):
@@ -29,7 +33,7 @@ class Batch_isp (Batch):
         os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/isp/')
         Batch.close (self)
 
-    def init_ISP_topo (self, dbname, isp):
+    def init_ISP_topo (self, dbname):
 
         def init_topology (cursor):
             ISP_edges_file = self.ISP_edges_file
@@ -112,41 +116,41 @@ class Batch_isp (Batch):
 
         time_lapse = 0
 
-        ribs = open (rib_edges_file, "r").readlines ()
-        for r in ribs:
-            switch_id = int (nm [r.split ()[0]]) 
-            prefix = r.split ()[1]
-            random_border = int(random.choice (ISP_borders))
+        # ribs = open (rib_edges_file, "r").readlines ()
+        # for r in ribs:
+        #     switch_id = int (nm [r.split ()[0]]) 
+        #     prefix = r.split ()[1]
+        #     random_border = int(random.choice (ISP_borders))
 
-            for n in [random_border]:
-                if n != switch_id:
-                    path_list = ISP_graph.get_shortest_paths (switch_id, n)[0]
-                    path_edges = path_to_edge (path_list)
+        #     for n in [random_border]:
+        #         if n != switch_id:
+        #             path_list = ISP_graph.get_shortest_paths (switch_id, n)[0]
+        #             path_edges = path_to_edge (path_list)
 
-                    start_t = time.time ()
+        #             start_t = time.time ()
 
-                    try: 
-                        cursor.execute ("""SELECT flow_id from flow_constraints WHERE flow_id = %s""", ([prefixes_id_map[prefix]]))
-                        c = cursor.fetchall ()
+        #             try: 
+        #                 cursor.execute ("""SELECT flow_id from flow_constraints WHERE flow_id = %s""", ([prefixes_id_map[prefix]]))
+        #                 c = cursor.fetchall ()
 
-                        if c == []:
-                            try: 
-                                cursor.execute ("""INSERT INTO flow_constraints (flow_id, flow_name) VALUES (%s,  %s)""", (prefixes_id_map[prefix], prefix))
-                            except psycopg2.DatabaseError, e:
-                                logging.warning (e)
+        #                 if c == []:
+        #                     try: 
+        #                         cursor.execute ("""INSERT INTO flow_constraints (flow_id, flow_name) VALUES (%s,  %s)""", (prefixes_id_map[prefix], prefix))
+        #                     except psycopg2.DatabaseError, e:
+        #                         logging.warning (e)
 
-                        for ed in path_edges:                            
-                            cursor.execute ("""INSERT INTO configuration (flow_id, switch_id, next_id) VALUES (%s,%s,%s)""", (prefixes_id_map[prefix], ed[0], ed[1]))
+        #                 for ed in path_edges:                            
+        #                     cursor.execute ("""INSERT INTO configuration (flow_id, switch_id, next_id) VALUES (%s,%s,%s)""", (prefixes_id_map[prefix], ed[0], ed[1]))
 
-                    except psycopg2.DatabaseError, e:
-                        pass
+        #             except psycopg2.DatabaseError, e:
+        #                 pass
 
-                    end_t = time.time ()
-                    time_lapse = time_lapse + end_t - start_t
+        #             end_t = time.time ()
+        #             time_lapse = time_lapse + end_t - start_t
 
-        cursor.execute ("""SELECT count (*) FROM configuration""")
-        c = cursor.fetchall ()
+        # cursor.execute ("""SELECT count (*) FROM configuration""")
+        # c = cursor.fetchall ()
 
-        logging.info ("Load configuration " + str (tf (time_lapse)) + " " + str (tfm (time_lapse)))
-        logging.info ("Load configuration (" + str (c[0][0]) + " rows) average " + tf (time_lapse / int(c[0][0])))
-        print "Load configuration table with edges\n"
+        # logging.info ("Load configuration " + str (tf (time_lapse)) + " " + str (tfm (time_lapse)))
+        # logging.info ("Load configuration (" + str (c[0][0]) + " rows) average " + tf (time_lapse / int(c[0][0])))
+        # print "Load configuration table with edges\n"
