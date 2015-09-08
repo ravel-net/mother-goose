@@ -24,8 +24,8 @@ class Batch_isp (Batch):
 
         feeds = dbname[8:]
         rib_feeds_all = os.getcwd() + '/rib_feeds/rib20011204_edges.txt'
-        self.rib_edges = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
-        os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges)
+        self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+        os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
 
 
     def close (self):
@@ -73,13 +73,14 @@ class Batch_isp (Batch):
         print "--------------------> load_ISP_topo_fewer_hosts successful"
 
 
-    def init_rib (self, rib_edges_file):
+    def init_rib (self):
 
         cursor = self.cur
         ISP_edges_file = self.ISP_edges_file
         ISP_nodes_file = self.ISP_nodes_file
-        rib_prefixes_file = self.rib_prefixes 
-        rib_peerIPs_file = self.rib_peerIPs 
+        rib_prefixes_file = self.rib_prefixes_file
+        rib_peerIPs_file = self.rib_peerIPs_file 
+        rib_edges_file = self.rib_edges_file
 
         def peerIP_ISP_map (peerIP_nodes_file, ISP_nodes_file):
             pf = open (peerIP_nodes_file, "r").readlines ()
