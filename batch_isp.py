@@ -6,9 +6,15 @@ class Batch_isp (Batch):
 
     def __init__(self, dbname, rounds):
 
+        self.ISP_edges_file = os.getcwd () + '/ISP_topo/'+str (isp) +'_edges.txt'
+        self.ISP_nodes_file = os.getcwd () + '/ISP_topo/'+str (isp)+'_nodes.txt'
+        self.rib_prefixes_file = os.getcwd() + '/rib_feeds/' + "rib20011204_prefixes.txt"
+        self.rib_peerIPs_file = os.getcwd() + '/rib_feeds/' + "rib20011204_nodes.txt"
+
         isp = dbname[3:]
         self.isp = isp
         print "for database isp" + str (isp) + "--------------------"
+
         create_db (dbname, Batch.username)
         if database_exists == 0:
             add_pgrouting_plpy_plsh_extension (dbname, Batch.username)
@@ -26,9 +32,8 @@ class Batch_isp (Batch):
     def init_ISP_topo (self, dbname, isp):
 
         def init_topology (cursor):
-            ISP_edges_file = os.getcwd () + '/ISP_topo/'+str (isp) +'_edges.txt'
-            ISP_nodes_file = os.getcwd () + '/ISP_topo/'+str (isp)+'_nodes.txt'
-
+            ISP_edges_file = self.ISP_edges_file
+            ISP_nodes_file = self.ISP_nodes_file
             f = open (ISP_edges_file, "r").readlines ()
 
             for edge in f:
@@ -64,11 +69,13 @@ class Batch_isp (Batch):
         print "--------------------> load_ISP_topo_fewer_hosts successful"
 
 
+    def init_rib (self, rib_edges_file):
 
-
-
-    def init_rib (self, rib_edges_file, rib_prefixes_file, rib_peerIPs_file, ISP_nodes_file, ISP_edges_file):
         cursor = self.cur
+        ISP_edges_file = self.ISP_edges_file
+        ISP_nodes_file = self.ISP_nodes_file
+        rib_prefixes_file = self.rib_prefixes 
+        rib_peerIPs_file = self.rib_peerIPs 
 
         def peerIP_ISP_map (peerIP_nodes_file, ISP_nodes_file):
             pf = open (peerIP_nodes_file, "r").readlines ()
@@ -121,7 +128,6 @@ class Batch_isp (Batch):
                     try: 
                         cursor.execute ("""SELECT flow_id from flow_constraints WHERE flow_id = %s""", ([prefixes_id_map[prefix]]))
                         c = cursor.fetchall ()
-                        # logging.info (str (prefixes_id_map[prefix]) + str (c))
 
                         if c == []:
                             try: 
@@ -133,7 +139,6 @@ class Batch_isp (Batch):
                             cursor.execute ("""INSERT INTO configuration (flow_id, switch_id, next_id) VALUES (%s,%s,%s)""", (prefixes_id_map[prefix], ed[0], ed[1]))
 
                     except psycopg2.DatabaseError, e:
-                        # logging.warning (e)
                         pass
 
                     end_t = time.time ()
