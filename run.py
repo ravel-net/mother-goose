@@ -1,4 +1,5 @@
 execfile("libRavel.py")
+execfile("plot.py")
 execfile("batch.py")
 execfile("batch_profile.py")
 execfile("batch_fattree.py")
@@ -9,6 +10,7 @@ import batch
 import batch_profile
 import batch_fattree
 import batch_isp
+import plot
 
 switch_size = 0
 fanout_size = 0
@@ -28,35 +30,47 @@ tenant = "/home/mininet/ravel/sql_scripts/tenant.sql"
 if __name__ == '__main__':
     l1 = ['fattree16', 'fattree32', 'fattree64']
     l2 = ['fattree4', 'fattree8', 'fattree16']
-    l3 = ['fattree16']
+    l4 = ['isp4755_10', 'isp4755_100', 'isp4755_1000']
 
     while True:
         m = raw_input ("batch, interactive, mininet, or exit? (b, i, m, e) \n")
 
-        if m == 'i':
+        if m == 'b':
+
+            primitive = rPlot_primitive ('fattree')
+
+            for db in l2:
+                t2 = Batch_fattree (db, 4)
+                t2.primitive ()
+                t2.close ()
+
+                primitive.add_log (t2.logdest)
+
+            primitive.gen_dat ()
+
+            # plot ('primitive', profile.log_file_list[0], profile.key_list[0], '/media/sf_share/ravel_plot/fattree/dat/t.dat')
+
+                # t = Batch_profile (db, 4)
+                # t.primitive ()
+                # t.close ()
+                # profile_log_files.append ('/media/sf_share/ravel_plot/profile/' + t.logdest)
+
+            #     t3 = Batch_fattree (db, 4)
+            #     t3.tenant ()
+            #     t3.close ()
+            #     fat_tenant_log_files.append ('/media/sf_share/ravel_plot/fattree/' + t3.logdest)
+
+            # for db in l4:
+            #     t4 = Batch_isp (db, 4)
+            #     t4.primitive ()
+            #     t4.close ()
+            #     isp_primitive_log_files.append ('/media/sf_share/ravel_plot/isp/' + t4.logdest)
+
+            # a = parse_log (fat_primitive_log_files[0], 'lb: check max load')
+            # print a
+
+        elif m == 'i':
             procedure ()
-
-        elif m == 'b':
-            # t = Batch_profile (l3[0], 4)
-            # t.rtm_ins (4)
-            # t.rtm_del ()
-            # t.re_route ()
-            # t.close ()
-
-            # t2 = Batch_fattree (l3[0], 4)
-            # t2.primitive ()
-            # t2.close ()
-
-            # t3 = Batch_fattree (l3[0], 4)
-            # t3.tenant ()
-            # t3.close ()
-
-            t4 = Batch_isp ('isp4755_100', 4)
-            # print len (t4.test.keys ())
-            # print t4.test.keys ()[0:10]
-            # print t4.test.values ()[0:10]
-            t4.primitive ()
-            t4.close ()
 
         elif m == 'm':
             mininet_interactive ()

@@ -120,7 +120,7 @@ hid = 1000 + sid;
 """)
         cs = self.cur.fetchall ()
         sid2u_hid = {h['sid']: int (h['u_hid']) for h in cs}
-        print len (sid2u_hid)
+        # print len (sid2u_hid)
 
         ribs = open (rib_edges_file, "r").readlines ()
 

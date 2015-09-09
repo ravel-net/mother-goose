@@ -131,7 +131,7 @@ class Batch:
         for r in range (max_fid+1, max_fid + rounds + 1):
             [h1, h2] = random.sample(self.uhosts, 2)
 
-            self.f.write ("round " + str (r-1) + '\n')
+            self.f.write ("#round " + str (r-1) + '\n')
             self.f.flush ()
             t1 = time.time ()
             self.cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (r),int (h1),int (h2)]))
@@ -146,7 +146,7 @@ class Batch:
         fids = [h['fid'] for h in cs]
 
         for r in range (0, self.rounds):
-            self.f.write ("round " + str (r) + '\n')
+            self.f.write ("#round " + str (r) + '\n')
             self.f.flush ()
             t1 = time.time ()
             self.cur.execute ("DELETE FROM rtm WHERE fid =" +str (fids[r])+ ";")

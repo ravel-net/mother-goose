@@ -14,8 +14,8 @@ class Batch_profile (Batch):
     def primitive (self):
 
         Batch.rtm_ins (self, self.rounds)
-
         Batch.rtm_del (self)
+        Batch.re_route (self)
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)

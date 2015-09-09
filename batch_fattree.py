@@ -7,7 +7,9 @@ class Batch_fattree (Batch):
     def __init__(self,dbname, rounds):
         gdb ([dbname], "/home/mininet/ravel/sql_scripts/primitive.sql")
         Batch.__init__(self,dbname, rounds)
+
         remove_profile_schema (self.cur)
+
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
@@ -21,6 +23,9 @@ class Batch_fattree (Batch):
         Batch.init_lb (self)
 
         Batch.op_primitive (self)
+
+        dbname = self.logdest.split ('.')[0]
+        self.logdest = dbname + '_primitive.log'
 
     def tenant (self):
         size = 10
@@ -41,6 +46,9 @@ class Batch_fattree (Batch):
         thosts = [h['hid'] for h in cs]
         for i in range (size):
             Batch_fattree.routing_ins_acl_lb_tenant (self,thosts)
+
+        dbname = self.logdest.split ('.')[0]
+        self.logdest = dbname + '_tenant.log'
 
     def routing_ins_acl_lb_tenant (self,hosts):
         cur = self.cur
@@ -76,7 +84,7 @@ class Batch_fattree (Batch):
         cur.execute ("select distinct host2 from tenant_policy ;")
         cs = cur.fetchall ()
         ends = [h['host2'] for h in cs]
-        print ends
+        # print ends
         
         for e in ends:
             cur.execute ("INSERT INTO tlb_tb VALUES ("+ str (e)+ ");")
@@ -117,7 +125,7 @@ class Batch_fattree (Batch):
         for h in selected_hosts:
             cur.execute ("insert into tenant_hosts values (" + str (h) + ");")
 
-        print selected_hosts
+        # print selected_hosts
         Batch_fattree.tenant_fullmesh (self, selected_hosts)
 
     def op_tlb (self):
