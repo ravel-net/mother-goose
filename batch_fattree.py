@@ -10,7 +10,6 @@ class Batch_fattree (Batch):
 
         remove_profile_schema (self.cur)
 
-
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
         os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/fattree/')

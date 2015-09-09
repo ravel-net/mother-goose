@@ -44,14 +44,16 @@ if __name__ == '__main__':
                 t2.close ()
                 primitive.add_log (t2.logdest)
             primitive.gen_dat ()
+            primitive.gen_plt ()
 
-            # tenant = rPlot_tenant ('fattree')
-            # for db in l2:
-            #     t3 = Batch_fattree (db, 4)
-            #     t3.tenant ()
-            #     t3.close ()
-            #     tenant.add_log (t3.logdest)
-            # tenant.gen_dat ()
+            tenant = rPlot_tenant ('fattree')
+            for db in l2:
+                t3 = Batch_fattree (db, 4)
+                t3.tenant ()
+                t3.close ()
+                tenant.add_log (t3.logdest)
+            tenant.gen_dat ()
+            tenant.gen_plt ()
 
             isp = rPlot_primitive ('isp')
             for db in l4:
@@ -60,6 +62,7 @@ if __name__ == '__main__':
                 t4.close ()
                 isp.add_log (t4.logdest)
             isp.gen_dat ()
+            isp.gen_plt ()
 
                 # t = Batch_profile (db, 4)
                 # t.primitive ()

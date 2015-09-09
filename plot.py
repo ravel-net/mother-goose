@@ -51,18 +51,14 @@ def parse_log (logfile, keytext):
                     s.append (float (e[2][:-1]))
     return s
 
-def gen_dat (topo, logfile, keytext, dir_name):
+def gen_dat (logfile, keytext, dir_name):
 
     xlabel = keytext
     nametext = xlabel.replace (' ', '_').replace (':', '').replace ('(','_').replace (')','_').replace ('+','_').replace ('*','_')
 
-    # pltfile = os.getcwd () + '/' + topo + '/' + nametext + '.plt'
-    # pdffile = os.getcwd () + '/' + topo + '/pdf/' + nametext + '.pdf'
     datfile = dir_name + nametext + '.dat'
 
-    # print logfile[0]
     o0 = sorted (parse_log (logfile[0], keytext))
-    # print o0
     o1 = sorted (parse_log (logfile[1], keytext)) 
     o2 = sorted (parse_log (logfile[2], keytext))
 
@@ -78,18 +74,43 @@ def gen_dat (topo, logfile, keytext, dir_name):
             return o[li-1]
 
     f = open (datfile, "wr")
-    # print 'datfile: ' + datfile
-    # print 'len is: ' + str (len (o0))
-    
     for i in range (0,l):
         line = str ((i+1)/l0) + '\t' + str (t_o (i, l0, o0) ) + '\t' + str ((i+1)/l1)+'\t' + str (t_o (i, l1, o1)) + '\t' +str ((i+1)/l2)+'\t' + str (t_o (i, l2, o2)) + '\n'
         f.write (line)
         f.flush ()
     f.close ()
 
-#     for k in keytext2:
-#         print "plot " + k
-#         plot ('tenant', log4, k)
+def gen_plt (logfile, keytext, dir_name):
+    print "gen_plt ************************************************************************************"
+
+    xlabel = keytext
+    nametext = xlabel.replace (' ', '_').replace (':', '').replace ('(','_').replace (')','_').replace ('+','_').replace ('*','_')
+
+    pltfile = dir_name + nametext + '.plt'
+    pdffile = nametext + '.pdf'
+
+    pf = open(pltfile, "wr")
+    pf.write (gnuplot_script)
+    pf.write ('''
+# set ylabel "CDF"
+# set xlabel "Per-update overhead (ms)"
+# set title "''' +keytext+ '''"
+set xlabel "''' +xlabel+ '''"
+set yrange [0:1]
+
+set output "''' + pdffile + '''"
+set terminal pdfcairo size 2,2 font "Gill Sans,9" linewidth 2 rounded fontscale 1 
+# default 5 by 3 (inches)
+
+set logscale x
+plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" with lp ls 11,\
+ '' using 4:3 title "k='''+get_k (logfile[1])+ '''" with lp ls 12,\
+ '' using 6:5 title "k='''+get_k (logfile[2])+ '''" with lp ls 13
+''')
+
+    pf.flush ()
+    pf.close ()
+
 
 class rPlot ():
     
@@ -113,7 +134,11 @@ class rPlot ():
 
     def gen_dat (self):
         for key in self.key_list:
-            gen_dat ('primitive', self.log_file_list, key, self.dat_dir)
+            gen_dat (self.log_file_list, key, self.dat_dir)
+
+    def gen_plt (self):
+        for key in self.key_list:
+            gen_plt (self.log_file_list, key, self.pdf_dir)
 
 class rPlot_primitive (rPlot):
 
@@ -125,10 +150,11 @@ class rPlot_primitive (rPlot):
         link = ['rt: linkdown', 'rt: linkup']
         acllbrt = ['acl+lb+rt: route ins']
 
-        key_primitive = lblist + acllist + link + acllbrt + rtlist
+        key_primitive = lblist + acllist + acllbrt + rtlist # + link
 
         rPlot.__init__ (self, [], key_primitive)
         self.dat_dir += subdir + '/dat/'
+        self.pdf_dir += subdir + '/dat/'
         self.sub_dir += subdir + '/'
 
 class rPlot_tenant (rPlot):
@@ -141,26 +167,5 @@ class rPlot_tenant (rPlot):
 
         rPlot.__init__ (self, [], key_tenant)
         self.dat_dir += subdir + '/dat/'
+        self.pdf_dir += subdir + '/dat/'
         self.sub_dir += subdir + '/'
-
-#     pf = open(pltfile, "wr")
-#     pf.write (gnuplot_script)
-#     pf.write ('''
-# # set ylabel "CDF"
-# # set xlabel "Per-update overhead (ms)"
-# # set title "''' +keytext+ '''"
-# set xlabel "''' +xlabel+ '''"
-# set yrange [0:1]
-
-# set output "''' + pdffile + '''"
-# set terminal pdfcairo size 2,2 font "Gill Sans,9" linewidth 2 rounded fontscale 1 
-# # default 5 by 3 (inches)
-
-# set logscale x
-# plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" with lp ls 11,\
-#  '' using 4:3 title "k='''+get_k (logfile[1])+ '''" with lp ls 12,\
-#  '' using 6:5 title "k='''+get_k (logfile[2])+ '''" with lp ls 13
-# ''')
-
-#     pf.flush ()
-#     pf.close ()
