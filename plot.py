@@ -92,10 +92,6 @@ def gen_dat (topo, logfile, keytext, dir_name):
 #         plot ('tenant', log4, k)
 
 class rPlot ():
-
-    tenantlist = ['rt*tenant: route ins', 'lb*tenant: check max load', '(lb+rt)*tenant: re-balance', 'lb*tenant: re-balance', 'acl*tenant: check violation', 'acl*tenant: fix violation', 'acl+rt*tenant: fix violation', '(acl+lb+rt)*tenant: route ins']
-
-    key_tenant = tenantlist
     
     def __init__ (self, loglist, keylist):
         self.log_file_list = loglist
@@ -136,11 +132,16 @@ class rPlot_primitive (rPlot):
         self.sub_dir += subdir + '/'
 
 class rPlot_tenant (rPlot):
-    def __init__ (self):
 
-        rPlot.__init__ (rPlot.key_tenant)
+    def __init__ (self, subdir):
 
+        tenantlist = ['rt*tenant: route ins', 'lb*tenant: check max load', '(lb+rt)*tenant: re-balance', 'lb*tenant: re-balance', 'acl*tenant: check violation', 'acl*tenant: fix violation', 'acl+rt*tenant: fix violation', '(acl+lb+rt)*tenant: route ins']
 
+        key_tenant = tenantlist
+
+        rPlot.__init__ (self, [], key_tenant)
+        self.dat_dir += subdir + '/dat/'
+        self.sub_dir += subdir + '/'
 
 #     pf = open(pltfile, "wr")
 #     pf.write (gnuplot_script)

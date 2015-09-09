@@ -1,65 +1,974 @@
-#rtm_ins----------------------------------------------
-#round 0
-iiiiiiiiii----rt: route ins----26.0119438171
-#round 1
-iiiiiiiiii----rt: route ins----18.373966217
-#round 2
-iiiiii----rt: route ins----14.3461227417
-#round 3
-iiiiii----rt: route ins----12.3500823975
-#round 4
-iiiiii----rt: route ins----12.5758647919
-#round 5
-iiiiiiiiii----rt: route ins----18.5880661011
-#round 6
-iiiiiiiiii----rt: route ins----19.7160243988
-#round 7
-iiiiiiiiii----rt: route ins----15.7279968262
-#round 8
-iiiiiiiiii----rt: route ins----17.4977779388
-#round 9
-iiiiiiiiii----rt: route ins----18.5899734497
-#primitive: op_lb ----------------------------------------------
-----lb: check max load----0.578165054321
-----lb: re-balance (absolute)----7.15184211731
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----32.1559906006
-----lb+rt: re-balance (absolute)----32.1559906006
-----lb: check max load----0.370979309082
-----lb: re-balance (absolute)----6.12092018127
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----32.7730178833
-----lb+rt: re-balance (absolute)----32.7730178833
-----lb: check max load----0.303983688354
-----lb: re-balance (absolute)----5.35583496094
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----33.1087112427
-----lb+rt: re-balance (absolute)----33.1087112427
-----lb: check max load----0.367164611816
-----lb: re-balance (absolute)----6.61182403564
-ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----34.051656723
-----lb+rt: re-balance (absolute)----34.051656723
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#primitive: op_lb ----------------------------------------------
+----lb: check max load----3.39508056641
+----lb: re-balance (absolute)----682.909011841
+ddddddiiiiiiiiiiiiiiii----lb+rt: re-balance (per rule)----697.559118271
+----lb+rt: re-balance (absolute)----697.559118271
+----lb: check max load----3.44204902649
+----lb: re-balance (absolute)----683.656930923
+ddddddiiiiiiiiiiiiiiii----lb+rt: re-balance (per rule)----700.16002655
+----lb+rt: re-balance (absolute)----700.16002655
+----lb: check max load----3.09896469116
+----lb: re-balance (absolute)----723.583936691
+ddddddddiiiiiiiiiiiiiiii----lb+rt: re-balance (per rule)----736.689090729
+----lb+rt: re-balance (absolute)----736.689090729
+----lb: check max load----4.5371055603
+----lb: re-balance (absolute)----684.324979782
+ddddddddddiiiiii----lb+rt: re-balance (per rule)----692.924976349
+----lb+rt: re-balance (absolute)----692.924976349
 #primitive: op_acl ----------------------------------------------
-----acl: check violation----0.768899917603
-----acl: fix violation----1.12700462341
-dddddd----acl+rt: fix violation (per rule)----8.59212875366
-----acl+rt: fix violation (absolute)----8.59212875366
-----acl: check violation----0.406980514526
-----acl: fix violation----1.4820098877
-dddddddddd----acl+rt: fix violation (per rule)----12.7811431885
-----acl+rt: fix violation (absolute)----12.7811431885
-----acl: check violation----0.262022018433
-----acl: fix violation----0.971078872681
-dddddd----acl+rt: fix violation (per rule)----7.87210464478
-----acl+rt: fix violation (absolute)----7.87210464478
-----acl: check violation----0.397920608521
-----acl: fix violation----1.42478942871
-dddddddddd----acl+rt: fix violation (per rule)----10.871887207
-----acl+rt: fix violation (absolute)----10.871887207
+----acl: check violation----0.972032546997
+----acl: fix violation----3.38578224182
+dddddddd----acl+rt: fix violation (per rule)----8.69369506836
+----acl+rt: fix violation (absolute)----8.69369506836
+----acl: check violation----1.05786323547
+----acl: fix violation----4.05216217041
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----31.0251712799
+----acl+rt: fix violation (absolute)----31.0251712799
+----acl: check violation----1.0359287262
+----acl: fix violation----3.88598442078
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.8979797363
+----acl+rt: fix violation (absolute)----25.8979797363
+----acl: check violation----1.19590759277
+----acl: fix violation----4.55689430237
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----40.5259132385
+----acl+rt: fix violation (absolute)----40.5259132385
+----acl: check violation----1.19185447693
+----acl: fix violation----4.51278686523
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----30.455827713
+----acl+rt: fix violation (absolute)----30.455827713
+----acl: check violation----1.97601318359
+----acl: fix violation----2.8178691864
+dddddddddddd----acl+rt: fix violation (per rule)----10.2326869965
+----acl+rt: fix violation (absolute)----10.2326869965
+----acl: check violation----0.952005386353
+----acl: fix violation----1.86800956726
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----17.9929733276
+----acl+rt: fix violation (absolute)----17.9929733276
+----acl: check violation----0.992059707642
+----acl: fix violation----5.09405136108
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----32.6900482178
+----acl+rt: fix violation (absolute)----32.6900482178
+----acl: check violation----1.04713439941
+----acl: fix violation----3.91697883606
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----35.6538295746
+----acl+rt: fix violation (absolute)----35.6538295746
+----acl: check violation----0.906944274902
+----acl: fix violation----5.13291358948
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----50.0960350037
+----acl+rt: fix violation (absolute)----50.0960350037
+----acl: check violation----0.904083251953
+----acl: fix violation----4.00996208191
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----42.5968170166
+----acl+rt: fix violation (absolute)----42.5968170166
+----acl: check violation----1.05786323547
+----acl: fix violation----2.72107124329
+dddddddddddddddd----acl+rt: fix violation (per rule)----12.2570991516
+----acl+rt: fix violation (absolute)----12.2570991516
+----acl: check violation----0.945091247559
+----acl: fix violation----2.54106521606
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.9151763916
+----acl+rt: fix violation (absolute)----18.9151763916
+----acl: check violation----1.00803375244
+----acl: fix violation----3.0300617218
+dddddddddddddd----acl+rt: fix violation (per rule)----11.1019611359
+----acl+rt: fix violation (absolute)----11.1019611359
+----acl: check violation----1.03402137756
+----acl: fix violation----3.33404541016
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.4381217957
+----acl+rt: fix violation (absolute)----21.4381217957
+----acl: check violation----0.92887878418
+----acl: fix violation----3.76582145691
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.780916214
+----acl+rt: fix violation (absolute)----25.780916214
+----acl: check violation----1.21808052063
+----acl: fix violation----1.65605545044
+dddddddddddddd----acl+rt: fix violation (per rule)----10.1380348206
+----acl+rt: fix violation (absolute)----10.1380348206
+----acl: check violation----0.988960266113
+----acl: fix violation----3.40008735657
+dddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.5959339142
+----acl+rt: fix violation (absolute)----18.5959339142
+----acl: check violation----0.955104827881
+----acl: fix violation----3.56101989746
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.9011306763
+----acl+rt: fix violation (absolute)----21.9011306763
+----acl: check violation----0.793933868408
+----acl: fix violation----4.98795509338
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----43.2040691376
+----acl+rt: fix violation (absolute)----43.2040691376
+----acl: check violation----1.0130405426
+----acl: fix violation----3.83400917053
+dddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----22.5110054016
+----acl+rt: fix violation (absolute)----22.5110054016
+----acl: check violation----1.11293792725
+----acl: fix violation----4.80890274048
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----31.1768054962
+----acl+rt: fix violation (absolute)----31.1768054962
+----acl: check violation----0.969886779785
+----acl: fix violation----4.08506393433
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----44.0900325775
+----acl+rt: fix violation (absolute)----44.0900325775
+----acl: check violation----1.15299224854
+----acl: fix violation----2.26902961731
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.9119319916
+----acl+rt: fix violation (absolute)----20.9119319916
+----acl: check violation----0.952005386353
+----acl: fix violation----2.79784202576
+dddddddddd----acl+rt: fix violation (per rule)----8.59880447388
+----acl+rt: fix violation (absolute)----8.59880447388
+----acl: check violation----0.838041305542
+----acl: fix violation----4.33111190796
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.7230319977
+----acl+rt: fix violation (absolute)----21.7230319977
+----acl: check violation----0.999927520752
+----acl: fix violation----3.75699996948
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----15.0468349457
+----acl+rt: fix violation (absolute)----15.0468349457
+----acl: check violation----1.15394592285
+----acl: fix violation----3.95607948303
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----22.6202011108
+----acl+rt: fix violation (absolute)----22.6202011108
+----acl: check violation----0.760078430176
+----acl: fix violation----4.46701049805
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.8420333862
+----acl+rt: fix violation (absolute)----14.8420333862
+----acl: check violation----0.994920730591
+----acl: fix violation----3.98397445679
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.2238864899
+----acl+rt: fix violation (absolute)----13.2238864899
+----acl: check violation----0.52809715271
+----acl: fix violation----3.55100631714
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.4700183868
+----acl+rt: fix violation (absolute)----25.4700183868
+----acl: check violation----1.01494789124
+----acl: fix violation----2.77709960938
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----39.1311645508
+----acl+rt: fix violation (absolute)----39.1311645508
+----acl: check violation----1.05094909668
+----acl: fix violation----4.59814071655
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----51.381111145
+----acl+rt: fix violation (absolute)----51.381111145
+----acl: check violation----0.954866409302
+----acl: fix violation----3.90005111694
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.5521583557
+----acl+rt: fix violation (absolute)----20.5521583557
+----acl: check violation----0.951051712036
+----acl: fix violation----3.43990325928
+dddddddddddddddddddddddd----acl+rt: fix violation (per rule)----16.343832016
+----acl+rt: fix violation (absolute)----16.343832016
+----acl: check violation----0.64492225647
+----acl: fix violation----3.19409370422
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.6729946136
+----acl+rt: fix violation (absolute)----14.6729946136
+----acl: check violation----0.982999801636
+----acl: fix violation----3.52787971497
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.6586894989
+----acl+rt: fix violation (absolute)----14.6586894989
+----acl: check violation----0.80680847168
+----acl: fix violation----2.59184837341
+dddddddddd----acl+rt: fix violation (per rule)----9.6218585968
+----acl+rt: fix violation (absolute)----9.6218585968
+----acl: check violation----0.691890716553
+----acl: fix violation----2.30622291565
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----16.2572860718
+----acl+rt: fix violation (absolute)----16.2572860718
+----acl: check violation----1.16205215454
+----acl: fix violation----4.52589988708
+dddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----29.0460586548
+----acl+rt: fix violation (absolute)----29.0460586548
+----acl: check violation----0.960111618042
+----acl: fix violation----3.84116172791
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.3810882568
+----acl+rt: fix violation (absolute)----25.3810882568
+----acl: check violation----0.926971435547
+----acl: fix violation----2.99096107483
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.4300880432
+----acl+rt: fix violation (absolute)----20.4300880432
+----acl: check violation----1.060962677
+----acl: fix violation----3.7100315094
+dddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.8748836517
+----acl+rt: fix violation (absolute)----18.8748836517
+----acl: check violation----0.940084457397
+----acl: fix violation----2.11405754089
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.8140869141
+----acl+rt: fix violation (absolute)----18.8140869141
+----acl: check violation----1.37710571289
+----acl: fix violation----3.70502471924
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.8172283173
+----acl+rt: fix violation (absolute)----24.8172283173
+----acl: check violation----0.921964645386
+----acl: fix violation----3.6940574646
+dddddddddd----acl+rt: fix violation (per rule)----9.46617126465
+----acl+rt: fix violation (absolute)----9.46617126465
+----acl: check violation----1.00708007812
+----acl: fix violation----3.76296043396
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.9559879303
+----acl+rt: fix violation (absolute)----24.9559879303
+----acl: check violation----0.644207000732
+----acl: fix violation----2.56109237671
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.2640972137
+----acl+rt: fix violation (absolute)----24.2640972137
+----acl: check violation----1.16991996765
+----acl: fix violation----2.67004966736
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.1381702423
+----acl+rt: fix violation (absolute)----18.1381702423
+----acl: check violation----0.979900360107
+----acl: fix violation----3.53097915649
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.4219398499
+----acl+rt: fix violation (absolute)----14.4219398499
+----acl: check violation----0.593900680542
+----acl: fix violation----2.59590148926
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.3967399597
+----acl+rt: fix violation (absolute)----13.3967399597
+----acl: check violation----0.920057296753
+----acl: fix violation----3.72695922852
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.0118598938
+----acl+rt: fix violation (absolute)----14.0118598938
+----acl: check violation----0.589847564697
+----acl: fix violation----1.75380706787
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.5547904968
+----acl+rt: fix violation (absolute)----10.5547904968
+----acl: check violation----0.962972640991
+----acl: fix violation----4.10103797913
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----26.4298915863
+----acl+rt: fix violation (absolute)----26.4298915863
+----acl: check violation----0.638008117676
+----acl: fix violation----2.40993499756
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.9131546021
+----acl+rt: fix violation (absolute)----13.9131546021
+----acl: check violation----0.956058502197
+----acl: fix violation----2.96688079834
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.1909122467
+----acl+rt: fix violation (absolute)----14.1909122467
+----acl: check violation----0.875949859619
+----acl: fix violation----2.72393226624
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.2850055695
+----acl+rt: fix violation (absolute)----25.2850055695
+----acl: check violation----0.988006591797
+----acl: fix violation----3.49807739258
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----41.4092540741
+----acl+rt: fix violation (absolute)----41.4092540741
+----acl: check violation----0.938892364502
+----acl: fix violation----3.10802459717
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----22.5801467896
+----acl+rt: fix violation (absolute)----22.5801467896
+----acl: check violation----0.967979431152
+----acl: fix violation----3.67999076843
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.1050300598
+----acl+rt: fix violation (absolute)----18.1050300598
+----acl: check violation----1.17707252502
+----acl: fix violation----3.14617156982
+dddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----28.6321640015
+----acl+rt: fix violation (absolute)----28.6321640015
+----acl: check violation----0.932216644287
+----acl: fix violation----2.84099578857
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----11.7011070251
+----acl+rt: fix violation (absolute)----11.7011070251
+----acl: check violation----0.792026519775
+----acl: fix violation----2.95209884644
+dddddddddddddddddddddddd----acl+rt: fix violation (per rule)----14.5890712738
+----acl+rt: fix violation (absolute)----14.5890712738
+----acl: check violation----1.08194351196
+----acl: fix violation----2.86507606506
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----19.2849636078
+----acl+rt: fix violation (absolute)----19.2849636078
+----acl: check violation----1.0461807251
+----acl: fix violation----1.84392929077
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----11.195898056
+----acl+rt: fix violation (absolute)----11.195898056
+----acl: check violation----0.590085983276
+----acl: fix violation----2.99119949341
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.71717453
+----acl+rt: fix violation (absolute)----13.71717453
+----acl: check violation----0.916004180908
+----acl: fix violation----5.01585006714
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----40.9660339355
+----acl+rt: fix violation (absolute)----40.9660339355
+----acl: check violation----1.3689994812
+----acl: fix violation----3.50499153137
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----34.5637798309
+----acl+rt: fix violation (absolute)----34.5637798309
+----acl: check violation----0.934839248657
+----acl: fix violation----2.85410881042
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.6501064301
+----acl+rt: fix violation (absolute)----14.6501064301
+----acl: check violation----1.18207931519
+----acl: fix violation----2.28786468506
+dddddddddd----acl+rt: fix violation (per rule)----8.74996185303
+----acl+rt: fix violation (absolute)----8.74996185303
+----acl: check violation----0.615835189819
+----acl: fix violation----1.71303749084
+dddddd----acl+rt: fix violation (per rule)----5.65600395203
+----acl+rt: fix violation (absolute)----5.65600395203
+----acl: check violation----1.29199028015
+----acl: fix violation----3.34906578064
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----33.3061218262
+----acl+rt: fix violation (absolute)----33.3061218262
+----acl: check violation----0.98180770874
+----acl: fix violation----2.7551651001
+dddddd----acl+rt: fix violation (per rule)----6.70123100281
+----acl+rt: fix violation (absolute)----6.70123100281
+----acl: check violation----0.969886779785
+----acl: fix violation----2.84004211426
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.228105545
+----acl+rt: fix violation (absolute)----14.228105545
+----acl: check violation----0.951051712036
+----acl: fix violation----3.31401824951
+dddddddddddddddddddddddd----acl+rt: fix violation (per rule)----15.5611038208
+----acl+rt: fix violation (absolute)----15.5611038208
+----acl: check violation----0.925779342651
+----acl: fix violation----3.48806381226
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.7481384277
+----acl+rt: fix violation (absolute)----20.7481384277
+----acl: check violation----0.971794128418
+----acl: fix violation----2.56586074829
+dddddddddd----acl+rt: fix violation (per rule)----9.64283943176
+----acl+rt: fix violation (absolute)----9.64283943176
+----acl: check violation----0.905990600586
+----acl: fix violation----2.57396697998
+dddddddddd----acl+rt: fix violation (per rule)----8.88991355896
+----acl+rt: fix violation (absolute)----8.88991355896
+----acl: check violation----0.903129577637
+----acl: fix violation----3.75390052795
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----36.0419750214
+----acl+rt: fix violation (absolute)----36.0419750214
+----acl: check violation----0.612020492554
+----acl: fix violation----2.13503837585
+dddddddddddddddddddddddd----acl+rt: fix violation (per rule)----15.5160427094
+----acl+rt: fix violation (absolute)----15.5160427094
+----acl: check violation----0.925064086914
+----acl: fix violation----3.73983383179
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----23.0176448822
+----acl+rt: fix violation (absolute)----23.0176448822
+----acl: check violation----0.598907470703
+----acl: fix violation----2.77996063232
+dddddddddddddddd----acl+rt: fix violation (per rule)----12.3970508575
+----acl+rt: fix violation (absolute)----12.3970508575
+----acl: check violation----0.901937484741
+----acl: fix violation----2.96497344971
+dddddddddddddddd----acl+rt: fix violation (per rule)----12.109041214
+----acl+rt: fix violation (absolute)----12.109041214
+----acl: check violation----1.15394592285
+----acl: fix violation----2.45499610901
+dddddddd----acl+rt: fix violation (per rule)----6.47711753845
+----acl+rt: fix violation (absolute)----6.47711753845
+----acl: check violation----0.977039337158
+----acl: fix violation----3.53097915649
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.3250904083
+----acl+rt: fix violation (absolute)----18.3250904083
+----acl: check violation----1.90615653992
+----acl: fix violation----2.68411636353
+dddddddd----acl+rt: fix violation (per rule)----8.71109962463
+----acl+rt: fix violation (absolute)----8.71109962463
+----acl: check violation----1.45101547241
+----acl: fix violation----2.90298461914
+dddddddddddddddd----acl+rt: fix violation (per rule)----11.9729042053
+----acl+rt: fix violation (absolute)----11.9729042053
+----acl: check violation----2.10404396057
+----acl: fix violation----3.38220596313
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----35.1340770721
+----acl+rt: fix violation (absolute)----35.1340770721
+----acl: check violation----0.900983810425
+----acl: fix violation----2.54487991333
+dddddddddddddd----acl+rt: fix violation (per rule)----11.0356807709
+----acl+rt: fix violation (absolute)----11.0356807709
+----acl: check violation----0.898122787476
+----acl: fix violation----2.36701965332
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.4050636292
+----acl+rt: fix violation (absolute)----10.4050636292
+----acl: check violation----1.12795829773
+----acl: fix violation----3.74293327332
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----33.0510139465
+----acl+rt: fix violation (absolute)----33.0510139465
+----acl: check violation----0.91290473938
+----acl: fix violation----3.35717201233
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.6860980988
+----acl+rt: fix violation (absolute)----24.6860980988
+----acl: check violation----0.914812088013
+----acl: fix violation----3.07011604309
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.3230686188
+----acl+rt: fix violation (absolute)----13.3230686188
+----acl: check violation----0.972986221313
+----acl: fix violation----2.6478767395
+dddddddd----acl+rt: fix violation (per rule)----7.5798034668
+----acl+rt: fix violation (absolute)----7.5798034668
+----acl: check violation----1.11198425293
+----acl: fix violation----2.96902656555
+dddddddddddddddddd----acl+rt: fix violation (per rule)----13.6661529541
+----acl+rt: fix violation (absolute)----13.6661529541
+----acl: check violation----0.901937484741
+----acl: fix violation----3.22198867798
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.445854187
+----acl+rt: fix violation (absolute)----13.445854187
+----acl: check violation----0.952959060669
+----acl: fix violation----3.63492965698
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----23.6449241638
+----acl+rt: fix violation (absolute)----23.6449241638
+----acl: check violation----0.619173049927
+----acl: fix violation----3.97396087646
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----19.4900035858
+----acl+rt: fix violation (absolute)----19.4900035858
+----acl: check violation----0.943899154663
+----acl: fix violation----4.14204597473
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----26.1881351471
+----acl+rt: fix violation (absolute)----26.1881351471
+----acl: check violation----0.931024551392
+----acl: fix violation----4.29916381836
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----31.5229892731
+----acl+rt: fix violation (absolute)----31.5229892731
+----acl: check violation----0.908851623535
+----acl: fix violation----3.18694114685
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----19.8128223419
+----acl+rt: fix violation (absolute)----19.8128223419
+----acl: check violation----0.91814994812
+----acl: fix violation----3.10611724854
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.5180225372
+----acl+rt: fix violation (absolute)----14.5180225372
+----acl: check violation----0.910043716431
+----acl: fix violation----3.59916687012
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.9150314331
+----acl+rt: fix violation (absolute)----20.9150314331
+----acl: check violation----1.03402137756
+----acl: fix violation----4.41694259644
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----27.8718471527
+----acl+rt: fix violation (absolute)----27.8718471527
+----acl: check violation----0.881195068359
+----acl: fix violation----3.29399108887
+dddddddddd----acl+rt: fix violation (per rule)----8.19420814514
+----acl+rt: fix violation (absolute)----8.19420814514
+----acl: check violation----0.612020492554
+----acl: fix violation----3.91292572021
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----35.640001297
+----acl+rt: fix violation (absolute)----35.640001297
+----acl: check violation----1.18589401245
+----acl: fix violation----2.70700454712
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.9248161316
+----acl+rt: fix violation (absolute)----10.9248161316
+----acl: check violation----0.586032867432
+----acl: fix violation----2.39706039429
+dddddddddddddd----acl+rt: fix violation (per rule)----10.4920864105
+----acl+rt: fix violation (absolute)----10.4920864105
+----acl: check violation----0.961065292358
+----acl: fix violation----3.97109985352
+dddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----27.8141498566
+----acl+rt: fix violation (absolute)----27.8141498566
+----acl: check violation----0.592947006226
+----acl: fix violation----2.48908996582
+dddddddddddddddd----acl+rt: fix violation (per rule)----11.2671852112
+----acl+rt: fix violation (absolute)----11.2671852112
+----acl: check violation----1.1191368103
+----acl: fix violation----2.9079914093
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.7290229797
+----acl+rt: fix violation (absolute)----14.7290229797
+----acl: check violation----1.19495391846
+----acl: fix violation----3.01909446716
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----19.3901062012
+----acl+rt: fix violation (absolute)----19.3901062012
+----acl: check violation----0.712871551514
+----acl: fix violation----2.60281562805
+dddddddddd----acl+rt: fix violation (per rule)----8.57496261597
+----acl+rt: fix violation (absolute)----8.57496261597
+----acl: check violation----1.060962677
+----acl: fix violation----3.16309928894
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----27.6849269867
+----acl+rt: fix violation (absolute)----27.6849269867
+----acl: check violation----0.953912734985
+----acl: fix violation----2.49004364014
+dddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----23.6840248108
+----acl+rt: fix violation (absolute)----23.6840248108
+----acl: check violation----0.907897949219
+----acl: fix violation----2.90298461914
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----28.4578800201
+----acl+rt: fix violation (absolute)----28.4578800201
+----acl: check violation----0.959157943726
+----acl: fix violation----2.74109840393
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.3220424652
+----acl+rt: fix violation (absolute)----14.3220424652
+----acl: check violation----1.12390518188
+----acl: fix violation----2.81691551208
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.0750312805
+----acl+rt: fix violation (absolute)----24.0750312805
+----acl: check violation----1.14583969116
+----acl: fix violation----3.23510169983
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.6431827545
+----acl+rt: fix violation (absolute)----24.6431827545
+----acl: check violation----0.723838806152
+----acl: fix violation----2.18892097473
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----22.1040248871
+----acl+rt: fix violation (absolute)----22.1040248871
+----acl: check violation----0.914096832275
+----acl: fix violation----2.77709960938
+dddddddd----acl+rt: fix violation (per rule)----7.78913497925
+----acl+rt: fix violation (absolute)----7.78913497925
+----acl: check violation----0.577211380005
+----acl: fix violation----2.37202644348
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----22.4938392639
+----acl+rt: fix violation (absolute)----22.4938392639
+----acl: check violation----0.943183898926
+----acl: fix violation----3.68618965149
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.8620300293
+----acl+rt: fix violation (absolute)----21.8620300293
+----acl: check violation----0.95796585083
+----acl: fix violation----2.60591506958
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.5480327606
+----acl+rt: fix violation (absolute)----21.5480327606
+----acl: check violation----1.09004974365
+----acl: fix violation----2.43782997131
+dddddd----acl+rt: fix violation (per rule)----6.48999214172
+----acl+rt: fix violation (absolute)----6.48999214172
+----acl: check violation----1.12295150757
+----acl: fix violation----2.09879875183
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----19.3679332733
+----acl+rt: fix violation (absolute)----19.3679332733
+----acl: check violation----1.02210044861
+----acl: fix violation----2.50291824341
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.8889923096
+----acl+rt: fix violation (absolute)----24.8889923096
+----acl: check violation----0.671863555908
+----acl: fix violation----1.97410583496
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----11.5461349487
+----acl+rt: fix violation (absolute)----11.5461349487
+----acl: check violation----1.12414360046
+----acl: fix violation----3.75199317932
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.1019306183
+----acl+rt: fix violation (absolute)----18.1019306183
+----acl: check violation----0.918865203857
+----acl: fix violation----3.51190567017
+dddddddddddddddddddddddd----acl+rt: fix violation (per rule)----15.291929245
+----acl+rt: fix violation (absolute)----15.291929245
+----acl: check violation----0.88906288147
+----acl: fix violation----3.56698036194
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----14.5370960236
+----acl+rt: fix violation (absolute)----14.5370960236
+----acl: check violation----0.891923904419
+----acl: fix violation----3.21316719055
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----20.5490589142
+----acl+rt: fix violation (absolute)----20.5490589142
+----acl: check violation----1.10197067261
+----acl: fix violation----3.80682945251
+dddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----25.9099006653
+----acl+rt: fix violation (absolute)----25.9099006653
+----acl: check violation----0.988960266113
+----acl: fix violation----3.06296348572
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----17.5471305847
+----acl+rt: fix violation (absolute)----17.5471305847
+----acl: check violation----0.88095664978
+----acl: fix violation----3.52811813354
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.3201255798
+----acl+rt: fix violation (absolute)----24.3201255798
+----acl: check violation----0.58388710022
+----acl: fix violation----2.57587432861
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.8620300293
+----acl+rt: fix violation (absolute)----21.8620300293
 ----acl: check violation----0.595092773438
-----acl: fix violation----1.52707099915
-dddddddddd----acl+rt: fix violation (per rule)----14.1749382019
-----acl+rt: fix violation (absolute)----14.1749382019
+----acl: fix violation----3.2000541687
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.7542438507
+----acl+rt: fix violation (absolute)----18.7542438507
+----acl: check violation----0.608921051025
+----acl: fix violation----2.21300125122
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.6598300934
+----acl+rt: fix violation (absolute)----18.6598300934
+----acl: check violation----1.38092041016
+----acl: fix violation----2.40898132324
+dddddddddddd----acl+rt: fix violation (per rule)----10.4188919067
+----acl+rt: fix violation (absolute)----10.4188919067
+----acl: check violation----1.06406211853
+----acl: fix violation----2.59113311768
+dddddddddd----acl+rt: fix violation (per rule)----9.58108901978
+----acl+rt: fix violation (absolute)----9.58108901978
+----acl: check violation----0.985860824585
+----acl: fix violation----3.62014770508
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----21.8291282654
+----acl+rt: fix violation (absolute)----21.8291282654
+----acl: check violation----0.88095664978
+----acl: fix violation----3.71408462524
+dddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----24.0790843964
+----acl+rt: fix violation (absolute)----24.0790843964
+----acl: check violation----0.98991394043
+----acl: fix violation----3.12209129333
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.4621810913
+----acl+rt: fix violation (absolute)----18.4621810913
+----acl: check violation----0.901937484741
+----acl: fix violation----4.52303886414
+dddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----30.4481983185
+----acl+rt: fix violation (absolute)----30.4481983185
+----acl: check violation----1.04308128357
+----acl: fix violation----2.74085998535
+dddddddddddddddd----acl+rt: fix violation (per rule)----9.07278060913
+----acl+rt: fix violation (absolute)----9.07278060913
+----acl: check violation----0.945806503296
+----acl: fix violation----2.50887870789
+dddddddddd----acl+rt: fix violation (per rule)----7.89594650269
+----acl+rt: fix violation (absolute)----7.89594650269
+----acl: check violation----0.847101211548
+----acl: fix violation----2.37512588501
+dddddddddd----acl+rt: fix violation (per rule)----9.72414016724
+----acl+rt: fix violation (absolute)----9.72414016724
+----acl: check violation----1.0678768158
+----acl: fix violation----2.40397453308
+dddddddddd----acl+rt: fix violation (per rule)----9.23681259155
+----acl+rt: fix violation (absolute)----9.23681259155
+----acl: check violation----0.961065292358
+----acl: fix violation----2.60806083679
+dddddddddd----acl+rt: fix violation (per rule)----8.95023345947
+----acl+rt: fix violation (absolute)----8.95023345947
+----acl: check violation----0.975131988525
+----acl: fix violation----2.31218338013
+dddddddd----acl+rt: fix violation (per rule)----6.42728805542
+----acl+rt: fix violation (absolute)----6.42728805542
+----acl: check violation----1.68585777283
+----acl: fix violation----2.36296653748
+dddddddddd----acl+rt: fix violation (per rule)----8.0771446228
+----acl+rt: fix violation (absolute)----8.0771446228
+----acl: check violation----0.580072402954
+----acl: fix violation----1.57403945923
+dddddddddd----acl+rt: fix violation (per rule)----7.89713859558
+----acl+rt: fix violation (absolute)----7.89713859558
+----acl: check violation----1.13987922668
+----acl: fix violation----2.74991989136
+dddddddddd----acl+rt: fix violation (per rule)----10.3600025177
+----acl+rt: fix violation (absolute)----10.3600025177
+----acl: check violation----1.02806091309
+----acl: fix violation----2.94899940491
+dddddddddddddddddddd----acl+rt: fix violation (per rule)----13.8709545135
+----acl+rt: fix violation (absolute)----13.8709545135
+----acl: check violation----0.962972640991
+----acl: fix violation----2.121925354
+dddddddddddddddd----acl+rt: fix violation (per rule)----8.91995429993
+----acl+rt: fix violation (absolute)----8.91995429993
+----acl: check violation----1.00207328796
+----acl: fix violation----2.45690345764
+dddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----15.0918960571
+----acl+rt: fix violation (absolute)----15.0918960571
+----acl: check violation----1.03998184204
+----acl: fix violation----2.79307365417
+dddddddddd----acl+rt: fix violation (per rule)----9.20510292053
+----acl+rt: fix violation (absolute)----9.20510292053
+----acl: check violation----0.875949859619
+----acl: fix violation----2.66909599304
+dddddddddddd----acl+rt: fix violation (per rule)----9.67407226562
+----acl+rt: fix violation (absolute)----9.67407226562
+----acl: check violation----1.0039806366
+----acl: fix violation----2.366065979
+dddddddddd----acl+rt: fix violation (per rule)----8.46195220947
+----acl+rt: fix violation (absolute)----8.46195220947
+----acl: check violation----0.886917114258
+----acl: fix violation----2.59518623352
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.8043117523
+----acl+rt: fix violation (absolute)----18.8043117523
+----acl: check violation----0.963926315308
+----acl: fix violation----3.60703468323
+dddddddddddddddd----acl+rt: fix violation (per rule)----13.1981372833
+----acl+rt: fix violation (absolute)----13.1981372833
+----acl: check violation----0.900030136108
+----acl: fix violation----2.22206115723
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.1350708008
+----acl+rt: fix violation (absolute)----18.1350708008
+----acl: check violation----1.2309551239
+----acl: fix violation----2.9661655426
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----33.5102081299
+----acl+rt: fix violation (absolute)----33.5102081299
+----acl: check violation----0.913143157959
+----acl: fix violation----3.4658908844
+dddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----18.6820030212
+----acl+rt: fix violation (absolute)----18.6820030212
+----acl: check violation----0.633001327515
+----acl: fix violation----1.55019760132
+dddddddddddddddd----acl+rt: fix violation (per rule)----9.16624069214
+----acl+rt: fix violation (absolute)----9.16624069214
+----acl: check violation----0.695943832397
+----acl: fix violation----3.15713882446
+dddddddddddddddd----acl+rt: fix violation (per rule)----13.1242275238
+----acl+rt: fix violation (absolute)----13.1242275238
+----acl: check violation----0.998973846436
+----acl: fix violation----4.81915473938
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----63.6351108551
+----acl+rt: fix violation (absolute)----63.6351108551
+----acl: check violation----0.587940216064
+----acl: fix violation----7.67087936401
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----52.8388023376
+----acl+rt: fix violation (absolute)----52.8388023376
+----acl: check violation----0.823974609375
+----acl: fix violation----3.41105461121
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----32.9329967499
+----acl+rt: fix violation (absolute)----32.9329967499
+----acl: check violation----0.959873199463
+----acl: fix violation----4.14204597473
+dddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----27.6350975037
+----acl+rt: fix violation (absolute)----27.6350975037
+----acl: check violation----1.01494789124
+----acl: fix violation----3.49807739258
+dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----34.8901748657
+----acl+rt: fix violation (absolute)----34.8901748657
+----acl: check violation----0.91814994812
+----acl: fix violation----2.55799293518
+dddddddddddddddddddddddddddddddd----acl+rt: fix violation (per rule)----17.6930427551
+----acl+rt: fix violation (absolute)----17.6930427551
+----acl: check violation----0.576972961426
+----acl: fix violation----1.51085853577
+dddddddddddddddd----acl+rt: fix violation (per rule)----10.4696750641
+----acl+rt: fix violation (absolute)----10.4696750641
+----acl: check violation----1.21593475342
+----acl: fix violation----2.49910354614
+dddddddddddddddd----acl+rt: fix violation (per rule)----12.2330188751
+----acl+rt: fix violation (absolute)----12.2330188751
 #primitive: routing_ins_acl_lb ----------------------------------------------
-----acl+lb+rt: route ins----11.204957962
-iiiiiiiiii----acl+lb+rt: route ins----23.4241485596
-iiiiiiiiii----acl+lb+rt: route ins----26.0119438171
-iiiiiiiiiiddddddddddiiiiiiiiii----acl+lb+rt: route ins----52.628993988
-iiiiiiiiii----acl+lb+rt: route ins----29.5360088348
+----acl+lb+rt: route ins----23.5710144043
+iiiiiiii----acl+lb+rt: route ins----27.3289680481
+----acl+lb+rt: route ins----23.2620239258
+----acl+lb+rt: route ins----24.0621566772
+iiiiiiiiii----acl+lb+rt: route ins----28.5749435425
+----acl+lb+rt: route ins----22.8681564331
+----acl+lb+rt: route ins----23.1471061707
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----32.8240394592
+----acl+lb+rt: route ins----23.609161377
+----acl+lb+rt: route ins----24.3418216705
+----acl+lb+rt: route ins----16.1149501801
+iiiiiiiiii----acl+lb+rt: route ins----18.1410312653
+iiiiiiiiii----acl+lb+rt: route ins----16.8240070343
+----acl+lb+rt: route ins----14.0800476074
+iiiiiiiiii----acl+lb+rt: route ins----18.6297893524
+----acl+lb+rt: route ins----13.6921405792
+iiiiiiiiii----acl+lb+rt: route ins----17.4140930176
+----acl+lb+rt: route ins----13.7138366699
+iiiiiiiiii----acl+lb+rt: route ins----17.2338485718
+iiiiiiiiii----acl+lb+rt: route ins----18.2018280029
+iiiiiiii----acl+lb+rt: route ins----17.1689987183
+----acl+lb+rt: route ins----15.4709815979
+----acl+lb+rt: route ins----12.8598213196
+----acl+lb+rt: route ins----14.9400234222
+----acl+lb+rt: route ins----15.1360034943
+----acl+lb+rt: route ins----13.2970809937
+----acl+lb+rt: route ins----14.3480300903
+iiiiiiii----acl+lb+rt: route ins----16.2110328674
+iiiiiiiiii----acl+lb+rt: route ins----17.226934433
+iiiiiiiiiiiiii----acl+lb+rt: route ins----20.6980705261
+----acl+lb+rt: route ins----13.9989852905
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----22.2339630127
+----acl+lb+rt: route ins----13.8211250305
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----22.1128463745
+iiiiiiiiiiiiii----acl+lb+rt: route ins----18.5990333557
+----acl+lb+rt: route ins----14.6160125732
+iiiiiiiiii----acl+lb+rt: route ins----17.4729824066
+----acl+lb+rt: route ins----15.8689022064
+iiiiiiiiii----acl+lb+rt: route ins----19.0048217773
+iiiiiiiiii----acl+lb+rt: route ins----24.4860649109
+iiiiiiiiiiiiii----acl+lb+rt: route ins----27.2421836853
+iiiiiiiiii----acl+lb+rt: route ins----20.919084549
+----acl+lb+rt: route ins----13.3900642395
+----acl+lb+rt: route ins----20.6010341644
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----30.0900936127
+iiiiiiiiiiiiii----acl+lb+rt: route ins----29.834985733
+----acl+lb+rt: route ins----23.5040187836
+----acl+lb+rt: route ins----23.6449241638
+iiiiiidddddd----acl+lb+rt: route ins----280.224084854
+----acl+lb+rt: route ins----23.2501029968
+iiiiiiiiiidddddddddd----acl+lb+rt: route ins----276.052951813
+----acl+lb+rt: route ins----24.2087841034
+----acl+lb+rt: route ins----22.6051807404
+----acl+lb+rt: route ins----22.451877594
+iiiiiiiiii----acl+lb+rt: route ins----29.3838977814
+----acl+lb+rt: route ins----24.7178077698
+----acl+lb+rt: route ins----25.4609584808
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----31.3680171967
+iiiiiiiiiidddddddddd----acl+lb+rt: route ins----269.748926163
+iiiiiiiiiiiiii----acl+lb+rt: route ins----30.4291248322
+iiiiiiiiiiiiii----acl+lb+rt: route ins----27.4469852448
+----acl+lb+rt: route ins----23.129940033
+----acl+lb+rt: route ins----24.9190330505
+iiiiiiii----acl+lb+rt: route ins----28.3489227295
+iiii----acl+lb+rt: route ins----24.1758823395
+iiiiiiiiii----acl+lb+rt: route ins----34.9848270416
+----acl+lb+rt: route ins----29.1941165924
+----acl+lb+rt: route ins----28.2139778137
+----acl+lb+rt: route ins----28.0110836029
+iiiiiiiiii----acl+lb+rt: route ins----34.6570014954
+----acl+lb+rt: route ins----25.6059169769
+iiiiii----acl+lb+rt: route ins----31.7931175232
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----41.5029525757
+----acl+lb+rt: route ins----28.3689498901
+----acl+lb+rt: route ins----18.7740325928
+----acl+lb+rt: route ins----18.2778835297
+----acl+lb+rt: route ins----17.7361965179
+----acl+lb+rt: route ins----21.1670398712
+iiiiiiiiii----acl+lb+rt: route ins----24.158000946
+iiiiiiiiii----acl+lb+rt: route ins----25.7999897003
+----acl+lb+rt: route ins----19.1900730133
+iiiiiiiiiiiiii----acl+lb+rt: route ins----17.3959732056
+iiiiiiiiii----acl+lb+rt: route ins----15.7470703125
+iiiiiiiiii----acl+lb+rt: route ins----15.7930850983
+----acl+lb+rt: route ins----218.210935593
+----acl+lb+rt: route ins----20.6670761108
+----acl+lb+rt: route ins----21.2378501892
+iiiiiiiiii----acl+lb+rt: route ins----25.6199836731
+iiiiiiiiii----acl+lb+rt: route ins----23.7209796906
+iiiiiiiiii----acl+lb+rt: route ins----26.7307758331
+----acl+lb+rt: route ins----18.424987793
+iiiiiiiiii----acl+lb+rt: route ins----22.5360393524
+iiiiiiiiiiii----acl+lb+rt: route ins----26.9200801849
+----acl+lb+rt: route ins----19.1519260406
+iiiiiiiiii----acl+lb+rt: route ins----24.9109268188
+iiiiii----acl+lb+rt: route ins----23.1690406799
+----acl+lb+rt: route ins----21.1360454559
+iiiiiiiiii----acl+lb+rt: route ins----26.2260437012
+iiiiiiiiiiiiii----acl+lb+rt: route ins----242.024183273
+iiiiiiiiiiiiii----acl+lb+rt: route ins----26.7009735107
+iiiiiiiiii----acl+lb+rt: route ins----24.9729156494
+iiiiiiiiii----acl+lb+rt: route ins----27.0829200745
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----29.5848846436
+----acl+lb+rt: route ins----18.8848972321
+iiiiiiii----acl+lb+rt: route ins----22.5701332092
+iiiiiiiiii----acl+lb+rt: route ins----25.3298282623
+----acl+lb+rt: route ins----21.1229324341
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.9740562439
+----acl+lb+rt: route ins----20.7190513611
+----acl+lb+rt: route ins----18.7361240387
+----acl+lb+rt: route ins----252.176046371
+----acl+lb+rt: route ins----21.3010311127
+iiiiiiiiii----acl+lb+rt: route ins----26.6289710999
+----acl+lb+rt: route ins----21.0349559784
+iiiiiiii----acl+lb+rt: route ins----22.882938385
+----acl+lb+rt: route ins----21.4719772339
+----acl+lb+rt: route ins----18.1491374969
+----acl+lb+rt: route ins----17.4148082733
+iiiiiiiiii----acl+lb+rt: route ins----26.32188797
+iiiiiiiiii----acl+lb+rt: route ins----40.3039455414
+----acl+lb+rt: route ins----22.4809646606
+iiiiiiiiii----acl+lb+rt: route ins----24.3048667908
+iiiiiiiiiiiiii----acl+lb+rt: route ins----26.654958725
+----acl+lb+rt: route ins----21.7411518097
+iiiiiiiiiiiiii----acl+lb+rt: route ins----27.6691913605
+iiiiii----acl+lb+rt: route ins----23.236989975
+iiiiiiii----acl+lb+rt: route ins----24.002790451
+----acl+lb+rt: route ins----20.3540325165
+iiiiii----acl+lb+rt: route ins----23.9889621735
+----acl+lb+rt: route ins----19.4890499115
+----acl+lb+rt: route ins----21.6298103333
+----acl+lb+rt: route ins----19.7770595551
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.5680294037
+iiiiiiiiii----acl+lb+rt: route ins----25.671005249
+iiiiiiiiii----acl+lb+rt: route ins----26.3369083405
+----acl+lb+rt: route ins----18.1858539581
+----acl+lb+rt: route ins----21.1229324341
+iiiiiiiiiiii----acl+lb+rt: route ins----27.8370380402
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.3689498901
+----acl+lb+rt: route ins----19.7770595551
+iiiiii----acl+lb+rt: route ins----23.8749980927
+iiiiiiiiii----acl+lb+rt: route ins----27.5440216064
+----acl+lb+rt: route ins----17.4350738525
+----acl+lb+rt: route ins----20.5929279327
+iiiiiiiiiiiiii----acl+lb+rt: route ins----27.5399684906
+----acl+lb+rt: route ins----20.7929611206
+iiiiiiiiiiiiii----acl+lb+rt: route ins----26.6709327698
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.2459259033
+----acl+lb+rt: route ins----19.6259021759
+----acl+lb+rt: route ins----21.6538906097
+----acl+lb+rt: route ins----18.2211399078
+----acl+lb+rt: route ins----22.399187088
+iiiiii----acl+lb+rt: route ins----23.5369205475
+----acl+lb+rt: route ins----20.9279060364
+dddddddddddddddd----acl+lb+rt: route ins----294.82293129
+----acl+lb+rt: route ins----19.8450088501
+iiiiiiiiii----acl+lb+rt: route ins----24.8670578003
+----acl+lb+rt: route ins----20.9219455719
+----acl+lb+rt: route ins----20.6069946289
+----acl+lb+rt: route ins----19.8991298676
+iiiiiiiiii----acl+lb+rt: route ins----25.1219272614
+iiiiiiiiii----acl+lb+rt: route ins----22.9480266571
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.2621383667
+----acl+lb+rt: route ins----19.5348262787
+iiiiiiiiiiddddddddddiiiiiiiiiiiiiiii----acl+lb+rt: route ins----285.532951355
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.7790298462
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----32.4189662933
+iiiiiiiiiidddddddddd----acl+lb+rt: route ins----299.936056137
+iiiiiiiiii----acl+lb+rt: route ins----26.6561508179
+iiiiiiiiii----acl+lb+rt: route ins----26.6609191895
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----29.7651290894
+----acl+lb+rt: route ins----20.8508968353
+----acl+lb+rt: route ins----19.299030304
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.8791656494
+iiiiiiiiii----acl+lb+rt: route ins----27.1549224854
+----acl+lb+rt: route ins----22.8250026703
+----acl+lb+rt: route ins----22.3820209503
+----acl+lb+rt: route ins----21.0978984833
+iiiiiiiiiiiiii----acl+lb+rt: route ins----26.6199111938
+iiiiiiiiii----acl+lb+rt: route ins----24.7719287872
+iiiiiiiiii----acl+lb+rt: route ins----26.417016983
+----acl+lb+rt: route ins----21.8360424042
+----acl+lb+rt: route ins----18.2280540466
+iiiiiiiiii----acl+lb+rt: route ins----27.471780777
+----acl+lb+rt: route ins----20.4389095306
+----acl+lb+rt: route ins----22.2120285034
+iiiiiiiiii----acl+lb+rt: route ins----25.5060195923
+iiiiiiiiiiiiii----acl+lb+rt: route ins----29.8697948456
+----acl+lb+rt: route ins----19.3529129028
+iiiiiiiiiiiiii----acl+lb+rt: route ins----25.5899429321
+iiiiiiiiiiiiii----acl+lb+rt: route ins----324.936151505
+----acl+lb+rt: route ins----20.7660198212
+iiiiii----acl+lb+rt: route ins----20.2729701996
+iiiiiiiiii----acl+lb+rt: route ins----27.440071106
+----acl+lb+rt: route ins----21.2979316711
+iiiiiiiiiidddddddddd----acl+lb+rt: route ins----333.98103714
+iiiiiiiiiiiiiiii----acl+lb+rt: route ins----26.8931388855
+----acl+lb+rt: route ins----22.125005722
+dddddddddd----acl+lb+rt: route ins----286.947011948
+----acl+lb+rt: route ins----23.017168045
+iiiiiiiiiiiiii----acl+lb+rt: route ins----30.5919647217
+iiiiiiiiiiiiii----acl+lb+rt: route ins----28.0268192291
+iiiiiiiiii----acl+lb+rt: route ins----27.9848575592
+iiiiiiiiii----acl+lb+rt: route ins----27.272939682
+iiiiii----acl+lb+rt: route ins----23.1668949127
+----acl+lb+rt: route ins----21.106004715
+iiiiiiiiii----acl+lb+rt: route ins----25.9079933167
+----acl+lb+rt: route ins----21.096944809
+iiiiii----acl+lb+rt: route ins----23.460149765
+----acl+lb+rt: route ins----21.1009979248
+----acl+lb+rt: route ins----20.3590393066
+iiiiiiiiii----acl+lb+rt: route ins----25.7201194763
+----acl+lb+rt: route ins----24.0859985352
+ddddddddddddddiiiiiiiiiiiiii----acl+lb+rt: route ins----308.516979218
+iiiiiiiiii----acl+lb+rt: route ins----26.0231494904
+ddddddddddddddiiiiiiiiiiiiii----acl+lb+rt: route ins----348.895072937
+iiiiiiiiiiiiiidddddddddd----acl+lb+rt: route ins----317.914962769
+iiiiiiiiii----acl+lb+rt: route ins----27.7619361877
+----acl+lb+rt: route ins----20.6639766693
+iiiiiiiiii----acl+lb+rt: route ins----23.6458778381
+iiiiiiiiii----acl+lb+rt: route ins----28.0389785767
+----acl+lb+rt: route ins----21.2600231171
+----acl+lb+rt: route ins----20.2260017395
+iiiiiiiiiidddddd----acl+lb+rt: route ins----312.757968903
+iiiiiiiiii----acl+lb+rt: route ins----26.5190601349
+----acl+lb+rt: route ins----20.5359458923
+iiiiiiiiiiiiiiiidddddddddd----acl+lb+rt: route ins----314.06712532
+iiiiii----acl+lb+rt: route ins----23.8189697266
+dddddd----acl+lb+rt: route ins----320.739984512
+iiiiiiiiii----acl+lb+rt: route ins----28.1369686127
+iiiiiiiiii----acl+lb+rt: route ins----28.4471511841
+----acl+lb+rt: route ins----21.4059352875
+----acl+lb+rt: route ins----17.0810222626
+iiiiiiii----acl+lb+rt: route ins----24.6779918671
+iiiiiiiiiiii----acl+lb+rt: route ins----29.972076416
+----acl+lb+rt: route ins----20.9171772003
+iiiiiiiiii----acl+lb+rt: route ins----30.5337905884
+iiiiii----acl+lb+rt: route ins----23.6151218414
+----acl+lb+rt: route ins----22.8068828583
+iiiiiiiiii----acl+lb+rt: route ins----28.1231403351
+----acl+lb+rt: route ins----20.8349227905
+iiiiiiiiii----acl+lb+rt: route ins----25.3190994263
+----acl+lb+rt: route ins----20.5419063568
+iiiiiiiiii----acl+lb+rt: route ins----27.9788970947
+iiiiiiiiiiiiiiddddddddddddddiiiiiiiiiiii----acl+lb+rt: route ins----351.207017899
+ddddddddddiiiiiiiiiiiiiiii----acl+lb+rt: route ins----355.776071548
+iiiiiiiiii----acl+lb+rt: route ins----26.0229110718
+iiiiiiiiiidddddddddd----acl+lb+rt: route ins----361.479043961
+iiiiii----acl+lb+rt: route ins----24.9049663544
+iiiiiiddddddddddiiiiiiiiiiiiiiii----acl+lb+rt: route ins----334.230899811
+----acl+lb+rt: route ins----20.828962326
+iiiiiiiiiiiiii----acl+lb+rt: route ins----27.1899700165
+iiiiiiiiii----acl+lb+rt: route ins----28.0330181122
+----acl+lb+rt: route ins----22.8321552277
+iiiiiiiiii----acl+lb+rt: route ins----28.5260677338
+----acl+lb+rt: route ins----22.6988792419
+----acl+lb+rt: route ins----22.4549770355
+iiiiiiiiii----acl+lb+rt: route ins----27.5201797485
+----acl+lb+rt: route ins----21.6000080109
