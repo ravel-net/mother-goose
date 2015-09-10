@@ -32,9 +32,9 @@ f = TD["new"]["pid"]
 s = TD["new"]["sid"]
 n = TD["new"]["nid"]
 
-u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
-outport = str(u[0]['port'])
-v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
+u = plpy.execute("""select port from ports where sid = """ + str (s) + """ and nid = """ +str (n))
+outport = str (u[0]['port'])
+v = plpy.execute("""select port from ports where sid = """ + str (s) + """ and nid = """ +str (f))
 inport = str (v[0]['port'])
 
 cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
@@ -59,10 +59,16 @@ f = TD["old"]["pid"]
 s = TD["old"]["sid"]
 n = TD["old"]["nid"]
 
-u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
+u = plpy.execute("""\
+         select port
+         from ports where sid = """ +str (s)+"""   
+         and nid = """ +str (n))
 outport = str(u[0]['port'])
 
-v = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (f))
+v = plpy.execute("""\
+         select port
+         from ports where sid = """ +str (s)+"""
+         and nid = """ +str (f))
 inport = str (v[0]['port'])
 
 cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport

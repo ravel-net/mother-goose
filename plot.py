@@ -28,6 +28,7 @@ set xtics nomirror
 set ytics nomirror'''
 
 def get_k (logfile):
+    # if logfile[:3]
     t = logfile.split ('/')[-1] # .split ('.').split ('_')
     t2 = str (t.split ('_')[0][7:]) 
     return t2
@@ -103,9 +104,9 @@ set terminal pdfcairo size 2,2 font "Gill Sans,9" linewidth 2 rounded fontscale 
 # default 5 by 3 (inches)
 
 set logscale x
-plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" with lp ls 11,\
+plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" with lp ls 13,\
  '' using 4:3 title "k='''+get_k (logfile[1])+ '''" with lp ls 12,\
- '' using 6:5 title "k='''+get_k (logfile[2])+ '''" with lp ls 13
+ '' using 6:5 title "k='''+get_k (logfile[2])+ '''" with lp ls 11
 ''')
 
     pf.flush ()
@@ -114,13 +115,18 @@ plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" wi
 
 class rPlot ():
     
-    def __init__ (self, loglist, keylist):
+    def __init__ (self, subdir, loglist, keylist):
         self.log_file_list = loglist
         self.key_list = keylist
         self.sub_dir = '/media/sf_share/ravel_plot/'
         self.dat_dir = '/media/sf_share/ravel_plot/'
         self.plt_dir = '/media/sf_share/ravel_plot/'
         self.pdf_dir = '/media/sf_share/ravel_plot/'
+
+        self.dat_dir += subdir + '/dat/'
+        self.pdf_dir += subdir 
+        self.sub_dir += subdir + '/'
+
 
     def add_log (self,filename):
         self.log_file_list.append (self.sub_dir + filename)
@@ -152,10 +158,7 @@ class rPlot_primitive (rPlot):
 
         key_primitive = lblist + acllist + acllbrt + rtlist # + link
 
-        rPlot.__init__ (self, [], key_primitive)
-        self.dat_dir += subdir + '/dat/'
-        self.pdf_dir += subdir + '/dat/'
-        self.sub_dir += subdir + '/'
+        rPlot.__init__ (self, subdir, [], key_tenant)
 
 class rPlot_tenant (rPlot):
 
@@ -165,7 +168,7 @@ class rPlot_tenant (rPlot):
 
         key_tenant = tenantlist
 
-        rPlot.__init__ (self, [], key_tenant)
-        self.dat_dir += subdir + '/dat/'
-        self.pdf_dir += subdir + '/dat/'
-        self.sub_dir += subdir + '/'
+        rPlot.__init__ (self, subdir, [], key_tenant)
+        # self.dat_dir += subdir + '/dat/'
+        # self.pdf_dir += subdir 
+        # self.sub_dir += subdir + '/'

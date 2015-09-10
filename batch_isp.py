@@ -21,6 +21,7 @@ class Batch_isp (Batch):
             Batch_isp.init_ISP_topo (self, dbname)
 
         Batch.__init__(self,dbname, rounds)
+        remove_profile_schema (self.cur)
 
         feeds = dbname[8:]
         rib_feeds_all = os.getcwd() + '/rib_feeds/rib20011204_edges.txt'
@@ -31,7 +32,13 @@ class Batch_isp (Batch):
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
-        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/isp/')
+
+        if self.isp == '4755' or self.isp == '3356' or self.isp == '7018':
+            t = 'isp_3sizes'
+        elif self.isp == '2914':
+            t = 'isp' + isp + '_3ribs'
+
+        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/' + t + '/log/')
         Batch.close (self)
 
     def primitive (self):
@@ -68,6 +75,15 @@ class Batch_isp (Batch):
                     cursor.execute ("""INSERT INTO tp(sid, nid, ishost, isactive) VALUES (%s, %s,1,1);""",(int(nd)+1000,int(nd)))
                 except psycopg2.DatabaseError, e:
                     print "Unable to insert into hosts table: %s" % str(e)
+
+            cursor.execute (""" 
+DROP TABLE IF EXISTS ports CASCADE;
+CREATE UNLOGGED TABLE ports AS
+       SELECT switches.sid, t.nid, t.port
+       FROM switches, get_port(switches.sid) t ;
+CREATE INDEX ON ports(sid, nid);
+""")
+
             print "Initialize topology table with edges in " + ISP_edges_file
 
         conn = psycopg2.connect(database= dbname, user= Batch.username)
