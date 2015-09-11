@@ -56,7 +56,12 @@ class Batch:
     def init_acl (self):
         self.cur.execute ("select distinct host1, host2 from utm ;")
         cs = self.cur.fetchall ()
-        ends = [[h['host1'], h['host2']] for h in cs]
+        t_ends = [[h['host1'], h['host2']] for h in cs]
+        print "init_acl ends size: " + str (len (t_ends)) 
+        if len (t_ends) > self.rounds:
+            ends = t_ends[: self.rounds]
+        else:
+            ends = t_ends
 
         for i in range (len (ends)):
             [e1, e2] = ends[i]
@@ -67,7 +72,12 @@ class Batch:
     def init_lb (self):
         self.cur.execute ("select distinct host2 from utm ;")
         cs = self.cur.fetchall ()
-        ends = [h['host2'] for h in cs]
+        t_ends = [h['host2'] for h in cs]
+        print "init_lb ends size: " + str (len (t_ends)) 
+        if len (t_ends) > self.rounds:
+            ends = t_ends[: self.rounds]
+        else:
+            ends = t_ends
         
         for i in range (len (ends)):
             e = ends[i]
@@ -143,6 +153,7 @@ class Batch:
             self.cur.execute ("INSERT INTO rtm values (%s,%s,%s);",([int (r),int (h1),int (h2)]))
             t2 = time.time ()
             self.f.write ('----rt: route ins----' + str ((t2-t1)*1000) + '\n')
+            self.f.write ('#pi----rt: route ins----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
 
     def rtm_del (self):
@@ -158,40 +169,42 @@ class Batch:
             self.cur.execute ("DELETE FROM rtm WHERE fid =" +str (fids[r])+ ";")
             t2 = time.time ()
             self.f.write ('----rt: route del----' + str ((t2-t1)*1000) + '\n')
-            self.f.write ('#p----rt: route del----' + str ((t2-t1)*1000) + '\n')
+            self.f.write ('#pd----rt: route del----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
 
 
     def op_lb (self):
         cur = self.cur
         f = self.f
-        try: # add comments here
-            t1 = time.time ()
-            cur.execute ("select max(load) from lb ;")
-            t2 = time.time ()
-            f.write ('----lb: check max load----' + str ((t2-t1)*1000) + '\n')
-            f.flush ()
-            max_load = cur.fetchall ()[0]['max']
+        # try: # add comments here
 
-            cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
-            s_id = cur.fetchall ()[0]['sid']
-
-            t1 = time.time ()
-            cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
-            t2 = time.time ()
-            f.write ('----lb: re-balance (absolute)----' + str ((t2-t1)*1000) + '\n')
-            f.flush ()
-
-            t3 = time.time ()
-            cur.execute("select max (counts) from clock;")
-            ct = cur.fetchall () [0]['max']
-            cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
-            t4 = time.time ()
-            f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
-            f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
-        except: print "op_lb fail due to ..., skip"
-
+        t1 = time.time ()
+        cur.execute ("select max(load) from lb ;")
+        t2 = time.time ()
+        f.write ('----lb: check max load----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
+        max_load = cur.fetchall ()[0]['max']
+
+        cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
+        s_id = cur.fetchall ()[0]['sid']
+
+        t1 = time.time ()
+        cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
+        print "update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";"
+        t2 = time.time ()
+        f.write ('----lb: re-balance (absolute)----' + str ((t2-t1)*1000) + '\n')
+        f.flush ()
+
+        t3 = time.time ()
+        cur.execute("select max (counts) from clock;")
+        ct = cur.fetchall () [0]['max']
+        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+        t4 = time.time ()
+        f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        f.flush ()
+        # except psycopg2.DatabaseError, e:
+        #     print 'op_lb fail Error %s' % e
 
     def op_acl (self):
         cur = self.cur
@@ -252,12 +265,14 @@ class Batch:
         f = self.f
 
         f.write ("#primitive: op_lb ----------------------------------------------\n")
-        for r in range (0, self.rounds):
+        for r in range (0, 20):
             Batch.op_lb (self)
 
         f.write ("#primitive: op_acl ----------------------------------------------\n")
         cur.execute("select count(*) from acl;")
         ct = cur.fetchall () [0]['count']
+        if ct > 20:
+            ct = 20
         for i in range (ct):
             Batch.op_acl (self)
 
@@ -269,5 +284,7 @@ class Batch:
         cur.execute ("SELECT DISTINCT end2 FROM acl_tb;")
         cs = cur.fetchall ()
         h2s = [h['end2'] for h in cs]
+        if capacity > 20:
+            capacity = 20
         for i in range (capacity):
             Batch.routing_ins_acl_lb (self, h1s, h2s)

@@ -25,22 +25,36 @@ class Batch_isp (Batch):
         remove_profile_schema (self.cur)
 
         rib_feeds_all = os.getcwd() + '/rib_feeds/rib20011204_edges.txt'
-        if database_exists == 0:
-            feeds = dbname[8:]
-            self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
-            os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
-
-        elif database_exists == 1:
-            cur = Batch.self.cur
-            t_feeds = cur.execute ("SELECT count (*) FROM utm;").fetchall ()[0]['count']
-            feeds = int (dbname[8:]) - int (t_feeds)
-
-            Batch.update_max_fid (self)
-            fid = self.max_fid + 1
-
-
+        feeds = dbname[8:]
+        self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+        os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
 
         Batch_isp.init_rib (self)
+        # if database_exists == 0:
+        #     feeds = dbname[8:]
+        #     self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+        #     os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
+
+        # elif database_exists == 1:
+        #     print "database_exists == 1"
+        #     self.cur.execute ("SELECT count (*) FROM utm;")
+        #     t_feeds = self.cur.fetchall ()[0]['count']
+        #     print "size of utm is: " + str (t_feeds)
+        #     feeds = int (dbname[8:]) - int (t_feeds)
+        #     # Batch_isp.init_rib (self)
+
+        #     if feeds > 0 :
+        #         Batch.update_max_fid (self)
+        #         feed_begins = self.max_fid + 1
+        #         print "feeds: " + str (feeds) 
+        #         print "feed_begins: " + str (feed_begins) 
+        #         self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+        #         os.system ("cp " + rib_feeds_all + " temp")
+        #         os.system ("sed -i -e 1,"+ str (feed_begins) + "d temp")
+        #         os.system ("head -n " + str(feeds) + " temp > " + self.rib_edges_file)
+        #         Batch_isp.init_rib (self)
+        #     else:
+        #         print "feeds: " + str (feeds)  + " ... just skip"
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
@@ -59,7 +73,9 @@ class Batch_isp (Batch):
 
     def primitive (self):
         Batch.init_acl (self)
+        print "Batch_isp.init_acl"
         Batch.init_lb (self)
+        print "Batch_isp.init_lb"
         Batch.op_primitive (self)
 
     def init_ISP_topo (self, dbname):
@@ -87,8 +103,8 @@ class Batch_isp (Batch):
             for node in f:
                 nd = node[:-1]
                 try:
-                    cursor.execute ("""INSERT INTO hosts VALUES (%s);""", ([int (nd)+1000]))
-                    cursor.execute ("""INSERT INTO tp(sid, nid, ishost, isactive) VALUES (%s, %s,1,1);""",(int(nd)+1000,int(nd)))
+                    cursor.execute ("""INSERT INTO hosts VALUES (%s);""", ([int (nd)+100000]))
+                    cursor.execute ("""INSERT INTO tp(sid, nid, ishost, isactive) VALUES (%s, %s,1,1);""",(int(nd)+100000,int(nd)))
                 except psycopg2.DatabaseError, e:
                     print "Unable to insert into hosts table: %s" % str(e)
 
@@ -148,7 +164,7 @@ CREATE UNLOGGED TABLE borders (
         cursor.execute (""" 
 SELECT *
 FROM uhosts, borders WHERE
-hid = 1000 + sid;
+hid = 100000 + sid;
 """)
         cs = self.cur.fetchall ()
         sid2u_hid = {h['sid']: int (h['u_hid']) for h in cs}

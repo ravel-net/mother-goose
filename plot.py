@@ -169,8 +169,50 @@ class rPlot_tenant (rPlot):
 
         rPlot.__init__ (self, subdir, [], key_tenant)
 
-class rPlot_profile (rPlot):
-    keys = ['test']
+# class rPlot_profile (rPlot):
+#     keys = ['test']
 
-    def __int__ (self):
-        rPlot.__int__ (self, 'profile', [], keys)
+#     def __int__ (self):
+#         rPlot.__int__ (self, 'profile', [], keys)
+        
+#     def profile_dat ():
+#         datfile = dir_name + nametext + '.dat'        
+
+def profile_dat (logfile):
+
+    logfilename = logfile.split ('/')[-1]    
+    temp = len (logfilename)
+    datfile = logfile[:-temp - 4] + 'dat/'+ logfilename.split ('.')[0] + '.dat'
+
+    rti_dat = []
+    rtd_dat = []
+    
+    f = open(logfile, "r")
+    for l in f.readlines():
+        if l[:2] != '#p':
+            pass
+        elif l[:3] == '#pi': 
+            e = l.split ('----')
+            rti_dat.append ({e[1]: e[2][:-1]})
+        elif l[:3] == '#pd': 
+            e = l.split ('----')
+            rtd_dat.append ({e[1]: e[2][:-1]})
+
+    print len (rti_dat)
+    print len (rtd_dat)
+
+            # if e[1] == 'pgr_dijkstra_(ms)':
+            #     r.append (float (e[2][:-1])/len (e[0]))
+
+            #     if len (e[0]) != 0:
+            #         s.append (float (e[2][:-1])/len (e[0]))
+            #     elif len (e[0]) == 0:
+            #         # s.append ([e[1], 0, float (e[2][:-1])])
+            #         s.append (float (e[2][:-1]))
+
+    # f = open (datfile, "wr")
+    # for i in range (0,l):
+    #     line = str ((i+1)/l0) + '\t' + str (t_o (i, l0, o0) ) + '\t' + str ((i+1)/l1)+'\t' + str (t_o (i, l1, o1)) + '\t' +str ((i+1)/l2)+'\t' + str (t_o (i, l2, o2)) + '\n'
+    #     f.write (line)
+    #     f.flush ()
+    # f.close ()

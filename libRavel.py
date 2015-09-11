@@ -309,6 +309,28 @@ def truncate_db (dbname):
     finally:
         if conn: conn.close()
 
+def truncate_db4isp (dbname):
+    try:
+        conn = psycopg2.connect(database= dbname, user= "mininet")
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        cur = conn.cursor()
+
+        cur.execute ("truncate acl_tb, lb_tb;")
+
+        # cur.execute ("INSERT INTO clock values (0);")
+
+        # cur.execute ("truncate t1, t2, t3, tacl_tb, tenant_hosts, tlb_tb;")
+
+        print "--------------------> truncate_db successful"
+
+    except psycopg2.DatabaseError, e:
+        print "clean_db error"
+        print 'Error %s' % e
+
+    finally:
+        if conn: conn.close()
+
+
 def clean_db (dbname):
     try:
         conn = psycopg2.connect(database= "postgres", user= "mininet")
@@ -345,8 +367,10 @@ def create_db (dbname, username):
             cur.execute ("CREATE DATABASE " + dbname + ";")
             database_exists = 0
         else:
-            if dbname[:7] == 'fattree':
-                truncate_db (dbname)
+            # if dbname[:7] == 'fattree':
+            truncate_db (dbname)
+            # elif dbname[:3] == 'isp':
+            #     truncate_db4isp (dbname)
             print "database " + dbname + " exists, truncate database"
             database_exists = 1
 

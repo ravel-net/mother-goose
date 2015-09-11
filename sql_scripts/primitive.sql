@@ -101,8 +101,8 @@ CREATE UNLOGGED TABLE cf (
        fid	integer,
        pid	integer,
        sid	integer,
-       nid	integer,
-       PRIMARY KEY (fid, sid)
+       nid	integer
+       -- PRIMARY KEY (fid, pid, sid, nid)
 );
 CREATE INDEX ON cf(fid,sid);
 

@@ -33,7 +33,7 @@ l4 = ['isp2914_10', 'isp4755_10', 'isp7018_10']
 
 
 def profile (rounds):
-        l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*100), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
+        l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
 
         for d in l:
             if d[:3] == 'isp':
@@ -93,35 +93,29 @@ if __name__ == '__main__':
 
         elif m == 'i':
 
-            scenario (10000, 'isp', '3sizes')
+            t1 = time.time ()
+            # scenario (100, 'isp', '3sizes')
             scenario (100, 'isp', '3ribs')
+            t2 = time.time ()
+            print ("time consumed: " + str ((t2-t1)))
 
         elif m == 'p':
 
-            profile (4)
+            profile (100)
 
         elif m == 'b':
 
-            scenario (10, 'fat', 'primitive')
-            scenario (10, 'fat', 'tenant')
+            scenario (100, 'fat', 'primitive')
+            scenario (100, 'fat', 'tenant')
 
-            scenario (10, 'isp', '3sizes')
-            scenario (10, 'isp', '3ribs')
+            scenario (100, 'isp', '3sizes')
+            scenario (100, 'isp', '3ribs')
 
             profile (4)
 
-
-        elif m == 't':
-            # for d in l4:
-            #     b = Batch_isp (d, 4)
-            #     b.add_profile_schema ()
-            #     b.op_profile ()
-            #     b.close ()
-
-            pass
-
-        # if m == 'p':
-        #     profile (l1[:1], username, 30)
+        elif m == 't': 
+            # profile (4)
+            profile_dat ('/media/sf_share/ravel_plot/profile/log/fattree16.log')
 
         elif m == 'e':
             break
@@ -154,9 +148,10 @@ if __name__ == '__main__':
             # isp.gen_dat ()
             # isp.gen_plt ()
 
-                # t = Batch_profile (db, 4)
-                # t.primitive ()
-                # t.close ()
-
-        # elif m == 'm':
-        #     mininet_interactive ()
+            # for d in l1[0]:
+            #     b = Batch_fattree (d, 4)
+            #     b.add_profile_schema ()
+            #     b.op_profile ()
+            #     b.close ()
+            # p.add_log (b.logdest)
+            # print p.log_file_list
