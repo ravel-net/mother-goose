@@ -178,11 +178,15 @@ class rPlot_tenant (rPlot):
 #     def profile_dat ():
 #         datfile = dir_name + nametext + '.dat'        
 
-def profile_dat (logfile):
+def profile_dat (logfile, rounds):
 
     logfilename = logfile.split ('/')[-1]    
     temp = len (logfilename)
-    datfile = logfile[:-temp - 4] + 'dat/'+ logfilename.split ('.')[0] + '.dat'
+    datfile_rti = logfile[:-temp - 4] + 'dat/'+ logfilename.split ('.')[0] + '_rti.dat'
+    datfile_rtd = logfile[:-temp - 4] + 'dat/'+ logfilename.split ('.')[0] + '_rtd.dat'
+    pdffile_rti = logfile[:-temp - 4] + logfilename.split ('.')[0] + '_rti.pdf'
+    pdffile_rtd = logfile[:-temp - 4] + logfilename.split ('.')[0] + '_rtd.pdf'
+    pltfile = logfile[:-temp - 4] + 'dat/' + logfilename.split ('.')[0] + '.plt'
 
     rti_dat = []
     rtd_dat = []
@@ -198,21 +202,59 @@ def profile_dat (logfile):
             e = l.split ('----')
             rtd_dat.append ({e[1]: e[2][:-1]})
 
-    print len (rti_dat)
-    print len (rtd_dat)
+    fi = open (datfile_rti, "wr")
+    for i in range (0,rounds):
+        for j in range (0, int (len (rti_dat) / rounds)):
+            num = int (i* len (rti_dat) / rounds + j)
+            if rti_dat[num].keys ()[0] == 'insert_compute_port':
+                tval = rti_dat[num].values ()[0].split (' ')[:-1]
+                cf_l = len (tval)
+                fi.write (str (rti_dat[num].keys ()[0]) + ' | ' + str (cf_l) + ' | ' +  str (sum([float(c) for c in tval])) + ' | ')
+            else:
+                fi.write (str (rti_dat[num].keys ()[0]) + ' | ' + str (rti_dat[num].values ()[0]) + ' | ')
+        fi.write ('\n')
+    fi.close ()
 
-            # if e[1] == 'pgr_dijkstra_(ms)':
-            #     r.append (float (e[2][:-1])/len (e[0]))
+    fd = open (datfile_rtd, "wr")
+    for i in range (0,rounds):
+        for j in range (0, int (len (rtd_dat) / rounds) ):
+            num = int (i* len (rtd_dat) / rounds + j)
+            if rtd_dat[num].keys ()[0] == 'del_compute_port':
+                tval = rtd_dat[num].values ()[0].split (' ')[:-1]
+                cf_l = len (tval)
+                fd.write (str (rtd_dat[num].keys ()[0]) + ' | ' + str (cf_l) + ' | ' +  str (sum([float(c) for c in tval])) + ' | ')
+            else:
+                fd.write (str (rtd_dat[num].keys ()[0]) + ' | ' + str (rtd_dat[num].values ()[0]) + ' | ')
+        fd.write ('\n')
+    fd.close ()
 
-            #     if len (e[0]) != 0:
-            #         s.append (float (e[2][:-1])/len (e[0]))
-            #     elif len (e[0]) == 0:
-            #         # s.append ([e[1], 0, float (e[2][:-1])])
-            #         s.append (float (e[2][:-1]))
+    f = open (pltfile, "wr")
+    f.write (""" 
+reset
+set termoption dash
+set style line 80 lt -1 lc rgb "#808080"
+set style line 81 lt 0  # dashed
+set style line 81 lt rgb "#808080"
+set grid back linestyle 81
+set border 3 back linestyle 80
+set key top left
+set xtics nomirror
+set ytics nomirror
+set style data histograms
+set style histogram rowstacked
+set boxwidth 1 relative
+set style fill solid 1.0 border -1
+set datafile separator "|"
+""")
 
-    # f = open (datfile, "wr")
-    # for i in range (0,l):
-    #     line = str ((i+1)/l0) + '\t' + str (t_o (i, l0, o0) ) + '\t' + str ((i+1)/l1)+'\t' + str (t_o (i, l1, o1)) + '\t' +str ((i+1)/l2)+'\t' + str (t_o (i, l2, o2)) + '\n'
-    #     f.write (line)
-    #     f.flush ()
-    # f.close ()
+    f.write ("""
+set output "/Users/anduo/share/"""+ pdffile_rti[16:] +""""
+set terminal pdfcairo size 2,2 font "Gill Sans,9" linewidth 2 rounded fontscale 1
+plot '/Users/anduo/share/"""+ datfile_rti[16:] +"""' using 2, '' using 5, '' using 7, '' using 9
+""")
+
+    f.write ("""
+set output "/Users/anduo/share/"""+ pdffile_rtd[16:] +""""
+set terminal pdfcairo size 2,2 font "Gill Sans,9" linewidth 2 rounded fontscale 1
+plot "/Users/anduo/share/"""+ datfile_rtd[16:] +"""" using 3, '' using 5, '' using 7
+""")
