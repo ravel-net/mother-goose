@@ -12,7 +12,11 @@ class Batch_fattree (Batch):
 
     def close (self):
         os.system ("cp "+ Batch.logfile + ' ' + self.logdest)
-        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/fattree/')
+
+        if self.profile == True:
+            os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/log/')
+        else:
+            os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/fattree/log/')
         Batch.close (self)
 
     def primitive (self):
@@ -58,14 +62,17 @@ class Batch_fattree (Batch):
         Batch.update_max_fid (self)
         fid = self.max_fid + 1
 
-        t1 = time.time ()
-        cur.execute ("INSERT INTO tenant_policy VALUES ("+str (fid) +"," +str (h1) + "," + str (h2)+");")
-        cur.execute("select max (counts) from clock;")
-        ct = cur.fetchall () [0]['max'] 
-        cur.execute ("INSERT INTO t1 VALUES (" + str (ct+1) + ", 'on');")
-        t2 = time.time ()
-        f.write ('----(acl+lb+rt)*tenant: route ins----' + str ((t2-t1)*1000) + '\n')
-        f.flush ()
+        try:
+            t1 = time.time ()
+            cur.execute ("INSERT INTO tenant_policy VALUES ("+str (fid) +"," +str (h1) + "," + str (h2)+");")
+            cur.execute("select max (counts) from clock;")
+            ct = cur.fetchall () [0]['max'] 
+            cur.execute ("INSERT INTO t1 VALUES (" + str (ct+1) + ", 'on');")
+            t2 = time.time ()
+            f.write ('----(acl+lb+rt)*tenant: route ins----' + str ((t2-t1)*1000) + '\n')
+            f.flush ()
+        except:
+            pass
 
     def init_tacl (self):
         cur = self.cur
@@ -75,7 +82,8 @@ class Batch_fattree (Batch):
 
         for i in range (len (ends)):
             [e1, e2] = ends[i]
-            is_inblacklist = random.choice([0,1])
+            # is_inblacklist = random.choice([0,1])
+            is_inblacklist = np.random.choice([0,1], 1, p=[0.8, 0.2])[0]
             cur.execute ("INSERT INTO tacl_tb VALUES ("+ str (e1)+ ","+ str (e2) + "," + str (is_inblacklist) +");") 
 
     def init_tlb (self):

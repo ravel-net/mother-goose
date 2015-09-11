@@ -8,7 +8,7 @@ class Batch:
 
     def __init__(self, dbname, rounds):
         self.rounds = rounds
-
+        self.profile = False 
 
         self.conn = psycopg2.connect(database= dbname, user= Batch.username)
         self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
@@ -44,6 +44,11 @@ class Batch:
         cs = self.cur.fetchall ()
         self.links = [[h['sid'], h['nid']] for h in cs]
 
+    def add_profile_schema (self):
+        cur = self.cur
+        add_profile_schema (cur)
+        self.profile = True
+
     def close (self):
         if self.conn: self.conn.close()
         self.f.close ()
@@ -52,11 +57,11 @@ class Batch:
         self.cur.execute ("select distinct host1, host2 from utm ;")
         cs = self.cur.fetchall ()
         ends = [[h['host1'], h['host2']] for h in cs]
-        
-        foo = [0, 1]
+
         for i in range (len (ends)):
             [e1, e2] = ends[i]
-            is_inblacklist = random.choice(foo)
+            # is_inblacklist = random.choice([0,1])
+            is_inblacklist = np.random.choice([0,1], 1, p=[0.8, 0.2])[0]
             self.cur.execute ("INSERT INTO acl_tb VALUES ("+ str (e1)+ ","+ str (e2) + "," + str (is_inblacklist) +");") 
 
     def init_lb (self):
@@ -100,6 +105,7 @@ class Batch:
             self.cur.execute ("UPDATE tp SET isactive = 0 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
             t2 = time.time ()
             self.f.write ('----re_route: linkdown----' + str ((t2-t1)*1000) + '\n')
+            self.f.write ('#p----re_route: linkdown----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
             self.cur.execute ("UPDATE tp SET isactive = 1 WHERE sid = %s AND nid = %s;",([link[0], link[1]]))
 
@@ -152,35 +158,39 @@ class Batch:
             self.cur.execute ("DELETE FROM rtm WHERE fid =" +str (fids[r])+ ";")
             t2 = time.time ()
             self.f.write ('----rt: route del----' + str ((t2-t1)*1000) + '\n')
+            self.f.write ('#p----rt: route del----' + str ((t2-t1)*1000) + '\n')
             self.f.flush ()
 
 
     def op_lb (self):
         cur = self.cur
         f = self.f
+        try: # add comments here
+            t1 = time.time ()
+            cur.execute ("select max(load) from lb ;")
+            t2 = time.time ()
+            f.write ('----lb: check max load----' + str ((t2-t1)*1000) + '\n')
+            f.flush ()
+            max_load = cur.fetchall ()[0]['max']
 
-        t1 = time.time ()
-        cur.execute ("select max(load) from lb ;")
-        t2 = time.time ()
-        f.write ('----lb: check max load----' + str ((t2-t1)*1000) + '\n')
-        f.flush ()
-        max_load = cur.fetchall ()[0]['max']
+            cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
+            s_id = cur.fetchall ()[0]['sid']
 
-        cur.execute ("select sid from lb where load = "+str (max_load)+" limit 1;")
-        s_id = cur.fetchall ()[0]['sid']
-        t1 = time.time ()
-        cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
-        t2 = time.time ()
-        f.write ('----lb: re-balance (absolute)----' + str ((t2-t1)*1000) + '\n')
-        f.flush ()
+            t1 = time.time ()
+            cur.execute ("update lb set load = " +str (max_load - 1)+" where sid = "+str (s_id)+";")
+            t2 = time.time ()
+            f.write ('----lb: re-balance (absolute)----' + str ((t2-t1)*1000) + '\n')
+            f.flush ()
 
-        t3 = time.time ()
-        cur.execute("select max (counts) from clock;")
-        ct = cur.fetchall () [0]['max']
-        cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
-        t4 = time.time ()
-        f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
-        f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+            t3 = time.time ()
+            cur.execute("select max (counts) from clock;")
+            ct = cur.fetchall () [0]['max']
+            cur.execute ("INSERT INTO p_spv VALUES (" + str (ct+1) + ", 'on');")
+            t4 = time.time ()
+            f.write ('----lb+rt: re-balance (per rule)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+            f.write ('----lb+rt: re-balance (absolute)----' + str ((t2-t1 + t4-t3)*1000) + '\n')
+        except: print "op_lb fail due to ..., skip"
+
         f.flush ()
 
     def op_acl (self):
@@ -230,6 +240,12 @@ class Batch:
         t2 = time.time ()
         f.write ('----acl+lb+rt: route ins----' + str ((t2-t1)*1000) + '\n')
         f.flush ()
+
+    def op_profile (self):
+
+        Batch.rtm_ins (self, self.rounds)
+        Batch.rtm_del (self)
+        Batch.re_route (self)
 
     def op_primitive (self):
         cur = self.cur

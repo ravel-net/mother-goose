@@ -14,7 +14,8 @@ class Batch_isp (Batch):
         self.rib_peerIPs_file = os.getcwd() + '/rib_feeds/' + "rib20011204_nodes.txt"
 
         print "for database " + dbname + "--------------------"
-        create_db (dbname, Batch.username)
+        create_db (dbname, Batch.username) # add comments
+
         if database_exists == 0:
             add_pgrouting_plpy_plsh_extension (dbname, Batch.username)
             load_schema (dbname, Batch.username, "/home/mininet/ravel/sql_scripts/primitive.sql")
@@ -23,10 +24,21 @@ class Batch_isp (Batch):
         Batch.__init__(self,dbname, rounds)
         remove_profile_schema (self.cur)
 
-        feeds = dbname[8:]
         rib_feeds_all = os.getcwd() + '/rib_feeds/rib20011204_edges.txt'
-        self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
-        os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
+        if database_exists == 0:
+            feeds = dbname[8:]
+            self.rib_edges_file = os.getcwd() + '/rib_feeds/rib20011204_edges_' + str (feeds) + '.txt'
+            os.system ("head -n " + str(feeds) + " " + rib_feeds_all + " > " + self.rib_edges_file)
+
+        elif database_exists == 1:
+            cur = Batch.self.cur
+            t_feeds = cur.execute ("SELECT count (*) FROM utm;").fetchall ()[0]['count']
+            feeds = int (dbname[8:]) - int (t_feeds)
+
+            Batch.update_max_fid (self)
+            fid = self.max_fid + 1
+
+
 
         Batch_isp.init_rib (self)
 
@@ -36,9 +48,13 @@ class Batch_isp (Batch):
         if self.isp == '4755' or self.isp == '3356' or self.isp == '7018':
             t = 'isp_3sizes'
         elif self.isp == '2914':
-            t = 'isp' + isp + '_3ribs'
+            t = 'isp' + self.isp + '_3ribs'
 
-        os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/' + t + '/log/')
+        if self.profile == True:
+            os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/profile/log/')
+        else:
+            os.system ("sudo mv "+ self.logdest + ' ' + ' /media/sf_share/ravel_plot/' + t + '/log/')
+
         Batch.close (self)
 
     def primitive (self):

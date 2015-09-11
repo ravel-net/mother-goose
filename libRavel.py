@@ -7,6 +7,7 @@ import psycopg2.extras
 import subprocess
 import datetime
 from igraph import *
+import numpy as np # np.random.choice([0,1,2,3,4], 3, p=[0.1, 0, 0.3, 0.6, 0]), generate an array of 3 items from a list with given probability
 
 def add_tenant_schema (cur):
     dbscript  = open ('/home/mininet/ravel/sql_scripts/tenant.sql','r').read()
@@ -88,12 +89,11 @@ def profile_pg_routing (d, rounds):
 #     for dbname in l:
 #         fattree_size (dbname, username, rounds)
 
-def profile (dbnamelist, username, rounds):
-    gdb (dbnamelist, sql_profile)
+# def profile (dbnamelist, username, rounds):
+#     gdb (dbnamelist, sql_profile)
 
-    for d in dbnamelist:
-        profile_pg_routing (d, rounds)
-
+#     for d in dbnamelist:
+#         profile_pg_routing (d, rounds)
 
 def add_cf2flows (dbname, username):
     conn = psycopg2.connect(database= dbname, user= username)
@@ -345,7 +345,8 @@ def create_db (dbname, username):
             cur.execute ("CREATE DATABASE " + dbname + ";")
             database_exists = 0
         else:
-            truncate_db (dbname)
+            if dbname[:7] == 'fattree':
+                truncate_db (dbname)
             print "database " + dbname + " exists, truncate database"
             database_exists = 1
 

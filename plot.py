@@ -87,8 +87,9 @@ def gen_plt (logfile, keytext, dir_name):
     xlabel = keytext
     nametext = xlabel.replace (' ', '_').replace (':', '').replace ('(','_').replace (')','_').replace ('+','_').replace ('*','_')
 
-    pltfile = dir_name + nametext + '.plt'
-    pdffile = nametext + '.pdf'
+    pltfile = dir_name + '/dat/' + nametext + '.plt'
+    print pltfile
+    pdffile = '/Users/anduo/share/ravel_plot/' + (dir_name.split ('/')[-1]) + '/' + nametext + '.pdf'
 
     pf = open(pltfile, "wr")
     pf.write (gnuplot_script)
@@ -114,22 +115,19 @@ plot "'''+ nametext +'''.dat" using 2:1 title "k='''+ get_k (logfile[0])+'''" wi
 
 
 class rPlot ():
-    
+
+    # subdir == isp_3sizes, isp2914_3ribs, fattree, profile    
     def __init__ (self, subdir, loglist, keylist):
         self.log_file_list = loglist
         self.key_list = keylist
-        self.sub_dir = '/media/sf_share/ravel_plot/'
-        self.dat_dir = '/media/sf_share/ravel_plot/'
-        self.plt_dir = '/media/sf_share/ravel_plot/'
-        self.pdf_dir = '/media/sf_share/ravel_plot/'
 
-        self.dat_dir += subdir + '/dat/'
-        self.pdf_dir += subdir 
-        self.sub_dir += subdir + '/'
-
+        d = '/media/sf_share/ravel_plot/'
+        self.log_dir = d + subdir + '/log/'
+        self.dat_dir = d + subdir + '/dat/'
+        self.pdf_dir = d + subdir
 
     def add_log (self,filename):
-        self.log_file_list.append (self.sub_dir + filename)
+        self.log_file_list.append (self.log_dir + filename)
 
     def add_key (self,key):
         self.key_list.append (key)
@@ -145,6 +143,7 @@ class rPlot ():
     def gen_plt (self):
         for key in self.key_list:
             gen_plt (self.log_file_list, key, self.pdf_dir)
+            print self.pdf_dir
 
 class rPlot_primitive (rPlot):
 
@@ -158,7 +157,7 @@ class rPlot_primitive (rPlot):
 
         key_primitive = lblist + acllist + acllbrt + rtlist # + link
 
-        rPlot.__init__ (self, subdir, [], key_tenant)
+        rPlot.__init__ (self, subdir, [], key_primitive)
 
 class rPlot_tenant (rPlot):
 
@@ -169,6 +168,9 @@ class rPlot_tenant (rPlot):
         key_tenant = tenantlist
 
         rPlot.__init__ (self, subdir, [], key_tenant)
-        # self.dat_dir += subdir + '/dat/'
-        # self.pdf_dir += subdir 
-        # self.sub_dir += subdir + '/'
+
+class rPlot_profile (rPlot):
+    keys = ['test']
+
+    def __int__ (self):
+        rPlot.__int__ (self, 'profile', [], keys)

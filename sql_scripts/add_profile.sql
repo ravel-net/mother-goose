@@ -22,11 +22,11 @@ if TD["new"]["status"] == 'on':
 	    t1 = time.time ()
             pv = plpy.execute("""SELECT array(SELECT id1 FROM pgr_dijkstra('SELECT 1 as id, sid as source, nid as target, 1.0::float8 as cost FROM tp WHERE isactive = 1',""" +str (s) + "," + str (d)  + ",FALSE, FALSE))""")[0]['array']
 	    t2 = time.time ()
-	    logfunc ('----pgr_dijkstra_(ms)----' + str ((t2-t1)*1000))
+	    logfunc ('#p----pgr_dijkstra_(ms)----' + str ((t2-t1)*1000))
 	    fo.flush ()
 
             l = len (pv)
-	    fo.write('----insert_compute_port----')
+	    fo.write('#p----insert_compute_port----')
 	    fo.flush ()
 
 	    r1 = time.time ()
@@ -34,13 +34,13 @@ if TD["new"]["status"] == 'on':
                 if i + 2 < l:
                     plpy.execute ("INSERT INTO cf (fid,pid,sid,nid) VALUES (" + str (f) + "," + str (pv[i]) + "," +str (pv[i+1]) +"," + str (pv[i+2])+  ");")
 	    r2 = time.time ()
-	    logfunc ('\n----insert_into_cf_(ms)----' + str ((r2-r1)*1000))
+	    logfunc ('\n#p----insert_into_cf_(ms)----' + str ((r2-r1)*1000))
 	    fo.flush ()
 					
         elif t["isadd"] == 0:
 	    r1 = time.time ()				
             f = t["fid"]
-	    fo.write('----del_compute_port----')
+	    fo.write('#p----del_compute_port----')
 	    fo.flush ()
             plpy.execute ("DELETE FROM cf WHERE fid =" +str (f) +";")
 	    r2 = time.time ()
