@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
         elif m == 'p':
 
-            profile (100)
+            profile (30)
 
         elif m == 'b':
 
@@ -117,12 +117,12 @@ if __name__ == '__main__':
 
         elif m == 't':
  
-            rounds = 4
-            l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*100), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
+            rounds = 30
+            l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
 
 
             for d in l:
-                profile_dat ('/media/sf_share/ravel_plot/profile/log/' + d + '.log', 4)
+                profile_dat ('/media/sf_share/ravel_plot/profile/log/' + d + '.log', 30)
 
         elif m == 'e':
             break
