@@ -190,6 +190,42 @@ def profile_dat (logfile, rounds):
 
     rti_dat = []
     rtd_dat = []
+
+    def normalize (datfile):
+        temp = open (datfile+'temp', "wr")
+        f = open (datfile, "r")
+        for e in f.readlines ():
+            items = e.split ('|')
+
+            if datfile[-5:] == 'i.dat':
+                num = float (items[3])
+                # print "i: " + str (num) 
+                if int(num)  == 0:
+                    pass
+                else: 
+                    temp.write (items[0] + ' | ')
+                    temp.write (str (float (items[1])/num) + ' | ')
+                    temp.write (items[2] + ' | 1 | ')
+                    temp.write (str (float (items[4]) /num)  + ' | ')
+                    temp.write (items[5] + '(-port) | ')
+                    temp.write (str (float (items[6]) -float (items[4]) /num)  + ' | ')
+                    temp.write (items[7] + '(-cf,-pgr) | ')
+                    temp.write (str ((float (items[8])  - float (items[6]) - float (items[1])) /num) + '\n')
+
+            elif datfile[-5:] == 'd.dat':
+                num = float (items[1])
+                # print 'd: ' + str (num ) 
+                if int(num)  == 0:
+                    pass
+                else: 
+                    temp.write (items[0] + ' | 1 | ')
+                    temp.write (str (float (items[2]) /num)  + ' | ')
+                    temp.write (items[3] + '(-port) | ')
+                    temp.write (str (float (items[4]) - float (items[2]) /num)  + ' | ')
+                    temp.write (items[5] + '(-cf) | ')
+                    temp.write (str ((float (items[6]) - float (items[4])) /num) + '\n')
+
+        os.system ("mv " + datfile + 'temp ' + datfile)
     
     f = open(logfile, "r")
     for l in f.readlines():
@@ -227,6 +263,9 @@ def profile_dat (logfile, rounds):
                 fd.write (str (rtd_dat[num].keys ()[0]) + ' | ' + str (rtd_dat[num].values ()[0]) + ' | ')
         fd.write ('\n')
     fd.close ()
+
+    normalize (datfile_rti)
+    normalize (datfile_rtd)
 
     f = open (pltfile, "wr")
     f.write (""" 
