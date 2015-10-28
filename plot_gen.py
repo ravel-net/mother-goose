@@ -1,7 +1,6 @@
 from os import system
 from collections import defaultdict
 path = "/tmp/"
-debug = "/tmp/debug.txt"
 
 gnuplot_script = '''
 reset
@@ -55,12 +54,9 @@ def gen_dat(logfile,title):
 	flag = 1
 	
 
-	df = open(debug, "a")
 	
 	for k,v in data.iteritems():
 		data[k] = sorted(v)
-		df.write(k + '\n')
-		df.write(str(data[k]))	
 	
 	f = open(datfile, "wr")
 	
@@ -76,7 +72,6 @@ def gen_dat(logfile,title):
 		f.write(line)
 		f.flush
 		flag = 0
-	df.close()
 	f.close()
 	#print(sorted(data['fattree4lblog_m']))
 	#print(label_list)	
