@@ -10,14 +10,14 @@ set style line 81 lt 0  # dashed
 set style line 81 lt rgb "#808080"
 set grid back linestyle 81
 set border 3 back linestyle 80
-set style line 1 lt 1 lc rgb "#DC143C" lw 3 pt 0
-set style line 2 lt 1 lc rgb "#008B8B" lw 3 pt 0
-set style line 3 lt 1 lc rgb "#1E90FF" lw 3 pt 0
-set style line 4 lt 1 lc rgb "#8B008B" lw 3 pt 0
-set style line 11 lt 1 lc rgb "#A00000" lw 3 pt 0 
-set style line 12 lt 1 lc rgb "#00A000" lw 3 pt 0
-set style line 13 lt 1 lc rgb "#5060D0" lw 3 pt 0
-set style line 14 lt 1 lc rgb "#F25900" lw 3 pt 0
+set style line 3 lt 1 lc rgb "#a50f15" lw 5 pt 0
+set style line 2 lt 1 lc rgb "#fb6a4a" lw 5 pt 0
+set style line 1 lt 1 lc rgb "#fcbba1" lw 5 pt 0
+set style line 4 lt 1 lc rgb "#8B008B" lw 5 pt 0
+set style line 13 lt 1 lc rgb "#08519c" lw 5 pt 0 
+set style line 12 lt 1 lc rgb "#6baed6" lw 5 pt 0
+set style line 11 lt 1 lc rgb "#c6dbef" lw 5 pt 0
+set style line 14 lt 1 lc rgb "#F25900" lw 5 pt 0
 set key top left
 set xtics nomirror
 set ytics nomirror'''
@@ -41,7 +41,7 @@ def parse(logfile):
 			result[e[1]].append(float(e[2][:-1]))
 	return result
 
-def gen_dat(logfile,title):
+def gen_dat(logfile,title, wordlist):
 	pl = filepath_gen(title)
 	
 	datfile = pl[1]
@@ -50,8 +50,8 @@ def gen_dat(logfile,title):
 	
 	data = parse(logfile)
 	size = 30
-	label_list = []
-	flag = 1
+	#label_list = []
+	#flag = 1
 	
 
 	
@@ -63,15 +63,17 @@ def gen_dat(logfile,title):
 	for i in range(size):
 		percent = str((float)(i+1)/size)
 		line = ""
-		for k,v in data.iteritems():
+		#for k,v in data.iteritems():
+		for key in wordlist:
 			#v[i] = v[i][:-1]
-			line += percent + '\t' + str(v[i]) + '\t'
-			if(flag):
-				label_list.append(k)
+			n = data[key][i]
+			line += percent + '\t' + str(n) + '\t'
+			#if(flag):
+			#	label_list.append(k)
 		line = line[:-1] + '\n'
 		f.write(line)
 		f.flush
-		flag = 0
+		#flag = 0
 	f.close()
 	#print(sorted(data['fattree4lblog_m']))
 	#print(label_list)	
@@ -87,12 +89,12 @@ set output "''' + pdffile + '''"
 set terminal pdfcairo size 10,5 font "Gill Sans,9" linewidth 2 rounded fontscale 1 
 # default 5 by 3 (inches)
 set logscale x
-plot "'''+ datfile + '''" using 2:1 title "'''+ label_list[0] +'''" with lp ls 13,\
- '' using 4:3 title "'''+ label_list[1]+'''" with lp ls 12,\
- '' using 6:5 title "'''+ label_list[2] + '''" with lp ls 11,\
- '' using 8:7 title "'''+ label_list[3] + '''" with lp ls 14,\
- '' using 10:9 title "'''+ label_list[4] + '''" with lp ls 1,\
- '' using 12:11 title "'''+ label_list[5] + '''" with lp ls 2
+plot "'''+ datfile + '''" using 2:1 title "'''+ wordlist[0] +'''" with lp ls 1,\
+ '' using 4:3 title "'''+ wordlist[1]+'''" with lp ls 2,\
+ '' using 6:5 title "'''+ wordlist[2] + '''" with lp ls 3,\
+ '' using 8:7 title "'''+ wordlist[3] + '''" with lp ls 11,\
+ '' using 10:9 title "'''+ wordlist[4] + '''" with lp ls 12,\
+ '' using 12:11 title "'''+ wordlist[5] + '''" with lp ls 13
 ''')
 
     	pf.flush ()

@@ -42,7 +42,7 @@ def acc_1(db, dbname, logfile):
         	num = int (db.cur.fetchall()[0][0])
         	t =(t2-t1)/num
 
-        	f.write ('----'+dbname +'lblog----' + str(t*1000) + '\n')
+        	f.write ('----'+dbname +'view----' + str(t*1000) + '\n')
         	f.flush ()
 
         	t1 = time.time()
@@ -53,7 +53,7 @@ def acc_1(db, dbname, logfile):
         	num = int (db.cur.fetchall ()[0][0])
         	t = (t2-t1)/num
 
-        	f.write ('----'+ dbname+ 'lblog_m----' + str(t*1000) +'\n')
+        	f.write ('----'+ dbname+ 'table----' + str(t*1000) +'\n')
         	f.flush ()
 	f.close()
 
@@ -77,7 +77,7 @@ def acc_2(db, dbname, logfile):
                 t2 = time.time()
                 t = (t2-t1)
 
-                f.write ('----'+dbname +'max----' + str (t*1000) + '\n')
+                f.write ('----'+dbname +'view----' + str (t*1000) + '\n')
                 f.flush ()
 
                 t1 = time.time()
@@ -86,7 +86,7 @@ def acc_2(db, dbname, logfile):
 
                 t = t2- t1
 
-                f.write ('----'+ dbname+ 'max_m----' + str (t*1000) +'\n')
+                f.write ('----'+ dbname+ 'table----' + str (t*1000) +'\n')
                 f.flush ()
         f.close()
 
@@ -112,7 +112,7 @@ def ovh_1(db, dbname, logfile):
         	t2 = time.time()
         	t = (t2-t1)
 
-        	f.write ('----'+dbname + 'ist_utm----' + str (t*1000) + '\n')
+        	f.write ('----'+dbname + 'ins----' + str (t*1000) + '\n')
         	f.flush ()
 
         	t1 = time.time()
@@ -121,7 +121,7 @@ def ovh_1(db, dbname, logfile):
 
         	t = (t2-t1)
 
-        	f.write ('----'+dbname + 'dlt_utm----' + str (t*1000) +'\n')
+        	f.write ('----'+dbname + 'del----' + str (t*1000) +'\n')
         	f.flush ()
 	f.close()
 
@@ -149,7 +149,7 @@ def ovh_2(db, dbname, logfile):
         	t2 = time.time()
         	t = (t2-t1)
 
-        	f.write ('----'+dbname+ 'dlt_lbtb----' + str (t*1000) + '\n')
+        	f.write ('----'+dbname+ 'del----' + str (t*1000) + '\n')
         	f.flush ()
 
         	t1 = time.time()
@@ -158,7 +158,7 @@ def ovh_2(db, dbname, logfile):
 
         	t = (t2-t1)
 
-        	f.write ('----'+ dbname + 'ist_lbtb----' + str (t*1000) +'\n')
+        	f.write ('----'+ dbname + 'ins----' + str (t*1000) +'\n')
         	f.flush ()
 
 	f.close()
@@ -221,8 +221,13 @@ def main():
 		ovh_1(b, dbname, logfile['ovh1'])
 		ovh_2(b, dbname, logfile['ovh2'])
 	
-	for tp in file_list:
-		gen_dat(logfile[tp], tp)
+	wl = []
+	wl.append(['10view', '100view', '1000view', '10table', '100table', '1000table'])
+	wl.append(['fattree4del','fattree8del','fattree16del', 'fattree4ins','fattree8ins', 'fattree16ins'])
+	for i in range(4):
+		tp = file_list[i]
+		wordlist = wl[i/2]
+		gen_dat(logfile[tp], tp, wordlist)
 		system('gnuplot '+ pltfile[tp])
 
 '''
