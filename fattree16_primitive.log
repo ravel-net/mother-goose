@@ -1,0 +1,124 @@
+#rtm_ins----------------------------------------------
+#round 0
+iiiiiiiiii----rt: route ins----19.467830658
+#pi----rt: route ins----19.467830658
+#round 1
+iiiiiiiiii----rt: route ins----10.2028846741
+#pi----rt: route ins----10.2028846741
+#round 2
+iiiiiiiiii----rt: route ins----8.93402099609
+#pi----rt: route ins----8.93402099609
+#round 3
+iiiiiiiiii----rt: route ins----9.79399681091
+#pi----rt: route ins----9.79399681091
+#round 4
+iiiiiiiiii----rt: route ins----9.31000709534
+#pi----rt: route ins----9.31000709534
+#round 5
+iiiiiiiiii----rt: route ins----11.0809803009
+#pi----rt: route ins----11.0809803009
+#round 6
+iiiiiiiiii----rt: route ins----9.40012931824
+#pi----rt: route ins----9.40012931824
+#round 7
+iiiiiiiiii----rt: route ins----8.39400291443
+#pi----rt: route ins----8.39400291443
+#round 8
+iiiiiiiiii----rt: route ins----9.18984413147
+#pi----rt: route ins----9.18984413147
+#round 9
+iiiiiiiiii----rt: route ins----10.0309848785
+#pi----rt: route ins----10.0309848785
+#primitive: op_lb ----------------------------------------------
+----lb: check max load----0.636100769043
+----lb: re-balance (absolute)----7.7588558197
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----16.5979862213
+----lb+rt: re-balance (absolute)----16.5979862213
+----lb: check max load----0.256061553955
+----lb: re-balance (absolute)----6.58893585205
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.522977829
+----lb+rt: re-balance (absolute)----18.522977829
+----lb: check max load----0.3821849823
+----lb: re-balance (absolute)----5.03706932068
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.7968788147
+----lb+rt: re-balance (absolute)----12.7968788147
+----lb: check max load----0.757932662964
+----lb: re-balance (absolute)----4.2929649353
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.4390335083
+----lb+rt: re-balance (absolute)----15.4390335083
+----lb: check max load----0.452995300293
+----lb: re-balance (absolute)----5.31983375549
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.816947937
+----lb+rt: re-balance (absolute)----18.816947937
+----lb: check max load----0.381946563721
+----lb: re-balance (absolute)----6.49094581604
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.3040885925
+----lb+rt: re-balance (absolute)----15.3040885925
+----lb: check max load----0.280141830444
+----lb: re-balance (absolute)----7.54404067993
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----16.0422325134
+----lb+rt: re-balance (absolute)----16.0422325134
+----lb: check max load----0.399827957153
+----lb: re-balance (absolute)----5.52010536194
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.3429718018
+----lb+rt: re-balance (absolute)----18.3429718018
+----lb: check max load----0.415086746216
+----lb: re-balance (absolute)----5.89799880981
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----17.4570083618
+----lb+rt: re-balance (absolute)----17.4570083618
+----lb: check max load----0.240087509155
+----lb: re-balance (absolute)----5.7201385498
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----13.9331817627
+----lb+rt: re-balance (absolute)----13.9331817627
+----lb: check max load----0.273942947388
+----lb: re-balance (absolute)----4.97913360596
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.3019638062
+----lb+rt: re-balance (absolute)----18.3019638062
+----lb: check max load----0.402927398682
+----lb: re-balance (absolute)----6.31308555603
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.209197998
+----lb+rt: re-balance (absolute)----15.209197998
+----lb: check max load----0.367879867554
+----lb: re-balance (absolute)----5.85007667542
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----16.7460441589
+----lb+rt: re-balance (absolute)----16.7460441589
+----lb: check max load----0.266790390015
+----lb: re-balance (absolute)----5.85889816284
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.6408081055
+----lb+rt: re-balance (absolute)----14.6408081055
+----lb: check max load----1.46484375
+----lb: re-balance (absolute)----5.48386573792
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----12.8657817841
+----lb+rt: re-balance (absolute)----12.8657817841
+----lb: check max load----0.458002090454
+----lb: re-balance (absolute)----6.71100616455
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----21.4078426361
+----lb+rt: re-balance (absolute)----21.4078426361
+----lb: check max load----0.38480758667
+----lb: re-balance (absolute)----4.85897064209
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----17.1940326691
+----lb+rt: re-balance (absolute)----17.1940326691
+----lb: check max load----0.352144241333
+----lb: re-balance (absolute)----5.10191917419
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----14.3187046051
+----lb+rt: re-balance (absolute)----14.3187046051
+----lb: check max load----0.402927398682
+----lb: re-balance (absolute)----9.3309879303
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----18.3460712433
+----lb+rt: re-balance (absolute)----18.3460712433
+----lb: check max load----0.366926193237
+----lb: re-balance (absolute)----6.63304328918
+ddddddddddiiiiiiiiii----lb+rt: re-balance (per rule)----15.3861045837
+----lb+rt: re-balance (absolute)----15.3861045837
+#primitive: op_acl ----------------------------------------------
+----acl: check violation----0.437021255493
+----acl: fix violation----1.59597396851
+dddddddddd----acl+rt: fix violation (per rule)----4.63581085205
+----acl+rt: fix violation (absolute)----4.63581085205
+----acl: check violation----0.54407119751
+----acl: fix violation----1.75285339355
+dddddddddd----acl+rt: fix violation (per rule)----4.95195388794
+----acl+rt: fix violation (absolute)----4.95195388794
+iiiiiiiiii#primitive: routing_ins_acl_lb ----------------------------------------------
+----acl+lb+rt: route ins----24.5249271393
+iiiiiiiiii----acl+lb+rt: route ins----17.8651809692
