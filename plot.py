@@ -194,9 +194,10 @@ def profile_dat (logfile, rounds):
     def normalize (datfile):
         temp = open (datfile+'temp', "wr")
         f = open (datfile, "r")
+        # print 'hello'
+        # print datfile
         for e in f.readlines ():
             items = e.split ('|')
-
             if datfile[-5:] == 'i.dat':
                 num = float (items[3])
                 # print "i: " + str (num) 
@@ -204,13 +205,13 @@ def profile_dat (logfile, rounds):
                     pass
                 else: 
                     temp.write (items[0] + ' | ')
-                    temp.write (str (float (items[1])/num) + ' | ')
+                    temp.write (str (float (items[1])/(2*num)) + ' | ')
                     temp.write (items[2] + ' | 1 | ')
-                    temp.write (str (float (items[4]) /num)  + ' | ')
+                    temp.write (str (float (items[4]) /(2*num))  + ' | ')
                     temp.write (items[5] + '(-port) | ')
-                    temp.write (str (float (items[6]) -float (items[4]) /num)  + ' | ')
+                    temp.write (str (float (items[6]) -float (items[4]) /(2*num))  + ' | ')
                     temp.write (items[7] + '(-cf,-pgr) | ')
-                    temp.write (str ((float (items[8])  - float (items[6]) - float (items[1])) /num) + '\n')
+                    temp.write (str ((float (items[8])  - float (items[6]) - float (items[1])) /(2*num)) + '\n')
 
             elif datfile[-5:] == 'd.dat':
                 num = float (items[1])
@@ -219,11 +220,11 @@ def profile_dat (logfile, rounds):
                     pass
                 else: 
                     temp.write (items[0] + ' | 1 | ')
-                    temp.write (str (float (items[2]) /num)  + ' | ')
+                    temp.write (str (float (items[2]) /(2*num))  + ' | ')
                     temp.write (items[3] + '(-port) | ')
-                    temp.write (str (float (items[4]) - float (items[2]) /num)  + ' | ')
+                    temp.write (str (float (items[4]) - float (items[2]) /(2*num))  + ' | ')
                     temp.write (items[5] + '(-cf) | ')
-                    temp.write (str ((float (items[6]) - float (items[4])) /num) + '\n')
+                    temp.write (str ((float (items[6]) - float (items[4])) /(2*num)) + '\n')
 
         os.system ("mv " + datfile + 'temp ' + datfile)
     

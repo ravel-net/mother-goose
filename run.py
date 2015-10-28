@@ -50,7 +50,7 @@ def scenario(rounds, t, s):
     if t == 'isp' and s == '3sizes':
         l = ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)]
         p = rPlot_primitive ('isp_3sizes')
-        p.key_list.remove ('rt: route ins')
+        # p.key_list.remove ('rt: route ins')
 
     elif t == 'isp' and s == '3ribs':
         l = ['isp2914_' + str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)]
@@ -89,21 +89,29 @@ if __name__ == '__main__':
         m = raw_input ("fat, isp, profile, batch, test, mininet, or exit? (f, i, p, b, t, m, e) \n")
 
         if m == 'f':
-
-            scenario (100, 'fat', 'primitive')
-            scenario (100, 'fat', 'tenant')
+            b = Batch_fattree ('fattree16', 5)
+            # scenario (1000, 'fat', 'primitive')
+            # scenario (1000, 'fat', 'tenant')
+            print "hey"
 
         elif m == 'i':
 
             t1 = time.time ()
-            # scenario (100, 'isp', '3sizes')
-            scenario (100, 'isp', '3ribs')
+            scenario (100, 'isp', '3sizes')
+            # scenario (100, 'isp', '3ribs')
             t2 = time.time ()
             print ("time consumed: " + str ((t2-t1)))
 
         elif m == 'p':
 
-            profile (30)
+            rounds = 30
+
+            profile (rounds)
+
+            l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
+
+            for d in l:
+                profile_dat ('/media/sf_share/ravel_plot/profile/log/' + d + '.log', rounds)
 
         elif m == 'b':
 
@@ -118,10 +126,11 @@ if __name__ == '__main__':
         elif m == 't':
  
             rounds = 30
+
             l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
 
             for d in l:
-                profile_dat ('/media/sf_share/ravel_plot/profile/log/' + d + '.log', 30)
+                profile_dat ('/media/sf_share/ravel_plot/profile/log/' + d + '.log', rounds)
 
         elif m == 'e':
             break
