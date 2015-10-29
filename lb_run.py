@@ -221,13 +221,9 @@ def main():
 		ovh_1(b, dbname, logfile['ovh1'])
 		ovh_2(b, dbname, logfile['ovh2'])
 	
-	wl = []
-	wl.append(['10view', '100view', '1000view', '10table', '100table', '1000table'])
-	wl.append(['fattree4del','fattree8del','fattree16del', 'fattree4ins','fattree8ins', 'fattree16ins'])
 	for i in range(4):
 		tp = file_list[i]
-		wordlist = wl[i/2]
-		gen_dat(logfile[tp], tp, wordlist)
+		gen_dat(logfile[tp], tp)
 		system('gnuplot '+ pltfile[tp])
 
 '''
