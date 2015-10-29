@@ -22,9 +22,6 @@ $$
 if(TD["event"] == "INSERT"):
 	new_host2 = TD["new"]["host2"]
 	m_row = plpy.execute("SELECT * FROM lb_tb WHERE sid ="+ str(new_host2))
-	#if(m_row.nrows() ==0):
-		#plpy.execute("INSERT INTO lb_m VALUES ("+ str(new_host2)+ ", 1);")
-	#else:
 	if(m_row.nrows() != 0):
 		plpy.execute("UPDATE lb_m SET load = load + 1 WHERE sid = "+ str(new_host2) + ";")
 
@@ -32,7 +29,16 @@ if(TD["event"] == "DELETE"):
 	old_host2 = TD["old"]["host2"]
 	plpy.execute("UPDATE lb_m SET load = load - 1 WHERE sid = "+ str(old_host2) + ";")
 	#plpy.execute("delete from lb_m where load = 0;")
-	
+
+if(TD["event"] == "UPDATE"):
+	new_host2 = TD["new"]["host2"]
+	old_host2 = TD["old"]["host2"]
+	if (new_host2 != old_host2):
+		plpy.execute("UPDATE lb_m SET load = load - 1 WHERE sid = "+ str(old_host2) + ";")
+		m_row = plpy.execute("SELECT * FROM lb_tb WHERE sid ="+ str(new_host2))
+        	if(m_row.nrows() != 0):
+                	plpy.execute("UPDATE lb_m SET load = load + 1 WHERE sid = "+ str(new_host2) + ";")
+		
 
 return None;
 $$
@@ -41,7 +47,7 @@ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 
 CREATE TRIGGER utm_1
-	BEFORE INSERT OR DELETE ON utm
+	BEFORE INSERT OR DELETE OR UPDATE ON utm
 	FOR EACH ROW
 EXECUTE PROCEDURE r_1();
 
@@ -58,11 +64,21 @@ if(TD["event"] == "INSERT"):
 	res = plpy.execute("SELECT * FROM utm WHERE host2 = "+ str(new_sid)+ ";")
 	count = res.nrows()
 	plpy.execute("INSERT INTO lb_m VALUES(" + str(new_sid)+ ", " + str(count)+ ");")
+
+if(TD["event"] == "UPDATE"):
+	new_sid = TD["new"]["sid"]
+	old_sid = TD["old"]["sid"]
+	if(new_sid != old_sid):
+		plpy.execute("DELETE FROM lb_m WHERE sid ="+ str(old_sid)+ ";")
+		res = plpy.execute("SELECT * FROM utm WHERE host2 = "+ str(new_sid)+ ";")
+        	count = res.nrows()
+        	plpy.execute("INSERT INTO lb_m VALUES(" + str(new_sid)+ ", " + str(count)+ ");")
+
 $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 CREATE TRIGGER lb_tb_1
-	BEFORE INSERT OR DELETE ON lb_tb
+	BEFORE INSERT OR DELETE OR UPDATE ON lb_tb
 	FOR EACH ROW
 EXECUTE PROCEDURE r_2();
 
