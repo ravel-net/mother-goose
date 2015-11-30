@@ -1,0 +1,42 @@
+#!/bin/bash
+if [ $# != 2 ]; then
+    echo "Ravel: please enter a table name, a limit number"
+    exit 1
+fi
+
+DBNAME=toy
+# SQL='SELECT * FROM tp limit 10;'
+SQL='SELECT * FROM '
+SQL+=$1
+SQL+=' limit '
+# SQL+=' limit 10;'
+SQL+=$2
+SQL+=';'
+
+watch -c -n 2 --no-title "echo '$DBNAME: $1'; psql -d $DBNAME -c '$SQL'"
+
+# watch -c -n 2 "echo '------tp (topology)------'; psql -d fattree4 -c 'SELECT * FROM tp limit 10'"
+
+# while true
+# do
+#         clear
+# 	echo "-----base table tp (topology)-----"
+#         (psql -d fattree4 -c "SELECT * FROM tp limit 2;")
+#         sleep 1
+# done
+
+# set -e
+# set -u
+
+# psql \
+#     # -X \
+#     # -U user \
+#     -d $DBHOST \
+#     -f /path/to/sql/file.sql \
+#     --echo-all \
+#     --set AUTOCOMMIT=off \
+#     --set ON_ERROR_STOP=on \
+#     --set TSUFF=$TSUFF \
+#     --set QTSTUFF=\'$TSUFF\' \
+#     mydatabase
+

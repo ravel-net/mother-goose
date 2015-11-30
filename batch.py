@@ -6,22 +6,60 @@ class Batch:
     logfile = os.getcwd ()+'/log.txt'
     username = 'mininet'
 
-    def __init__(self, dbname, rounds):
-        self.rounds = rounds
-        self.profile = False 
+    def create_db(self, sql_script):
+        username = 'mininet'
 
-        self.conn = psycopg2.connect(database= dbname, user= Batch.username)
+        conn = psycopg2.connect(database= 'postgres', user= 'mininet')
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor()
+
+        cur.execute ("SELECT datname FROM pg_database WHERE datistemplate = false;")
+        c = cur.fetchall ()
+        dblist = [c[i][0] for i in range (len (c))]
+        if self.dbname not in dblist:
+            self.database_new = 1
+
+            cur.execute ("CREATE DATABASE " + self.dbname + ";")
+            print "--------------------> create_db " + self.dbname
+            add_pgrouting_plpy_plsh_extension (self.dbname, username)
+
+        else:
+            self.database_new = 0
+            print "database exists"
+        if conn: conn.close()
+        
+    def connect(self):        
+        self.conn = psycopg2.connect(database= self.dbname, user= Batch.username)
         self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        print "connect"
 
+    def load_schema(self, sql_script):
+        dbscript  = open (sql_script,'r').read()
+        self.cur.execute(dbscript)
+
+    # def load_topo (self, topology):
+
+    #     if topology == 'toy':
+    #         load_topo4switch ('toy', Batch.username)
+    #     elif topology == 'fat' and self.dbname[0:7] == 'fattree': 
+    #         k_size = int (self.dbname[8:]) 
+    #         init_fattree (k_size, self.dbname, Batch.username)
+    #     print "--------------------> load topology"
+        
+        
+    def __init__(self, dbname, rounds, sql_script, topology):
+                        
+        self.rounds = rounds
         self.max_fid = 0
 
         open(Batch.logfile, 'w').close()
         self.f = open(Batch.logfile, 'a')
         self.logdest = dbname + '.log'
 
+    def fetch(self):
+        
         self.cur.execute ("SELECT * FROM uhosts;")
-
         cs = self.cur.fetchall ()
         self.hids = [h['hid'] for h in cs]
 
@@ -43,6 +81,31 @@ class Batch:
         self.cur.execute ("SELECT sid,nid FROM tp where ishost = 0;")
         cs = self.cur.fetchall ()
         self.links = [[h['sid'], h['nid']] for h in cs]
+
+        print "fetch: update hids, switch_size ..."
+        
+    def drop(self):
+
+        conn = psycopg2.connect(database= 'postgres', user= 'mininet')
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
+        cur = conn.cursor()
+
+        cur.execute ("SELECT datname FROM pg_database WHERE datistemplate = false;")
+        c = cur.fetchall ()
+        dblist = [c[i][0] for i in range (len (c))]
+        if self.dbname in dblist:
+            cur.execute ("DROP DATABASE " + self.dbname + ";")
+            self.database_exists = 0
+
+        print "--------------------> drop database " + self.dbname
+
+        if conn: conn.close()
+
+    # def create_db (self,dbname, username):
+
+    #     if dbname not in dblist:
+    #         cur.execute ("CREATE DATABASE " + dbname + ";")
+    #         self.database_new = 1
 
     def add_profile_schema (self):
         cur = self.cur
@@ -132,6 +195,10 @@ class Batch:
         if cs[0]['max'] > self.max_fid:
             self.max_fid = cs[0]['max']
 
+        self.cur.execute ("SELECT max(fid) FROM tm;")
+        cs = self.cur.fetchall ()
+        if cs[0]['max'] > self.max_fid:
+            self.max_fid = cs[0]['max']            
 
     def rtm_ins (self, rounds):
         self.f.write ("#rtm_ins----------------------------------------------\n")

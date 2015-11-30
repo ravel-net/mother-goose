@@ -12,7 +12,7 @@ from math import log,exp
 username = 'mininet'
 
 path = '/tmp/'
-db_list = ['fattree4','fattree8', 'fattree16']
+db_list = ['fattree16','fattree32', 'fattree64']
 
 '''
 this function runs overhead on utm

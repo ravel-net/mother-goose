@@ -9,6 +9,9 @@ import datetime
 from igraph import *
 import numpy as np # np.random.choice([0,1,2,3,4], 3, p=[0.1, 0, 0.3, 0.6, 0]), generate an array of 3 items from a list with given probability
 
+import rlcompleter, readline
+readline.parse_and_bind('tab: complete')
+
 def add_tenant_schema (cur):
     dbscript  = open ('/home/mininet/ravel/sql_scripts/tenant.sql','r').read()
     cur.execute(dbscript)

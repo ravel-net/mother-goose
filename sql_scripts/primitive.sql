@@ -52,15 +52,27 @@ CREATE UNLOGGED TABLE pox_hosts (
 ------------------------------------------------------------
 ---------- base tables 
 
+-- DROP TABLE IF EXISTS tp CASCADE;
+-- CREATE UNLOGGED TABLE tp (
+--        sid	integer,
+--        nid	integer,
+--        ishost   integer,
+--        isactive integer,
+--        PRIMARY KEY (sid, nid)
+-- );
+-- CREATE INDEX ON tp(sid);
+
 DROP TABLE IF EXISTS tp CASCADE;
 CREATE UNLOGGED TABLE tp (
        sid	integer,
        nid	integer,
        ishost   integer,
        isactive integer,
+       bw	integer,
        PRIMARY KEY (sid, nid)
 );
-CREATE INDEX ON tp(sid);
+CREATE INDEX ON tp(sid, nid);
+
 
 CREATE TRIGGER tp_up_trigger
      AFTER UPDATE ON tp
@@ -106,15 +118,29 @@ CREATE UNLOGGED TABLE cf (
 );
 CREATE INDEX ON cf(fid,sid);
 
+-- DROP TABLE IF EXISTS tm CASCADE;
+-- CREATE UNLOGGED TABLE tm (
+--        fid      integer,
+--        src	integer,
+--        dst	integer,
+--        vol	integer,
+--        PRIMARY KEY (fid)
+-- );
+-- CREATE INDEX ON tm (fid,src);
+
 DROP TABLE IF EXISTS tm CASCADE;
 CREATE UNLOGGED TABLE tm (
        fid      integer,
        src	integer,
        dst	integer,
        vol	integer,
+       FW	integer,
+       LB	integer,
        PRIMARY KEY (fid)
 );
-CREATE INDEX ON tm (fid,src);
+CREATE INDEX ON tm (fid,src,dst);
+
+
 
 DROP TABLE IF EXISTS tm_delta CASCADE;
 CREATE UNLOGGED TABLE tm_delta (
@@ -124,7 +150,7 @@ CREATE UNLOGGED TABLE tm_delta (
        vol	integer,
        isadd	integer
 );
-CREATE INDEX ON tm (fid,src);
+CREATE INDEX ON tm_delta (fid,src);
 
 CREATE OR REPLACE RULE tm_ins AS
        ON INSERT TO tm

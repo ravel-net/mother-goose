@@ -16,7 +16,7 @@ change db_list to experiment on different fattree size
 change size_list to experiment on different policy size
 '''
 username = 'mininet'
-db_list = ['fattree4','fattree8', 'fattree16']
+db_list = ['fattree16','fattree32', 'fattree64']
 file_list = ['acc', 'max', 'ovh1', 'ovh2']
 size_list = [10, 100, 1000]
 path = "/tmp/"

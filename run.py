@@ -4,6 +4,7 @@ execfile("batch.py")
 execfile("batch_profile.py")
 execfile("batch_fattree.py")
 execfile("batch_isp.py")
+# execfile ("batch_example.py")
 
 import libRavel
 import batch
@@ -90,18 +91,11 @@ if __name__ == '__main__':
 
         if m == 'f':
             b = Batch_fattree ('fattree16', 5)
-            # scenario (1000, 'fat', 'primitive')
-            # scenario (1000, 'fat', 'tenant')
-            print "hey"
+            b.rtm_ins(10)
 
         elif m == 'i':
-
-            t1 = time.time ()
-            scenario (100, 'isp', '3sizes')
-            # scenario (100, 'isp', '3ribs')
-            t2 = time.time ()
-            print ("time consumed: " + str ((t2-t1)))
-
+            print "hello"
+            
         elif m == 'p':
 
             rounds = 30
@@ -117,10 +111,8 @@ if __name__ == '__main__':
 
             scenario (100, 'fat', 'primitive')
             scenario (100, 'fat', 'tenant')
-
             scenario (100, 'isp', '3sizes')
             scenario (100, 'isp', '3ribs')
-
             profile (4)
 
         elif m == 't':
@@ -135,38 +127,3 @@ if __name__ == '__main__':
         elif m == 'e':
             break
 
-
-            # primitive = rPlot_primitive ('fattree')
-            # for db in l1:
-            #     t2 = Batch_fattree (db, 50)
-            #     t2.primitive ()
-            #     t2.close ()
-            #     primitive.add_log (t2.logdest)
-            # primitive.gen_dat ()
-            # primitive.gen_plt ()
-
-            # tenant = rPlot_tenant ('fattree')
-            # for db in l1:
-            #     t3 = Batch_fattree (db, 50)
-            #     t3.tenant ()
-            #     t3.close ()
-            #     tenant.add_log (t3.logdest)
-            # tenant.gen_dat ()
-            # tenant.gen_plt ()
-
-            # isp = rPlot_primitive ('isp')
-            # for db in l4:
-            #     t4 = Batch_isp (db, 4)
-            #     t4.primitive ()
-            #     t4.close ()
-            #     isp.add_log (t4.logdest)
-            # isp.gen_dat ()
-            # isp.gen_plt ()
-
-            # for d in l1[0]:
-            #     b = Batch_fattree (d, 4)
-            #     b.add_profile_schema ()
-            #     b.op_profile ()
-            #     b.close ()
-            # p.add_log (b.logdest)
-            # print p.log_file_list
