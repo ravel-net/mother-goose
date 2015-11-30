@@ -2,6 +2,24 @@
 -- merlin, kinetic, PGA
 ----------------------------------------------------------------------
 
+DROP TABLE IF EXISTS Merlin_policy CASCADE;
+CREATE UNLOGGED TABLE MERLIN_policy (
+       fid	      integer,
+       rate 	      integer,
+       PRIMARY key (fid)		
+);
+
+CREATE OR REPLACE VIEW MERLIN_violation AS (
+       SELECT tm.fid, rate AS req, vol AS asgn
+       FROM tm, Merlin_policy       
+       WHERE tm.fid = Merlin_policy.fid AND rate > vol
+);
+
+CREATE OR REPLACE RULE Merlin_repair AS
+       ON DELETE TO Merlin_violation
+       DO INSTEAD
+              UPDATE tm SET vol = OLD.req WHERE fid = OLD.fid;
+
 ----------------------------------------------------------------------
 -- PGA (endpoints, service chain)
 ----------------------------------------------------------------------
@@ -23,14 +41,18 @@ CREATE UNLOGGED TABLE PGA_group (
 );
 CREATE INDEX ON PGA_group (gid);
 
+DROP VIEW IF EXISTS PGA CASCADE;
 CREATE OR REPLACE VIEW PGA AS(
-       WITH TMP AS (
-       	    SELECT gid1 AS gid, sid_array AS sid_array2, MB
-	    FROM PGA_policy, PGA_group
-	    WHERE gid2 = gid
-       )
-       SELECT unnest(sid_array)"sid1" , unnest(sid_array2)"sid2", MB
-       FROM TMP, PGA_group WHERE TMP.gid = PGA_group.gid
+       WITH PGA_group_policy AS (
+       	    SELECT p1.sid_array AS sa1,
+       	      	   p2.sid_array AS sa2, MB
+            FROM PGA_group p1, PGA_group p2, PGA_policy
+       	    WHERE p1.gid = gid1 AND p2.gid = gid2),
+       PGA_group_policy2 AS (
+            SELECT unnest (sa1)"sid1", sa2, MB
+	    FROM PGA_group_policy)
+       SELECT sid1, unnest (sa2)"sid2", MB
+       FROM  PGA_group_policy2
 );
 
 CREATE OR REPLACE VIEW PGA_violation AS (
@@ -39,6 +61,14 @@ CREATE OR REPLACE VIEW PGA_violation AS (
        WHERE src = sid1 AND dst = sid2 AND
        ((MB = 'FW' AND FW=0) OR (MB='LB' AND LB=0)) 
 );
+
+CREATE OR REPLACE RULE PGA_repair AS
+       ON DELETE TO PGA_violation
+       DO INSTEAD
+       (
+       UPDATE tm SET FW = 1 WHERE fid = OLD.fid AND OLD.MB = 'FW';
+       UPDATE tm SET LB = 1 WHERE fid = OLD.fid AND OLD.MB = 'LB';
+       );
 
 ----------------------------------------------------------------------
 -- kinetic (stateful firewall)
@@ -71,10 +101,17 @@ CREATE OR REPLACE RULE FW2 AS
        DO ALSO 
        	  DELETE FROM FW_policy_acl WHERE end2 = OLD.src AND end1 = OLD.dst;
 
--- CREATE OR REPLACE RULE acl2utm AS
---        ON UPDATE TO acl
---        DO INSTEAD
---        	  DELETE FROM utm WHERE host1 = NEW.end1 AND host2 = NEW.end2;
+CREATE OR REPLACE VIEW FW_violation AS (
+       SELECT fid
+       FROM tm, FW_policy_acl     
+       WHERE FW = 1 AND 
+       	     (src, dst) NOT IN (SELECT end1, end2 FROM FW_policy_acl)
+);
+
+CREATE OR REPLACE RULE FW_repair AS
+       ON DELETE TO FW_violation
+       DO INSTEAD
+       	  DELETE FROM tm WHERE fid = OLD.fid;
 
 ----------------------------------------------------------------------
 -- Merlin
@@ -129,3 +166,32 @@ INSERT INTO FW_policy_user VALUES (5),(8);
 --        FROM acl_policy, tm
 --        WHERE  src = end1 AND dst = end2 and allow = 0
 -- );
+
+----------------------------------------------------------------------
+-- orchestrating Merlin, Kinetic, PGA
+----------------------------------------------------------------------
+
+
+DROP TABLE IF EXISTS p_PGA CASCADE;
+CREATE UNLOGGED TABLE p_PGA (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+
+CREATE OR REPLACE RULE PGA_constraint AS
+       ON INSERT TO p_PGA
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           UPDATE lb SET load = 2 WHERE load > 2;
+	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+
+DROP TABLE IF EXISTS p_FW CASCADE;
+CREATE UNLOGGED TABLE p_FW (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);

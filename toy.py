@@ -33,7 +33,7 @@ class Toy (Batch):
         Batch.update_max_fid(self)
 
         self.cur.execute ("INSERT INTO tm(fid,src,dst,vol,FW,LB) VALUES (%s,%s,%s,%s,%s,%s);", 
-                          ([self.max_fid +1, src, dst, 1, 0, 0]))
+                          ([self.max_fid +1, src, dst, 0, 0, 0]))
 
     def del_flow (self, fid):
         self.cur.execute ("DELETE FROM tm WHERE fid = %s;", ([fid]))
