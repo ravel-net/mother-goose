@@ -6,12 +6,12 @@ DROP TABLE IF EXISTS Merlin_policy CASCADE;
 CREATE UNLOGGED TABLE MERLIN_policy (
        fid	      integer,
        rate 	      integer,
-       PRIMARY key (fid)		
+       PRIMARY key (fid)
 );
 
 CREATE OR REPLACE VIEW MERLIN_violation AS (
        SELECT tm.fid, rate AS req, vol AS asgn
-       FROM tm, Merlin_policy       
+       FROM tm, Merlin_policy
        WHERE tm.fid = Merlin_policy.fid AND rate > vol
 );
 
@@ -143,8 +143,6 @@ VALUES
 
 INSERT INTO FW_policy_user VALUES (5),(8);
 
-
-
 -- CREATE OR REPLACE FUNCTION protocol_fun() RETURNS TRIGGER AS
 -- $$
 -- plpy.notice ("engage ravel protocol")
@@ -171,7 +169,6 @@ INSERT INTO FW_policy_user VALUES (5),(8);
 -- orchestrating Merlin, Kinetic, PGA
 ----------------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS p_PGA CASCADE;
 CREATE UNLOGGED TABLE p_PGA (
        counts  	integer,
@@ -179,13 +176,12 @@ CREATE UNLOGGED TABLE p_PGA (
        PRIMARY key (counts)
 );
 
-
-CREATE OR REPLACE RULE PGA_constraint AS
+CREATE OR REPLACE RULE run_PGA AS
        ON INSERT TO p_PGA
        WHERE (NEW.status = 'on')
        DO ALSO (
-           UPDATE lb SET load = 2 WHERE load > 2;
-	   UPDATE p1 SET status = 'off' WHERE counts = NEW.counts;
+           DELETE FROM PGA_violation;
+	   UPDATE p_PGA SET status = 'off' WHERE counts = NEW.counts;
 	  );
 
 
@@ -195,3 +191,49 @@ CREATE UNLOGGED TABLE p_FW (
        status 	text,
        PRIMARY key (counts)
 );
+
+CREATE OR REPLACE RULE run_FW AS
+       ON INSERT TO p_FW
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           DELETE FROM FW_violation;
+	   UPDATE p_FW SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+
+DROP TABLE IF EXISTS p_Merlin CASCADE;
+CREATE UNLOGGED TABLE p_Merlin (
+       counts  	integer,
+       status 	text,
+       PRIMARY key (counts)
+);
+
+CREATE OR REPLACE RULE run_Merlin AS
+       ON INSERT TO p_Merlin
+       WHERE (NEW.status = 'on')
+       DO ALSO (
+           DELETE FROM FW_violation;
+	   UPDATE p_Merlin SET status = 'off' WHERE counts = NEW.counts;
+	  );
+
+----------------------------------------------------------------------
+-- implement a total order
+----------------------------------------------------------------------
+
+CREATE OR REPLACE RULE PGA2FW AS
+       ON UPDATE TO p_PGA
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO p_FW values (NEW.counts, 'on');
+
+CREATE OR REPLACE RULE FW2Merlin AS
+       ON UPDATE TO p_FW
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO p_Merlin values (NEW.counts, 'on');
+
+CREATE OR REPLACE RULE Merlin2c AS
+       ON UPDATE TO p_Merlin
+       WHERE (NEW.status = 'off')
+       DO ALSO
+           INSERT INTO clock values (NEW.counts);

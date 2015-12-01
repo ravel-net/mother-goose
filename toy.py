@@ -21,6 +21,11 @@ class Toy (Batch):
 
         self.profile = False
 
+    def protocol (self):
+        
+        ct = self.cur.execute ("select max (counts) from clock;")[0]['max']
+        self.cur.execute ("INSERT INTO p_PGA VALUES (" + str (ct+1) + ", 'on');")
+
     def fetch (self):
         Batch.fetch (self)
 
