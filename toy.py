@@ -23,7 +23,9 @@ class Toy (Batch):
 
     def protocol (self):
         
-        ct = self.cur.execute ("select max (counts) from clock;")[0]['max']
+        self.cur.execute ("select max (counts) from clock;")
+        ct = self.cur.fetchall () [0]['max']
+        print 'clock tick now: ' + str (ct) 
         self.cur.execute ("INSERT INTO p_PGA VALUES (" + str (ct+1) + ", 'on');")
 
     def fetch (self):
@@ -31,7 +33,7 @@ class Toy (Batch):
 
         self.cur.execute ("SELECT * FROM tm;")
         cs = self.cur.fetchall ()
-        self.tm = [[h['fid'], h['src'], h['dst'], h['vol'], h['FW'], h['LB']] for h in cs]
+        self.tm = [[h['fid'], h['src'], h['dst'], h['vol'], h['fw'], h['lb']] for h in cs]
 
         
     def add_flow (self, src, dst):
@@ -40,8 +42,16 @@ class Toy (Batch):
         self.cur.execute ("INSERT INTO tm(fid,src,dst,vol,FW,LB) VALUES (%s,%s,%s,%s,%s,%s);", 
                           ([self.max_fid +1, src, dst, 0, 0, 0]))
 
+    def add_flow_orchestrated (self, src, dst):
+        self.add_flow (src, dst)
+        self.protocol ()
+        
     def del_flow (self, fid):
         self.cur.execute ("DELETE FROM tm WHERE fid = %s;", ([fid]))
+
+    def del_flow_orchestrated (self, fid):
+        self.del_flow (fid)
+        self.protocol ()
 
     def load_topo (self):
         self.cur.execute ("""
@@ -50,13 +60,24 @@ class Toy (Batch):
             TRUNCATE TABLE tm cascade;
             INSERT INTO switches(sid) VALUES (1),(2),(3),(4);
             INSERT INTO hosts(hid) VALUES (5),(6),(7),(8);
-            INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,5,1,1), (2,6,1,1), (3,7,1,1), (4,8,1,1);
-            INSERT INTO tp(sid, nid, ishost, isactive) VALUES (1,2,0,1), (2,3,0,1), (3,4,0,1),(4,1,0,1);
+            INSERT INTO tp(sid, nid, ishost, isactive, bw) VALUES (1,5,1,1,5), (2,6,1,1,5), (3,7,1,1,5), (4,8,1,1,5);
+            INSERT INTO tp(sid, nid, ishost, isactive, bw) VALUES (1,2,0,1,5), (2,3,0,1,5), (3,4,0,1,5),(4,1,0,1,5);
     """)
 
-        self.cur.execute ("UPDATE tp SET bw = 5;")
+        # self.cur.execute ("UPDATE tp SET bw = 5;")
+        
+        self.database_new = 0
+        print "--------------------> load_topo4switch successful"
 
-        # self.cur.
+    def load_sig_example_schema (self):
+        sql_script = '/home/mininet/ravel/sql_scripts/sigcomm_example.sql'
+        Batch.load_schema(self, sql_script)
+
+    def close (self):
+        Batch.close (self)
+
+
+# self.cur.
 #         self.cur.execute ("""
 # INSERT INTO PGA_policy (gid1, gid2, MB)
 # VALUES (1,2,'FW'),
@@ -70,14 +91,3 @@ class Toy (Batch):
 # 	(3, ARRAY[6,7]),
 # 	(4, ARRAY[5,8]);
 #         """)
-        
-        self.database_new = 0
-        print "--------------------> load_topo4switch successful"
-
-    def load_sig_example_schema (self):
-        sql_script = '/home/mininet/ravel/sql_scripts/sigcomm_example.sql'
-        Batch.load_schema(self, sql_script)
-
-    def close (self):
-        Batch.close (self)
-

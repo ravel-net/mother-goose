@@ -34,7 +34,7 @@ l4 = ['isp2914_10', 'isp4755_10', 'isp7018_10']
 
 
 def profile (rounds):
-        l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'fattree32', 'fattree64']
+        l = ['isp2914_'+str (rounds), 'isp2914_' + str (rounds*10), 'isp2914_' + str (rounds*100)] + ['isp4755_' + str (rounds), 'isp3356_' + str (rounds), 'isp7018_' + str (rounds)] + ['fattree16', 'Fattree32', 'fattree64']
 
         for d in l:
             if d[:3] == 'isp':
