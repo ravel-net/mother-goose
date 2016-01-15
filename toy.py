@@ -35,6 +35,18 @@ class Toy (Batch):
         cs = self.cur.fetchall ()
         self.tm = [[h['fid'], h['src'], h['dst'], h['vol'], h['fw'], h['lb']] for h in cs]
 
+    def mininet (self):
+        create_mininet_topo (self.dbname, self.username)
+
+        filename = os.getcwd () + '/topo/'+ self.dbname + '_dtp.py'
+
+        # still need to add the right SQL script (triggers that actually instructs the network)
+        
+        while True:
+            cmd = 'please run (press y to not repeat the message)\n' + 'sudo mn --custom '+ filename + ' --topo mytopo --mac --switch ovsk --controller remote\n'
+            n = raw_input(cmd)
+            if n.strip () == 'y':
+                break
         
     def add_flow (self, src, dst):
         Batch.update_max_fid(self)
