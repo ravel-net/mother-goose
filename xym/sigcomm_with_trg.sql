@@ -42,20 +42,6 @@ CREATE UNLOGGED TABLE PGA_group (
 CREATE INDEX ON PGA_group (gid);
 
 
--- (PGA) configuration
-INSERT INTO PGA_policy (gid1, gid2, MB)
-VALUES (1,2,'FW'),
-       (4,3,'LB');
-
-INSERT INTO PGA_group
-       (gid, sid_array)
-VALUES
-        (1, ARRAY[5]),
-        (2, ARRAY[6]),
-        (3, ARRAY[6,7]),
-        (4, ARRAY[5,8]);
-
-
 ---delete later---
 DROP VIEW IF EXISTS PGA_V CASCADE;
 CREATE OR REPLACE VIEW PGA_V AS
@@ -153,9 +139,9 @@ if(TD["event"] == "INSERT"):
                         plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(new_sa)+ ", ARRAY"+ str(r_other[0]["sid_array"])+ ", '"+ str(r_gid1[0]["mb"])+ "')")
         r_gid2 = plpy.execute("SELECT * FROM PGA_policy WHERE gid2 = "+ str(new_gid))
         if(r_gid2.nrows()!=0):
-                r_other2 = plpy.execute("SELECT * FROM PGA_group WHERE gid = "+ str(r_gid1[0]["gid1"]))
+                r_other2 = plpy.execute("SELECT * FROM PGA_group WHERE gid = "+ str(r_gid2[0]["gid1"]))
                 if(r_other2.nrows()!= 0):
-                        plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(new_sa)+ ", ARRAY"+ str(r_other2[0]["sid_array"])+ ", '"+ str(r_gid2[0]["MB"])+ "')")
+                        plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(r_other2[0]["sid_array"]) + ", ARRAY"+ str(new_sa)+ ", '"+ str(r_gid2[0]["mb"])+ "')")
 
 if(TD["event"] == "DELETE"):
         old_gid = TD["old"]["gid"]
@@ -174,9 +160,9 @@ if(TD["event"] == "UPDATE"):
                         plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(new_sa)+ ", ARRAY"+ str(r_other[0]["sid_array"])+ ", '"+ str(r_gid1[0]["mb"])+ "')")
         r_gid2 = plpy.execute("SELECT * FROM PGA_policy WHERE gid2 = "+ str(new_gid))
         if(r_gid2.nrows()!=0):
-                r_other2 = plpy.execute("SELECT * FROM PGA_group WHERE gid = "+ str(r_gid1[0]["gid1"]))
+                r_other2 = plpy.execute("SELECT * FROM PGA_group WHERE gid = "+ str(r_gid2[0]["gid1"]))
                 if(r_other2.nrows()!= 0):
-                        plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(new_sa)+ ", ARRAY"+ str(r_other2[0]["sid_array"])+ ", '"+ str(r_gid2[0]["MB"])+ "')")
+                        plpy.execute("INSERT INTO PGA_t VALUES(ARRAY"+ str(new_sa)+ ", ARRAY"+ str(r_other2[0]["sid_array"])+ ", '"+ str(r_gid2[0]["mb"])+ "')")
         plpy.execute("DELETE FROM PGA_t WHERE sa1 = ARRAY"+str(old_sa)+ "or sa2 = ARRAY"+ str(old_sa))
 
 return None;
@@ -184,7 +170,7 @@ $$
 LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
 
 CREATE TRIGGER t_group
-        AFTER INSERT OR DELETE OR UPDATE ON PGA_group
+        BEFORE INSERT OR DELETE OR UPDATE ON PGA_group
         FOR EACH ROW
 EXECUTE PROCEDURE f_group();
 
@@ -462,17 +448,17 @@ CREATE OR REPLACE RULE Routing2c AS
 ----------------------------------------------------------------------
 
 -- (PGA) configuration
----INSERT INTO PGA_policy (gid1, gid2, MB)
---VALUES (1,2,'FW'),
---       (4,3,'LB');
---
---INSERT INTO PGA_group 
---       (gid, sid_array)
---VALUES
---	(1, ARRAY[5]),
---	(2, ARRAY[6]),
---	(3, ARRAY[6,7]),
---	(4, ARRAY[5,8]);
+INSERT INTO PGA_policy (gid1, gid2, MB)
+VALUES (1,2,'FW'),
+      (4,3,'LB');
+
+INSERT INTO PGA_group 
+       (gid, sid_array)
+VALUES
+	(1, ARRAY[5]),
+	(2, ARRAY[6]),
+	(3, ARRAY[6,7]),
+	(4, ARRAY[5,8]);
 
 -- (Kinetic) firewall configuration
 INSERT INTO FW_policy_acl VALUES (8,7,0);

@@ -1,1 +1,6 @@
-There are still bugs that need to be fixed. Will update this directory soon.
+To test the sigcomm example with triggers:
+
+At the beginning of "script.py", add these two lines:
+
+execfile("toyt.py")
+import toyt
