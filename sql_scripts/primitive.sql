@@ -506,6 +506,9 @@ inport = str (v[0]['port'])
 cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
 cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
 
+plpy.notice (cmd1)
+plpy.notice (cmd2)
+
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):
     f.write(msg)
@@ -593,6 +596,9 @@ inport = str (v[0]['port'])
 
 cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
 cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+
+plpy.notice (cmd1)
+plpy.notice (cmd2)
 
 fo = open ('/home/mininet/ravel/log.txt', 'a')
 def logfunc(msg,f=fo):

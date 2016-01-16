@@ -37,10 +37,71 @@ class Toy (Batch):
 
     def mininet (self):
         create_mininet_topo (self.dbname, self.username)
-
         filename = os.getcwd () + '/topo/'+ self.dbname + '_dtp.py'
 
-        # still need to add the right SQL script (triggers that actually instructs the network)
+        self.cur.execute ("""
+CREATE OR REPLACE FUNCTION add_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("hello, add_flow_fun")
+f = TD["new"]["pid"]
+s = TD["new"]["sid"]
+n = TD["new"]["nid"]
+
+u = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (n))
+outport = str(u[0]['port'])
+plpy.notice (str (u))
+v = plpy.execute('select port from get_port (' +str (s)+') where nid = ' +str (f))
+inport = str (v[0]['port'])
+plpy.notice (str (v))
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + inport + ',actions=output:' + outport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl add-flow s' + str (s) + ' in_port=' + outport + ',actions=output:' + inport
+
+import os
+import sys
+
+x1 = os.system (cmd1)
+plpy.notice (cmd1)
+
+x2 = os.system (cmd2)
+plpy.notice (cmd2)
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+        """)
+
+        self.cur.execute (""" 
+CREATE OR REPLACE FUNCTION del_flow_fun ()
+RETURNS TRIGGER
+AS $$
+plpy.notice ("invoke del_flow_fun")
+
+f = TD["old"]["pid"]
+s = TD["old"]["sid"]
+n = TD["old"]["nid"]
+
+u = plpy.execute("select port from get_port (" +str (s)+") where nid = " +str (n))
+outport = str(u[0]['port'])
+
+v = plpy.execute("select port from get_port (" +str (s)+ ") where nid = " +str (f))
+inport = str (v[0]['port'])
+
+cmd1 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + inport
+cmd2 = '/usr/bin/sudo /usr/bin/ovs-ofctl del-flows s' + str (s) + ' in_port=' + outport
+
+import os
+import sys
+import time
+
+x1 = os.system (cmd1)
+plpy.notice (cmd1)
+x1 = os.system (cmd2)
+plpy.notice (cmd2)
+
+return None;
+$$ LANGUAGE 'plpythonu' VOLATILE SECURITY DEFINER;
+""")
         
         while True:
             cmd = 'please run (press y to not repeat the message)\n' + 'sudo mn --custom '+ filename + ' --topo mytopo --mac --switch ovsk --controller remote\n'
@@ -48,6 +109,11 @@ class Toy (Batch):
             if n.strip () == 'y':
                 break
         
+
+    # def toggle_link(self, sid, nid):
+    #     update tp set isactive  = 1 where sid = 4 and nid = 1;
+    #     self.cur.execute ("update ")
+            
     def add_flow (self, src, dst):
         Batch.update_max_fid(self)
 
