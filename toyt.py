@@ -3,12 +3,13 @@ execfile("batch_fattree.py")
 import libRavel
 from batch import Batch
 
-class Toyt (Batch):
+class Toyt (Batch_fattree):
 
     def __init__(self,dbname, rounds):
 	sql_script = "/home/mininet/ravel/sql_scripts/primitive.sql"
-        topology = 'toy'
-
+        #topology = 'toy'
+	topology = 'fat'
+	
         self.dbname = dbname
         self.create_db (sql_script)
         Batch.connect (self)
@@ -54,17 +55,14 @@ class Toyt (Batch):
         self.protocol ()
 
 
-    def load_topo_fattree(self):
-	self.fetch()
-	size = 100
-	self.rtm_ins (size)
-        self.init_acl ()
-        self.init_lb ()
-
-        self.op_primitive ()
+    def load_topo(self):
+	if (self.dbname[0:7] == 'fattree'): 
+		k_size = int (self.dbname[8:]) 
+		init_fattree (k_size, self.dbname, Batch.username)
 
 
-    def load_topo (self):
+
+    def load_topo_toy (self):
         self.cur.execute ("""
             TRUNCATE TABLE tp cascade;
             TRUNCATE TABLE cf cascade;

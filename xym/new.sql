@@ -50,7 +50,7 @@ CREATE TABLE PGA AS(
         FROM tmp
         GROUP BY sid1, sid2, MB	
 );
----CREATE INDEX ON PGA (sid1, sid2);
+CREATE INDEX ON PGA (sid1, sid2);
 
 
 DROP VIEW IF EXISTS PGA_v CASCADE;

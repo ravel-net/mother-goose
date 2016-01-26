@@ -13,24 +13,33 @@ path = "/tmp/"
 SAMPLE_PERCENTAGE = 10
 
 
-def run_querytm(name, logfile):
+def run_querytm(toy, logfile):
 
         f = open(logfile, 'a')
 
-        f.write("#querytime\n")
-        f.flush
+        #f.write("#querytime\n")
+        #f.flush
 
-	for i in range(1, 30): 
-		for toy in name:
+	for i in range(1, 30):
 
-			t1 = time.time()
-                	toy.cur.execute("SELECT count(*) FROM pga where sid1 = 17;")
-			t2 = time.time()
-                	t = (t2-t1)
+		t1 = time.time()
+                toy.cur.execute("SELECT count(*) FROM pga where sid1 = 17;")
+		t2 = time.time()
+                t = (t2-t1)
 
 	
-			f.write ('---'+ toy.dbname +'---'+ str(i) + '---' + str (t*1000) + '\n')
-                	f.flush ()
+		f.write ('---pgatable---'+ str(i) + '---' + str (t*1000) + '\n')
+                f.flush ()
+
+		t1 = time.time()
+                toy.cur.execute("SELECT count(*) FROM pga_v where sid1 = 17;")
+                t2 = time.time()
+                t = (t2-t1)
+
+
+                f.write ('---pgaview---'+ str(i) + '---' + str (t*1000) + '\n')
+                f.flush ()
+
         
 
 	f.close()
@@ -50,7 +59,7 @@ def run_maintenance(logfile, percent):
 
 
         for i in range(rd):
-		a = Toyt('toyt', 4)
+		a = Toyt('fattree16', 4)
 		a.protocol()	
 		init_withsample(a, i*percent)	
                 
@@ -147,21 +156,20 @@ def init_threats(a):
 # a uses pga as view
 # b uses pga as table
 def figure10(keyword):
-	
-	a = Toy('toy', 4)
-	a.protocol()
-	b = Toyt('toyt', 4)
-	b.protocol()
-	
-	ab = []
-	ab.append(a)
-	ab.append(b)
-
 	logfile = path + keyword+ ".txt"	
-
-
 	open(logfile, 'w').close()
-	run_querytm(ab, logfile)
+
+        f = open(logfile, 'a')
+
+        f.write("#querytime\n")
+        f.flush
+	f.close()
+
+	a = Toyt('fattree16', 4)
+        a.protocol()
+	init_withsample(a, 100)
+
+	run_querytm(a, logfile)	
 
 	gen_dat(keyword)
 
