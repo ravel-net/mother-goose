@@ -1,19 +1,19 @@
 execfile("libRavel.py")
+execfile("batch_fattree.py")
 import libRavel
 from batch import Batch
 
 class Toyt (Batch):
 
     def __init__(self,dbname, rounds):
-
-        sql_script = "/home/mininet/ravel/sql_scripts/primitive.sql"
+	sql_script = "/home/mininet/ravel/sql_scripts/primitive.sql"
         topology = 'toy'
 
         self.dbname = dbname
         self.create_db (sql_script)
         Batch.connect (self)
 
-        self.load_schema (sql_script)        
+        self.load_schema (sql_script)
         self.load_sig_example_schema ()
         self.load_topo ()
 
@@ -53,6 +53,17 @@ class Toyt (Batch):
         self.del_flow (fid)
         self.protocol ()
 
+
+    def load_topo_fattree(self):
+	self.fetch()
+	size = 100
+	self.rtm_ins (size)
+        self.init_acl ()
+        self.init_lb ()
+
+        self.op_primitive ()
+
+
     def load_topo (self):
         self.cur.execute ("""
             TRUNCATE TABLE tp cascade;
@@ -70,7 +81,7 @@ class Toyt (Batch):
         print "--------------------> load_topo4switch successful"
 
     def load_sig_example_schema (self):
-        sql_script = '/home/mininet/ravel/xym/sigcomm_with_trg.sql'
+        sql_script = '/home/mininet/ravel/xym/new.sql'
         Batch.load_schema(self, sql_script)
 
     def close (self):

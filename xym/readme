@@ -1,6 +1,9 @@
-To test the sigcomm example with triggers:
+To generate plots:
 
-At the beginning of "script.py", add these two lines:
+at ravel directory, run: python orche_run.py
 
-execfile("toyt.py")
-import toyt
+To adjust the percentage interval of the sampling: 
+change the global variable at the top of orche_run.py
+
+To change the path of logfiles and pdf files:
+change the path variable at the tops of both orche_run.py and sigcomm_plot.py
