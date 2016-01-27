@@ -57,7 +57,7 @@ class Toyt (Batch_fattree):
 
     def load_topo(self):
 	if (self.dbname[0:7] == 'fattree'): 
-		k_size = int (self.dbname[8:]) 
+		k_size = int (self.dbname[7:]) 
 		init_fattree (k_size, self.dbname, Batch.username)
 
 
