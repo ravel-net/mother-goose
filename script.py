@@ -4,14 +4,16 @@ execfile("batch.py")
 execfile("batch_profile.py")
 execfile("batch_fattree.py")
 execfile("batch_isp.py")
-execfile ("toy.py")
+# execfile ("toy.py")
+execfile("toyt.py")
 
 import libRavel
 import batch
 import batch_profile
 import batch_fattree
 import batch_isp
-import toy
+# import toy
+import toyt
 
 print "load classes\n"
 
