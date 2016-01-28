@@ -55,8 +55,10 @@ def run_maintenance(logfile, percent):
 	
 	rd = int(100/percent)
 
-	delta = get_delta("/home/mininet/ravel/emergingthreats/emerging-Block-IPs.txt", "/home/mininet/ravel/today.txt")
-
+	delta = get_delta("/home/mininet/ravel/today2.txt", "/home/mininet/ravel/today.txt")
+	#stat = stat_delta(delta)
+	#print("ins: "+str(stat[0]))
+	#print("del: "+str(stat[1]))
 
         for i in range(rd):
 		a = Toyt('fattree16', 4)
@@ -165,7 +167,7 @@ def figure10(keyword):
         f.flush
 	f.close()
 
-	a = Toyt('fattree16', 4)
+	a = Toyt("fattree16", 4)
         a.protocol()
 	init_withsample(a, 100)
 
@@ -186,10 +188,22 @@ def figure_m(keyword):
 
 
 	
+def stat():
+	delta = get_delta("/home/mininet/ravel/today2.txt", "/home/mininet/ravel/today.txt")
+        stat = stat_delta(delta)
+        print("ins: "+str(stat[0]))
+        print("del: "+str(stat[1]))
+
+	a = Toyt('fattree16', 4)
+        a.protocol()
+        init_withsample(a, 100)
+	
+
 
 def main():
+	#stat()
 	figure_m("maintain")	
-	figure10("querytm");
+	figure10("querytm")
 	print("hello")	
 
 if __name__ == "__main__": main()
