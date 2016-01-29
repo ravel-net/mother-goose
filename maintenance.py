@@ -108,15 +108,23 @@ def init_emerging(data, db, percent):
 
 	
 		
-def apply_deltat(a, delta):
+def stat_delta(delta):
 	insert = delta[0]
-	for k,v in insert:
+	ins = 0
+	for k,v in insert.items():
 		print(k)
-		print(v)
-
-
-
+		ins = ins + len(v)
+	delete = delta[1]
+	de = 0
+	for k, v in delete.items():
+		print(k)
+		de = de + len(v)
+	res = []
+	res.append(ins)
+	res.append(de)
+	return res	
 		
+
 			
 def apply_delta(db, delta):
         insert = delta[0]
@@ -155,8 +163,29 @@ def apply_delta(db, delta):
                         db.cur.execute("delete from PGA_group where gid = "+ str(gid)+ " and sid = "+ str(sid))
 
 
-		
-	
+def ins_deletion(db, delta):
+	delete = delta[1]
+	for k, v in delete.items():
+		db.cur.execute("select * from groupid where gname = '"+k+"'")
+		gid = db.cur.fetchall()[0]["gid"]
+		sa_arr = []
+		for each in v:
+                        db.cur.execute("select * from addrid where addr = '"+ each + "';")
+                        find = db.cur.fetchall()
+                        if find:
+                                sa_arr.append(find[0]["aid"])
+                        else:
+                                db.cur.execute("select max(aid) from addrid ;")
+                                res = db.cur.fetchall()
+                                maxid = res[0]["max"]
+                                if not maxid:
+                                        maxid = 0
+
+                                db.cur.execute("insert into addrid values ('"+ each + "', "+ str(maxid+1)+ ");")
+                                sa_arr.append(maxid+1)
+                for sid in sa_arr:
+                        db.cur.execute("insert into PGA_group values ("+ str(gid) + ", "+ str(sid)+ ")")		
+
 
 
 def main():

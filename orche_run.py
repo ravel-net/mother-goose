@@ -55,16 +55,16 @@ def run_maintenance(logfile, percent):
 	
 	rd = int(100/percent)
 
-	delta = get_delta("/home/mininet/ravel/today2.txt", "/home/mininet/ravel/today.txt")
-	#stat = stat_delta(delta)
-	#print("ins: "+str(stat[0]))
-	#print("del: "+str(stat[1]))
+	delta = get_delta("/home/mininet/ravel/today.txt", "/home/mininet/ravel/today2.txt")
 
         for i in range(rd):
+		system("dropdb fattree16")
 		a = Toyt('fattree16', 4)
 		a.protocol()	
 		init_withsample(a, i*percent)	
-                
+               
+		ins_deletion(a, delta)
+ 
 		t1 = time.time()
 		#apply delta
 		apply_delta(a, delta)
@@ -76,6 +76,8 @@ def run_maintenance(logfile, percent):
 
                 f.write ('---maintenance---'+ str(size)+ '---' + str (t*1000) + '\n')
                 f.flush ()
+		
+		a.close()
         
 
         f.close()
@@ -104,7 +106,7 @@ def init_withsample(a, percent):
 	for each in hosts:
         	a.cur.execute("insert into pga_group values ("+ str(goodid)+ ", "+ str(each)+ ")")
 
-        data = parse_emerging("/home/mininet/ravel/emergingthreats/emerging-Block-IPs.txt")
+        data = parse_emerging("/home/mininet/ravel/today.txt")
         init_emerging(data, a, percent)
         #test(data, a)
 
@@ -138,7 +140,7 @@ def init_threats(a):
 	
 	a.cur.execute("insert into pga_group values ("+ str(goodid)+ ", ARRAY"+ str(hosts)+ ")")
 	
-	data = parse_emerging("/home/mininet/ravel/emergingthreats/emerging-Block-IPs.txt")
+	data = parse_emerging("/home/mininet/ravel/today.txt")
 	init_emerging(data, a)
 	#test(data, a)
 
@@ -189,14 +191,14 @@ def figure_m(keyword):
 
 	
 def stat():
-	delta = get_delta("/home/mininet/ravel/today2.txt", "/home/mininet/ravel/today.txt")
+	delta = get_delta("/home/mininet/ravel/emergingthreats/emerging-Block-IPs.txt", "/home/mininet/ravel/today.txt")
         stat = stat_delta(delta)
         print("ins: "+str(stat[0]))
         print("del: "+str(stat[1]))
 
-	a = Toyt('fattree16', 4)
-        a.protocol()
-        init_withsample(a, 100)
+	#a = Toyt('fattree16', 4)
+        #a.protocol()
+        #init_withsample(a, 100)
 	
 
 
