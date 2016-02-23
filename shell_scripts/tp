@@ -1,6 +1,6 @@
 # DBNAME=$1
 # SQL=$2
-DBNAME=fattree16
+DBNAME=newdb
 # SQL='SELECT * FROM tp limit 10;'
 SQL='SELECT * FROM '
 SQL+=$1
