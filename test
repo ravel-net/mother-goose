@@ -2,3 +2,6 @@ push to two remotes
 
 https://github.com/wadaries/ravel
 https://github.com/ravel-net/mother-goose
+
+git remote set-url --add --push origin git://original/repo.git
+git remote set-url --add --push origin git://another/repo.git
