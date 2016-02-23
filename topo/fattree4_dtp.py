@@ -1,0 +1,105 @@
+"""2015-08-13-13-39-47-384577
+$ sudo mn --custom /home/mininet/ravel/topo/fattree4_dtp.py --topo mytopo --test pingall
+$ sudo mn --custom /home/mininet/ravel/topo/fattree4_dtp.py --topo mytopo --mac --switch ovsk --controller remote
+"""
+
+from mininet.topo import Topo
+
+class MyTopo( Topo ):
+    "Simple topology example."
+
+    def __init__( self ):
+        "Create custom topo."
+
+        # Initialize topology
+        Topo.__init__( self )
+    
+        h13 = self.addHost('h13')
+        h14 = self.addHost('h14')
+        h15 = self.addHost('h15')
+        h16 = self.addHost('h16')
+        h1 = self.addHost('h1')
+        h2 = self.addHost('h2')
+        h3 = self.addHost('h3')
+        h4 = self.addHost('h4')
+        h5 = self.addHost('h5')
+        h6 = self.addHost('h6')
+        h7 = self.addHost('h7')
+        h8 = self.addHost('h8')
+        h9 = self.addHost('h9')
+        h10 = self.addHost('h10')
+        h11 = self.addHost('h11')
+        h12 = self.addHost('h12')
+
+        s0 = self.addSwitch('s0')
+        s1 = self.addSwitch('s1')
+        s2 = self.addSwitch('s2')
+        s3 = self.addSwitch('s3')
+        s4 = self.addSwitch('s4')
+        s5 = self.addSwitch('s5')
+        s6 = self.addSwitch('s6')
+        s7 = self.addSwitch('s7')
+        s8 = self.addSwitch('s8')
+        s9 = self.addSwitch('s9')
+        s10 = self.addSwitch('s10')
+        s11 = self.addSwitch('s11')
+        s12 = self.addSwitch('s12')
+        s13 = self.addSwitch('s13')
+        s14 = self.addSwitch('s14')
+        s15 = self.addSwitch('s15')
+        s16 = self.addSwitch('s16')
+        s17 = self.addSwitch('s17')
+        s18 = self.addSwitch('s18')
+        s19 = self.addSwitch('s19')
+
+        self.addLink(s0,s4)
+        self.addLink(s1,s4)
+        self.addLink(s4,s12)
+        self.addLink(s4,s13)
+        self.addLink(s2,s5)
+        self.addLink(s3,s5)
+        self.addLink(s5,s12)
+        self.addLink(s5,s13)
+        self.addLink(s12,h1)
+        self.addLink(s12,h2)
+        self.addLink(s13,h3)
+        self.addLink(s13,h4)
+        self.addLink(s0,s6)
+        self.addLink(s1,s6)
+        self.addLink(s6,s14)
+        self.addLink(s6,s15)
+        self.addLink(s2,s7)
+        self.addLink(s3,s7)
+        self.addLink(s7,s14)
+        self.addLink(s7,s15)
+        self.addLink(s14,h5)
+        self.addLink(s14,h6)
+        self.addLink(s15,h7)
+        self.addLink(s15,h8)
+        self.addLink(s0,s8)
+        self.addLink(s1,s8)
+        self.addLink(s8,s16)
+        self.addLink(s8,s17)
+        self.addLink(s2,s9)
+        self.addLink(s3,s9)
+        self.addLink(s9,s16)
+        self.addLink(s9,s17)
+        self.addLink(s16,h9)
+        self.addLink(s16,h10)
+        self.addLink(s17,h11)
+        self.addLink(s17,h12)
+        self.addLink(s0,s10)
+        self.addLink(s1,s10)
+        self.addLink(s10,s18)
+        self.addLink(s10,s19)
+        self.addLink(s2,s11)
+        self.addLink(s3,s11)
+        self.addLink(s11,s18)
+        self.addLink(s11,s19)
+        self.addLink(s18,h13)
+        self.addLink(s18,h14)
+        self.addLink(s19,h15)
+        self.addLink(s19,h16)
+
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+    
